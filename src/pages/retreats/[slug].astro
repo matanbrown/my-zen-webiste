@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const retreats = await getCollection("retreats");
+  return retreats.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title}>
+  <p class="eyebrow">{entry.data.place}{entry.data.year ? ` · ${entry.data.year}` : ""}</p>
+  <h1>{entry.data.title}</h1>
+  <div class="prose">
+    <Content />
+  </div>
+  <p><a href="/retreats/">← כל הריטריטים</a></p>
+</BaseLayout>

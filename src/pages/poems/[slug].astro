@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const poems = await getCollection("poems");
+  return poems.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title}>
+  <p class="eyebrow">{entry.data.form}</p>
+  <div class="poem-body">
+    <Content />
+  </div>
+  <p><a href="/poems/">← כל השירים</a></p>
+</BaseLayout>
+
+<style>
+  .poem-body {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    line-height: 2;
+    margin: var(--space-3) 0 var(--space-4);
+  }
+</style>

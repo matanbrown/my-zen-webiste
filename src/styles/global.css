@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;500;600;700&family=Noto+Sans+Hebrew:wght@400;500;600&display=swap");
+
+:root {
+  --paper: #ede9e1;
+  --paper-raised: #f5f2ec;
+  --ink: #1c1b19;
+  --ink-soft: #45423c;
+  --indigo: #1e3a4c;
+  --stone: #a8a196;
+  --stone-line: #d8d2c4;
+  --seal: #b33a3a;
+
+  --font-display: "Noto Serif Hebrew", serif;
+  --font-body: "Noto Sans Hebrew", sans-serif;
+
+  --measure: 34rem;
+  --space-1: .5rem; --space-2: 1rem; --space-3: 1.75rem; --space-4: 3rem; --space-5: 5rem;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.25; margin: 0 0 var(--space-2); }
+h1 { font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem); }
+h2 { font-size: 1.4rem; margin-top: var(--space-4); }
+p { margin: 0 0 var(--space-3); max-width: var(--measure); }
+a { color: var(--indigo); text-underline-offset: 3px; }
+a:hover { color: var(--seal); }
+a:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+
+.eyebrow { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); }
+.rule { border: none; border-top: 1px solid var(--stone-line); margin: var(--space-4) 0; }
+.card { border: 1px solid var(--stone-line); border-radius: 4px; padding: var(--space-3); background: var(--paper-raised); margin-bottom: var(--space-3); }
+.skip-link { position: absolute; inset-inline-start: -999px; top: 0; background: var(--ink); color: var(--paper); padding: var(--space-1) var(--space-2); z-index: 100; }
+.skip-link:focus { inset-inline-start: var(--space-2); top: var(--space-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

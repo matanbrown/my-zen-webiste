@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const poems = (await getCollection("poems", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="שירה" description="שירה והייקו בהשראת זן">
+  <p class="eyebrow">מילים קצרות, הרבה מרווח</p>
+  <h1>שירה</h1>
+
+  {poems.map((poem) => (
+    <article class="card">
+      <p class="eyebrow">{poem.data.form}</p>
+      <h2><a href={`/poems/${poem.id}/`}>{poem.data.title}</a></h2>
+    </article>
+  ))}
+
+  {poems.length === 0 && <p>עדיין אין שירים כאן — בקרוב.</p>}
+</BaseLayout>
