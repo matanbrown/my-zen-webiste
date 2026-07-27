@@ -52,6 +52,50 @@ pieces:
    (paste each value when prompted). Redeploy afterwards for the Function to
    pick them up.
 
+## Automated content drafting
+
+Twice a week (Sun + Wed mornings, `.github/workflows/content-draft.yml`),
+a GitHub Action drafts one new piece of content and opens a Pull Request
+for review — it never publishes anything by itself.
+
+**How it works:**
+1. You add topics to `content-ideas.md`, one per line, under `## Queue`, in
+   the order you want them written. Plain `topic text` drafts a lesson;
+   prefix with `poem: ` to draft a poem/haiku instead.
+2. On its schedule, the workflow takes the *first* line, calls the Claude
+   API (`scripts/generate-content.mjs`) to write it in Hebrew + English,
+   writes both files with `draft: true`, moves that line to `## Done`, and
+   opens a PR with everything as one commit.
+3. **You review the PR whenever it's convenient** — read the actual diff on
+   GitHub (web or mobile), no need to be at this computer. Push further
+   edits to the same branch if you want changes.
+4. To actually publish: edit `draft: true` → `draft: false` in **both**
+   files (Hebrew + English) on that branch, then merge the PR. Merging
+   pushes to `main`, which triggers the normal deploy — so nothing goes
+   live until you've both reviewed *and* flipped `draft` yourself. If you
+   merge without flipping `draft`, the content sits in the repo but stays
+   invisible on the site (exactly like any other draft).
+5. Empty queue → the workflow just logs "nothing to do" and exits, no PR.
+
+**Content types**: only `lesson` and `poem` are wired up — these are
+the two collections meant for recurring/generated writing. `retreats` and
+`inspirations` are first-person accounts of real experiences and real
+people, so they're deliberately left out of automation; write those
+yourself (or by chatting with Claude directly, same as everything else in
+this README).
+
+### One-time setup
+
+1. Create an API key at [console.anthropic.com](https://console.anthropic.com)
+2. Add it as a GitHub secret: repo → Settings → Secrets and variables →
+   Actions → New repository secret → name it `ANTHROPIC_API_KEY`
+3. That's it — `contents: write` / `pull-requests: write` permissions and
+   the `GH_TOKEN` for opening the PR are already handled inside the
+   workflow via the built-in `github.token`, no extra secret needed there.
+
+To test without waiting for the schedule: repo → **Actions** tab →
+**Draft content** → **Run workflow**.
+
 ## Adding photos
 
 1. Drop images into the shared Google Drive folder.

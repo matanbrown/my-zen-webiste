@@ -1,0 +1,53 @@
+name: Draft content
+
+on:
+  schedule:
+    # Sunday and Wednesday, 06:00 UTC (~09:00 Israel time in summer).
+    # Cron is UTC always — adjust here if you want a different local time.
+    - cron: "0 6 * * 0,3"
+  workflow_dispatch: {} # lets you trigger a run manually from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate draft content
+        id: generate
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/generate-content.mjs
+
+      - name: Open a PR for review
+        if: steps.generate.outputs.created == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SLUG: ${{ steps.generate.outputs.slug }}
+          TYPE: ${{ steps.generate.outputs.type }}
+          TOPIC: ${{ steps.generate.outputs.topic }}
+        run: |
+          git config user.name "content-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          BRANCH="content/${TYPE}-${SLUG}"
+          git checkout -b "$BRANCH"
+          git add content-ideas.md "src/content/${TYPE}s/" "src/content/en/${TYPE}s/"
+          git commit -m "טיוטה אוטומטית: ${TYPE} — ${TOPIC}"
+          git push origin "$BRANCH"
+
+          PR_BODY="טיוטה אוטומטית מהנושא: \"${TOPIC}\". עדיין draft:true בשני הקבצים (עברית+אנגלית) — לא יעלה לאתר עד שתשנה ל-draft:false בשניהם ותמזג. קרא את התוכן ישירות ב-diff של ה-PR הזה, אפשר לערוך ישירות על הענף הזה לפני שממזגים."
+
+          gh pr create \
+            --title "טיוטה: ${TOPIC}" \
+            --body "$PR_BODY" \
+            --base main \
+            --head "$BRANCH"

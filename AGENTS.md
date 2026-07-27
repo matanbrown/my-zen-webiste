@@ -39,6 +39,17 @@ mirror 1:1 by path).
 
 **Status: complete** as of the last session — `BaseLayout.astro` has the `lang` prop, translated nav, hreflang tags, and language switcher; `src/content/en/**` and `src/pages/en/**` both exist with a full 1:1 mirror of every Hebrew page/entry. Verified via `npm run build` (49 pages, 24 of them under `/en/`, sitemap confirms exact 1:1 parity). If you add a new page or collection entry, remember the rule above: add the English twin with the same filename/slug at the same time.
 
+### Automated content drafting (`.github/workflows/content-draft.yml`)
+
+A scheduled GitHub Action (Sun+Wed) reads the next topic from
+`content-ideas.md`, calls the Claude API directly (`scripts/generate-content.mjs`,
+not this chat/session), writes a `draft: true` he+en pair (lesson or poem
+only — retreats/inspirations are real personal accounts, deliberately not
+automated), and opens a PR. Full details, including why `draft:true` stays
+on even after merge until a human explicitly flips it, are in `README.md`
+under "Automated content drafting" — read that before touching this
+workflow or the script.
+
 ### Contact form (`/contact/`, `functions/api/contact.js`)
 
 Cloudflare Pages Function, not a third-party form service. Verifies an
