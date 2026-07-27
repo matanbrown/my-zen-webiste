@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const items = await getCollection("inspirationsEn");
+  return items.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title} lang="en">
+  <p class="eyebrow">
+    {entry.data.author}
+    {entry.data.translator && ` · translated by ${entry.data.translator}`}
+  </p>
+  <h1>{entry.data.title}</h1>
+  {entry.data.source && <p class="eyebrow">From: {entry.data.source}</p>}
+
+  <div class="prose">
+    <Content />
+  </div>
+
+  {entry.data.externalUrl && (
+    <p>
+      <a href={entry.data.externalUrl} target="_blank" rel="noopener noreferrer">
+        {entry.data.externalLabel ?? "More about this work →"}
+      </a>
+    </p>
+  )}
+
+  <p><a href="/en/inspirations/">← All inspirations</a></p>
+</BaseLayout>

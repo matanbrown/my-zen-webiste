@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const items = (await getCollection("inspirationsEn", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Inspirations" description="Poems and works that accompany me on this path" lang="en">
+  <p class="eyebrow">Others' works that accompany me</p>
+  <h1>Inspirations</h1>
+
+  {items.map((item) => (
+    <article class="card">
+      <p class="eyebrow">{item.data.author}{item.data.source ? ` · ${item.data.source}` : ""}</p>
+      <h2><a href={`/en/inspirations/${item.id}/`}>{item.data.title}</a></h2>
+    </article>
+  ))}
+
+  {items.length === 0 && <p>Nothing here yet — coming soon.</p>}
+</BaseLayout>

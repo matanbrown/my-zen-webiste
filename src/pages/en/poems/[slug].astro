@@ -1,0 +1,50 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const FORM_LABELS: Record<string, string> = {
+  haiku: "haiku",
+  poem: "poem",
+  quote: "quote",
+};
+
+export async function getStaticPaths() {
+  const poems = await getCollection("poemsEn");
+  return poems.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title} lang="en">
+  <p class="eyebrow">
+    {FORM_LABELS[entry.data.form] ?? entry.data.form}
+    {entry.data.author && ` · ${entry.data.author}`}
+    {entry.data.translator && ` · translated by ${entry.data.translator}`}
+  </p>
+  {entry.data.source && <p class="eyebrow">From: {entry.data.source}</p>}
+
+  <div class="poem-body">
+    <Content />
+  </div>
+
+  {entry.data.externalUrl && (
+    <p>
+      <a href={entry.data.externalUrl} target="_blank" rel="noopener noreferrer">
+        {entry.data.externalLabel ?? "More →"}
+      </a>
+    </p>
+  )}
+
+  <p><a href="/en/poems/">← All poems</a></p>
+</BaseLayout>
+
+<style>
+  .poem-body {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    line-height: 2;
+    margin: var(--space-3) 0 var(--space-4);
+  }
+</style>

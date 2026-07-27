@@ -65,4 +65,35 @@ const practices = defineCollection({
   }),
 });
 
-export const collections = { lessons, poems, retreats, inspirations, practices };
+// ---------------------------------------------------------------------------
+// English mirrors. Same schemas, same IDs/slugs as their Hebrew counterparts
+// (so the language switcher can map /x/slug/ <-> /en/x/slug/ directly),
+// sourced from src/content/en/<name> instead of src/content/<name>.
+// ---------------------------------------------------------------------------
+
+const lessonsEn = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/en/lessons" }),
+  schema: lessons.schema,
+});
+
+const poemsEn = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/en/poems" }),
+  schema: poems.schema,
+});
+
+const retreatsEn = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/en/retreats" }),
+  schema: retreats.schema,
+});
+
+const inspirationsEn = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/en/inspirations" }),
+  schema: inspirations.schema,
+});
+
+const practicesEn = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/en/practices" }),
+  schema: practices.schema,
+});
+
+export const collections = { lessons, poems, retreats, inspirations, practices, lessonsEn, poemsEn, retreatsEn, inspirationsEn, practicesEn };

@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const FORM_LABELS: Record<string, string> = {
+  haiku: "haiku",
+  poem: "poem",
+  quote: "quote",
+};
+
+const poems = (await getCollection("poemsEn", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Poems" description="Poems and haiku in the spirit of Zen" lang="en">
+  <p class="eyebrow">Short words, a lot of space</p>
+  <h1>Poems</h1>
+
+  {poems.map((poem) => (
+    <article class="card">
+      <p class="eyebrow">{FORM_LABELS[poem.data.form] ?? poem.data.form}{poem.data.author ? ` · ${poem.data.author}` : ""}</p>
+      <h2><a href={`/en/poems/${poem.id}/`}>{poem.data.title}</a></h2>
+    </article>
+  ))}
+
+  {poems.length === 0 && <p>No poems here yet — coming soon.</p>}
+</BaseLayout>

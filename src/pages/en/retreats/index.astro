@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const retreats = (await getCollection("retreatsEn", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Retreats" description="Stories from monasteries and retreats" lang="en">
+  <p class="eyebrow">An inner journey, another place</p>
+  <h1>Retreats</h1>
+
+  {retreats.map((retreat) => (
+    <article class="card">
+      <p class="eyebrow">{retreat.data.place}{retreat.data.year ? ` · ${retreat.data.year}` : ""}</p>
+      <h2><a href={`/en/retreats/${retreat.id}/`}>{retreat.data.title}</a></h2>
+    </article>
+  ))}
+
+  {retreats.length === 0 && <p>No stories here yet — coming soon.</p>}
+</BaseLayout>

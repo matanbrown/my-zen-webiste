@@ -1,26 +1,58 @@
 ---
 import "../styles/global.css";
 
-const SITE_NAME = "ללא מאמץ";
-
 interface Props {
   title: string;
   description?: string;
+  lang?: "he" | "en";
 }
-const { title, description } = Astro.props;
+const { title, description, lang = "he" } = Astro.props;
+const isEn = lang === "en";
+
+const SITE_NAME = isEn ? "Without Effort" : "ללא מאמץ";
 
 const pageTitle = title === SITE_NAME ? SITE_NAME : `${title} — ${SITE_NAME}`;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+
+// Equivalent URL in the other language — routes mirror 1:1 by slug, so this
+// is just adding/stripping the "/en" prefix.
+const otherLangPath = isEn
+  ? Astro.url.pathname.replace(/^\/en\/?/, "/")
+  : `/en${Astro.url.pathname}`;
+const otherLangUrl = new URL(otherLangPath, Astro.site);
+
+const NAV: [string, string][] = isEn
+  ? [
+      ["/en/lessons/", "Lessons"],
+      ["/en/practices/", "Practices"],
+      ["/en/inspirations/", "Inspirations"],
+      ["/en/poems/", "Poems"],
+      ["/en/retreats/", "Retreats"],
+      ["/en/about/", "About"],
+      ["/en/contact/", "Contact"],
+    ]
+  : [
+      ["/lessons/", "שיעורים"],
+      ["/practices/", "תרגולים"],
+      ["/inspirations/", "השראה"],
+      ["/poems/", "שירה"],
+      ["/retreats/", "ריטריטים"],
+      ["/about/", "אודות"],
+      ["/contact/", "צור קשר"],
+    ];
 ---
 
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang={lang} dir={isEn ? "ltr" : "rtl"}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="he" href={isEn ? otherLangUrl : canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={isEn ? canonicalUrl : otherLangUrl} />
+    <link rel="alternate" hreflang="x-default" href={isEn ? otherLangUrl : canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <meta property="og:site_name" content={SITE_NAME} />
@@ -28,7 +60,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:url" content={canonicalUrl} />
     {description && <meta property="og:description" content={description} />}
-    <meta property="og:locale" content="he_IL" />
+    <meta property="og:locale" content={isEn ? "en_US" : "he_IL"} />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
@@ -46,21 +78,18 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     )}
   </head>
   <body>
-    <a class="skip-link" href="#main">דלג לתוכן הדף</a>
+    <a class="skip-link" href="#main">{isEn ? "Skip to content" : "דלג לתוכן הדף"}</a>
     <div class="shell">
       <header class="site-header">
-        <a class="brand" href="/">
+        <a class="brand" href={isEn ? "/en/" : "/"}>
           <span class="brand-mark">禅</span>
-          <span>ללא מאמץ</span>
+          <span>{SITE_NAME}</span>
         </a>
-        <nav aria-label="ניווט ראשי">
-          <a href="/lessons/">שיעורים</a>
-          <a href="/practices/">תרגולים</a>
-          <a href="/inspirations/">השראה</a>
-          <a href="/poems/">שירה</a>
-          <a href="/retreats/">ריטריטים</a>
-          <a href="/about/">אודות</a>
-          <a href="/contact/">צור קשר</a>
+        <nav aria-label={isEn ? "Main navigation" : "ניווט ראשי"}>
+          {NAV.map(([href, label]) => <a href={href}>{label}</a>)}
+          <a href={otherLangUrl.pathname} class="lang-switch" hreflang={isEn ? "he" : "en"}>
+            {isEn ? "עברית" : "English"}
+          </a>
         </nav>
       </header>
       <main id="main" class="content">
@@ -84,6 +113,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
       .brand-mark { color: var(--seal); font-size: 1.5rem; }
       nav a { margin-inline-start: var(--space-2); font-size: .92rem; text-decoration: none; color: var(--ink-soft); }
       nav a:hover { color: var(--indigo); }
+      .lang-switch { border-inline-start: 1px solid var(--stone-line); padding-inline-start: var(--space-2); }
       .site-footer { margin-top: var(--space-5); }
     </style>
   </body>
