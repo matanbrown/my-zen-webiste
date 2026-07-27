@@ -19,6 +19,39 @@ for text content:
 
 Push to `main` → GitHub Actions builds and deploys to Cloudflare Pages automatically.
 
+## Contact form
+
+`/contact/` — sends to matan@matanbrown.com without ever putting that address
+in any client-side code, so it can't be scraped by spam bots. Built from three
+pieces:
+
+- `src/pages/contact/index.astro` — the form (name, email, message, a hidden
+  honeypot field, and an invisible Turnstile widget)
+- `functions/api/contact.js` — Cloudflare Pages Function that verifies the
+  Turnstile token + honeypot, then sends the email via the Resend API
+- Two secrets the Function reads from its environment: `TURNSTILE_SECRET_KEY`,
+  `RESEND_API_KEY` — never committed, never in Terraform state (see below)
+
+### One-time setup for the contact form
+
+1. **Turnstile widget**: Cloudflare dashboard → Turnstile → Add widget →
+   domain `zen.matanbrown.com`, mode "Invisible". Copy the **Site Key** into
+   `TURNSTILE_SITE_KEY` in `src/pages/contact/index.astro` (this one is public
+   by design, safe to commit). Copy the **Secret Key** for step 3.
+2. **Resend account**: sign up at resend.com, add and verify a sending domain
+   (`zen.matanbrown.com` or `matanbrown.com` — add the DNS records Resend
+   gives you in Cloudflare DNS). Create an API key.
+3. **Set the two secrets on the Pages project** (not in git, not in
+   Terraform — Pages secrets aren't something the `cloudflare` Terraform
+   provider can manage safely, and this repo's `terraform.tfstate` isn't
+   even gitignored, so keep real secrets out of it entirely):
+   ```
+   npx wrangler pages secret put TURNSTILE_SECRET_KEY --project-name=zen-matanbrown
+   npx wrangler pages secret put RESEND_API_KEY --project-name=zen-matanbrown
+   ```
+   (paste each value when prompted). Redeploy afterwards for the Function to
+   pick them up.
+
 ## Adding photos
 
 1. Drop images into the shared Google Drive folder.

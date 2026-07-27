@@ -1,0 +1,149 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// Public Turnstile site key — safe to expose in client-side code by design.
+// Replace with the real site key from your Turnstile widget (Cloudflare
+// dashboard → Turnstile → create widget → "Invisible" mode, domain
+// zen.matanbrown.com). The matching *secret* key is never in this file —
+// it lives only in the Pages Function's environment (see README).
+const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
+---
+
+<BaseLayout title="צור קשר" description="שלח לי הודעה">
+  <p class="eyebrow">רוצה לכתוב לי משהו?</p>
+  <h1>צור קשר</h1>
+  <p>מלא/י את הטופס ואני אחזור אליך.</p>
+
+  <form id="contact-form" novalidate>
+    <label>
+      שם
+      <input type="text" name="name" required autocomplete="name" />
+    </label>
+    <label>
+      אימייל שלך (לתשובה)
+      <input type="email" name="email" required autocomplete="email" />
+    </label>
+    <label>
+      הודעה
+      <textarea name="message" rows="6" required></textarea>
+    </label>
+
+    <!-- honeypot — hidden from real people, only bots fill this in -->
+    <div class="hp" aria-hidden="true">
+      <label>
+        אתר
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+
+    <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>
+
+    <button type="submit">שליחה</button>
+    <p id="form-status" role="status" class="eyebrow"></p>
+  </form>
+
+  <script async src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+  <script type="module">
+    const form = document.getElementById("contact-form");
+    const status = document.getElementById("form-status");
+    const submitButton = form.querySelector("button[type=submit]");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      submitButton.disabled = true;
+      status.textContent = "שולח…";
+
+      const data = new FormData(form);
+      const payload = {
+        name: data.get("name"),
+        email: data.get("email"),
+        message: data.get("message"),
+        website: data.get("website"),
+        turnstileToken: data.get("cf-turnstile-response"),
+      };
+
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const result = await res.json();
+
+        if (result.ok) {
+          status.textContent = "ההודעה נשלחה, תודה! אחזור אליך בקרוב.";
+          form.reset();
+          if (window.turnstile) window.turnstile.reset();
+        } else {
+          status.textContent = "משהו נכשל בשליחה. אפשר לנסות שוב, או לכתוב ישירות.";
+          submitButton.disabled = false;
+        }
+      } catch {
+        status.textContent = "משהו נכשל בשליחה. אפשר לנסות שוב, או לכתוב ישירות.";
+        submitButton.disabled = false;
+      }
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 28rem;
+    margin-top: var(--space-3);
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  input,
+  textarea {
+    font: inherit;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--stone-line);
+    border-radius: 4px;
+    background: var(--paper-raised);
+    color: var(--ink);
+  }
+  textarea {
+    resize: vertical;
+  }
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--indigo);
+    outline-offset: 1px;
+  }
+  .hp {
+    position: absolute;
+    inset-inline-start: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  button {
+    align-self: flex-start;
+    padding: 0.6rem 1.6rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    font: inherit;
+    cursor: pointer;
+  }
+  button:hover {
+    background: var(--seal);
+    border-color: var(--seal);
+  }
+  button:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  #form-status {
+    min-height: 1.2em;
+  }
+</style>

@@ -24,3 +24,8 @@ pnpm-debug.log*
 .idea/
 
 terraform.tfvars
+
+# terraform state can contain secrets/resource IDs in plaintext
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+infra/.terraform/
