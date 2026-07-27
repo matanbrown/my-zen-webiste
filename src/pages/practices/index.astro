@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const practices = (await getCollection("practices", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="תרגולים" description="תרגולי מדיטציה והליכה בדרך הזן">
+  <p class="eyebrow">תרגול, לא תיאוריה</p>
+  <h1>תרגולים</h1>
+
+  {practices.map((practice) => (
+    <article class="card">
+      <h2><a href={`/practices/${practice.id}/`}>{practice.data.title}</a></h2>
+      {practice.data.subtitle && <p>{practice.data.subtitle}</p>}
+    </article>
+  ))}
+
+  {practices.length === 0 && <p>עדיין אין תרגולים כאן — בקרוב.</p>}
+</BaseLayout>

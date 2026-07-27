@@ -50,4 +50,14 @@ const inspirations = defineCollection({
   }),
 });
 
-export const collections = { lessons, poems, retreats, inspirations };
+const practices = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/practices" }),
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string().optional(), // תיאור קצר, שורה אחת
+    order: z.number().default(0), // סדר תצוגה ברשימה
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { lessons, poems, retreats, inspirations, practices };
