@@ -114,8 +114,16 @@ async function callClaude(type, topic) {
   }
   const data = await res.json();
   const text = data.content.find((b) => b.type === "text")?.text ?? "";
-  const cleaned = text.replace(/^```json\s*|\s*```$/g, "").trim();
-  return JSON.parse(cleaned);
+  const cleaned = text
+    .trim()
+    .replace(/^```(?:json)?\s*/, "")
+    .replace(/\s*```$/, "")
+    .trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch (err) {
+    throw new Error(`Could not parse Claude's response as JSON: ${err.message}\n---\n${cleaned}`);
+  }
 }
 
 function frontmatter(fields) {

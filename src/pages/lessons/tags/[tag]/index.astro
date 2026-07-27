@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const lessons = await getCollection("lessons", ({ data }) => !data.draft);
+  const tags = new Set(lessons.flatMap((l) => l.data.tags ?? []));
+  return [...tags].map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const lessons = (await getCollection("lessons", ({ data }) => !data.draft && data.tags?.includes(tag)))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title={`תגית: ${tag}`} description={`שיעורים מתויגים ב-${tag}`}>
+  <p class="eyebrow">תגית</p>
+  <h1>{tag}</h1>
+
+  {lessons.map((lesson) => (
+    <article class="card">
+      <p class="eyebrow">{lesson.data.date.toLocaleDateString("he-IL")}</p>
+      <h2><a href={`/lessons/${lesson.id}/`}>{lesson.data.title}</a></h2>
+      {lesson.data.summary && <p>{lesson.data.summary}</p>}
+    </article>
+  ))}
+
+  <p><a href="/lessons/tags/">← כל התגיות</a></p>
+</BaseLayout>

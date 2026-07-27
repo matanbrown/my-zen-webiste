@@ -37,9 +37,21 @@ const latestPoem = poems[0];
   )}
 
   <p><a href="/en/lessons/">All lessons ←</a></p>
+
+  <hr class="rule" />
+
+  <p class="eyebrow">Elsewhere on the site</p>
+  <ul class="explore">
+    <li><a href="/en/practices/">Practices</a> — the meditation and walking practices I use</li>
+    <li><a href="/en/poems/">Poems</a> — short words, a lot of space</li>
+    <li><a href="/en/inspirations/">Inspirations</a> — teachers and writers who accompany me</li>
+    <li><a href="/en/retreats/">Retreats</a> — personal stories from monasteries and retreats</li>
+  </ul>
 </BaseLayout>
 
 <style>
   .hero { padding-block: var(--space-2); }
   .hero h1 { margin-top: var(--space-2); max-width: 16ch; }
+  .explore { list-style: none; padding: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+  .explore a { font-family: var(--font-display); }
 </style>

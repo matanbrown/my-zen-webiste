@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths({ paginate }) {
+  const lessons = (await getCollection("lessonsEn", ({ data }) => !data.draft))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return paginate(lessons, { pageSize: 8 });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title="Lessons" description="Weekly Zen lessons" lang="en">
+  <p class="eyebrow">A new lesson every week</p>
+  <h1>Lessons</h1>
+
+  {page.data.map((lesson) => (
+    <article class="card">
+      <p class="eyebrow">{lesson.data.date.toLocaleDateString("en-US")}</p>
+      <h2><a href={`/en/lessons/${lesson.id}/`}>{lesson.data.title}</a></h2>
+      {lesson.data.summary && <p>{lesson.data.summary}</p>}
+    </article>
+  ))}
+
+  {page.data.length === 0 && <p>No lessons here yet — coming soon.</p>}
+
+  {page.lastPage > 1 && (
+    <nav class="pagination" aria-label="Pagination">
+      {page.url.prev ? <a href={page.url.prev}>← Older</a> : <span />}
+      <span class="eyebrow">Page {page.currentPage} of {page.lastPage}</span>
+      {page.url.next ? <a href={page.url.next}>Newer →</a> : <span />}
+    </nav>
+  )}
+</BaseLayout>
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-4);
+  }
+</style>

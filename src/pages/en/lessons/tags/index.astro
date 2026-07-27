@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+const lessons = await getCollection("lessonsEn", ({ data }) => !data.draft);
+
+const counts = new Map();
+for (const lesson of lessons) {
+  for (const tag of lesson.data.tags ?? []) {
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+}
+const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="Tags" description="Lessons by topic" lang="en">
+  <p class="eyebrow">Lessons by topic</p>
+  <h1>Tags</h1>
+
+  {tags.length > 0 ? (
+    <ul class="tag-list">
+      {tags.map(([tag, count]) => (
+        <li>
+          <a href={`/en/lessons/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
+          <span class="eyebrow"> ({count})</span>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p>No tags yet — they'll show up here once lessons are tagged.</p>
+  )}
+
+  <p><a href="/en/lessons/">← All lessons</a></p>
+</BaseLayout>
+
+<style>
+  .tag-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .tag-list a { font-size: 1.05rem; }
+</style>
