@@ -12,10 +12,25 @@ const { Content } = await render(entry);
 ---
 
 <BaseLayout title={entry.data.title}>
-  <p class="eyebrow">{entry.data.form}</p>
+  <p class="eyebrow">
+    {entry.data.form}
+    {entry.data.author && ` · ${entry.data.author}`}
+    {entry.data.translator && ` · תרגום: ${entry.data.translator}`}
+  </p>
+  {entry.data.source && <p class="eyebrow">מתוך: {entry.data.source}</p>}
+
   <div class="poem-body">
     <Content />
   </div>
+
+  {entry.data.externalUrl && (
+    <p>
+      <a href={entry.data.externalUrl} target="_blank" rel="noopener noreferrer">
+        {entry.data.externalLabel ?? "לעוד →"}
+      </a>
+    </p>
+  )}
+
   <p><a href="/poems/">← כל השירים</a></p>
 </BaseLayout>
 

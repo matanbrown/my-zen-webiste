@@ -12,7 +12,7 @@ const poems = (await getCollection("poems", ({ data }) => !data.draft))
 
   {poems.map((poem) => (
     <article class="card">
-      <p class="eyebrow">{poem.data.form}</p>
+      <p class="eyebrow">{poem.data.form}{poem.data.author ? ` · ${poem.data.author}` : ""}</p>
       <h2><a href={`/poems/${poem.id}/`}>{poem.data.title}</a></h2>
     </article>
   ))}

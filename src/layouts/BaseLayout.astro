@@ -13,9 +13,20 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} — זן.מתן</title>
+    <title>{title} — ללא מאמץ</title>
     {description && <meta name="description" content={description} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {import.meta.env.PROD && (
+      <>
+        <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-EQ4Q50PXZF"></script>
+        <script is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(...args) { window.dataLayer.push(args); }
+          gtag("js", new Date());
+          gtag("config", "G-EQ4Q50PXZF");
+        </script>
+      </>
+    )}
   </head>
   <body>
     <a class="skip-link" href="#main">דלג לתוכן הדף</a>
@@ -23,13 +34,13 @@ const { title, description } = Astro.props;
       <header class="site-header">
         <a class="brand" href="/">
           <span class="brand-mark">禅</span>
-          <span>הדרך של מתן</span>
+          <span>ללא מאמץ</span>
         </a>
         <nav aria-label="ניווט ראשי">
-          <a href="/practices/">תרגולים</a>
           <a href="/lessons/">שיעורים</a>
-          <a href="/poems/">שירה</a>
+          <a href="/practices/">תרגולים</a>
           <a href="/inspirations/">השראה</a>
+          <a href="/poems/">שירה</a>
           <a href="/retreats/">ריטריטים</a>
           <a href="/about/">אודות</a>
         </nav>

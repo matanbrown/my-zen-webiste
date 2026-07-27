@@ -20,6 +20,11 @@ const poems = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     form: z.enum(["haiku", "poem", "quote"]).default("poem"),
+    author: z.string().optional(), // למילים של אחרים, אם ציין
+    translator: z.string().optional(),
+    source: z.string().optional(),
+    externalUrl: z.string().url().optional(),
+    externalLabel: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

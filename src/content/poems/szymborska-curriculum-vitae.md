@@ -1,9 +1,10 @@
 ---
 title: "כתיבת קורות חיים"
+date: 2026-07-25
+form: "quote"
 author: "ויסלבה שימבורסקה"
 translator: "רפי וייכרט"
 source: "סוף והתחלה"
-date: 2026-07-25
 externalUrl: "https://open.spotify.com/episode/2IEOXntGknPRss7uU3yOOm"
 externalLabel: "לפרק פודקאסט שדן בשיר →"
 draft: false
