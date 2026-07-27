@@ -12,11 +12,16 @@ const { Content } = await render(entry);
 const description = `${entry.data.place}${entry.data.year ? " · " + entry.data.year : ""} — סיפור אישי מתוך "ללא מאמץ"`;
 ---
 
-<BaseLayout title={entry.data.title} description={description}>
+<BaseLayout title={entry.data.title} description={description} image={entry.data.coverImage}>
   <p class="eyebrow">{entry.data.place}{entry.data.year ? ` · ${entry.data.year}` : ""}</p>
   <h1>{entry.data.title}</h1>
+  {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt="" />}
   <div class="prose">
     <Content />
   </div>
   <p><a href="/retreats/">← כל הריטריטים</a></p>
 </BaseLayout>
+
+<style>
+  .cover { width: 100%; border-radius: 4px; margin-bottom: var(--space-3); }
+</style>

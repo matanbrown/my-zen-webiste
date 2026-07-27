@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import CookieConsent from "../components/CookieConsent.astro";
 
 interface Props {
   title: string;
@@ -7,8 +8,11 @@ interface Props {
   lang?: "he" | "en";
   /** Extra JSON-LD object(s) for this specific page (e.g. Article schema for a lesson). Merged alongside the sitewide WebSite schema. */
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** Root-relative path to a page-specific OG/Twitter image (e.g. a lesson's coverImage). Defaults to the sitewide /og-image.png. */
+  image?: string;
 }
-const { title, description, lang = "he", jsonLd } = Astro.props;
+const { title, description, lang = "he", jsonLd, image = "/og-image.png" } = Astro.props;
+const ogImageUrl = new URL(image, Astro.site);
 const isEn = lang === "en";
 
 const SITE_NAME = isEn ? "Without Effort" : "ללא מאמץ";
@@ -89,28 +93,45 @@ const NAV: [string, string][] = isEn
     <meta property="og:url" content={canonicalUrl} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:locale" content={isEn ? "en_US" : "he_IL"} />
+    <meta property="og:image" content={ogImageUrl} />
 
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageUrl} />
 
     {allJsonLd.map((entry) => (
       <script type="application/ld+json" set:html={JSON.stringify(entry)} />
     ))}
     {import.meta.env.PROD && (
-      <>
-        <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-EQ4Q50PXZF"></script>
-        <script is:inline>
+      <script is:inline>
+        // GA is NOT loaded here — only a loader function is defined. It's
+        // only invoked once the person accepts the cookie banner (see
+        // CookieConsent.astro), or automatically on repeat visits once
+        // consent was already given (checked below). No analytics
+        // cookies are set before explicit consent.
+        window.__loadGA = function () {
+          if (window.__gaLoaded) return;
+          window.__gaLoaded = true;
           window.dataLayer = window.dataLayer || [];
-          function gtag(...args) { window.dataLayer.push(args); }
+          function gtag() { window.dataLayer.push(arguments); }
+          window.gtag = gtag;
+          var s = document.createElement("script");
+          s.async = true;
+          s.src = "https://www.googletagmanager.com/gtag/js?id=G-EQ4Q50PXZF";
+          document.head.appendChild(s);
           gtag("js", new Date());
           gtag("config", "G-EQ4Q50PXZF");
-        </script>
-      </>
+        };
+        if (localStorage.getItem("cookie_consent") === "accepted") {
+          window.__loadGA();
+        }
+      </script>
     )}
   </head>
   <body>
     <a class="skip-link" href="#main">{isEn ? "Skip to content" : "דלג לתוכן הדף"}</a>
+    <CookieConsent lang={lang} />
     <div class="shell">
       <header class="site-header">
         <a class="brand" href={isEn ? "/en/" : "/"}>

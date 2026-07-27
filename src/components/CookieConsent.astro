@@ -1,0 +1,83 @@
+---
+interface Props {
+  lang?: "he" | "en";
+}
+const { lang = "he" } = Astro.props;
+const isEn = lang === "en";
+---
+
+<div id="cookie-banner" class="cookie-banner" hidden dir={isEn ? "ltr" : "rtl"}>
+  <p>
+    {isEn
+      ? "This site uses Google Analytics to understand visits. No tracking happens until you accept."
+      : "האתר משתמש בגוגל אנליטיקס כדי להבין ביקורים. שום מעקב לא מופעל עד שתאשר/י."}
+  </p>
+  <div class="cookie-actions">
+    <button id="cookie-accept" type="button">{isEn ? "Accept" : "מאשר/ת"}</button>
+    <button id="cookie-decline" type="button">{isEn ? "Decline" : "לא תודה"}</button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var banner = document.getElementById("cookie-banner");
+    var consent = localStorage.getItem("cookie_consent");
+    if (!consent) banner.hidden = false;
+
+    document.getElementById("cookie-accept").addEventListener("click", function () {
+      localStorage.setItem("cookie_consent", "accepted");
+      banner.hidden = true;
+      if (window.__loadGA) window.__loadGA();
+    });
+    document.getElementById("cookie-decline").addEventListener("click", function () {
+      localStorage.setItem("cookie_consent", "declined");
+      banner.hidden = true;
+    });
+  })();
+</script>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    inset-inline: var(--space-2);
+    bottom: var(--space-2);
+    max-width: 32rem;
+    margin-inline: auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--stone-line);
+    border-radius: 8px;
+    padding: var(--space-2) var(--space-3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    z-index: 50;
+  }
+  .cookie-banner p {
+    margin: 0 0 var(--space-2);
+    font-size: 0.9rem;
+    max-width: none;
+  }
+  .cookie-actions {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .cookie-actions button {
+    font: inherit;
+    font-size: 0.88rem;
+    padding: 0.45rem 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  #cookie-accept {
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  #cookie-accept:hover {
+    background: var(--seal);
+    border-color: var(--seal);
+  }
+  #cookie-decline {
+    border: 1px solid var(--stone-line);
+    background: transparent;
+    color: var(--ink-soft);
+  }
+</style>

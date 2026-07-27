@@ -21,9 +21,11 @@ const articleJsonLd = {
 };
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.summary} jsonLd={articleJsonLd}>
+<BaseLayout title={entry.data.title} description={entry.data.summary} jsonLd={articleJsonLd} image={entry.data.coverImage}>
   <p class="eyebrow">{entry.data.date.toLocaleDateString("he-IL")}</p>
   <h1>{entry.data.title}</h1>
+
+  {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt="" />}
 
   {entry.data.videoUrl && (
     <div class="media-embed">
@@ -49,6 +51,7 @@ const articleJsonLd = {
 
 <style>
   .media-embed { width: 100%; margin-bottom: var(--space-3); border-radius: 4px; }
+  .cover { width: 100%; border-radius: 4px; margin-bottom: var(--space-3); }
   .tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-3); }
   .tag {
     font-size: .78rem;

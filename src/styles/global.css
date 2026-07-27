@@ -5,6 +5,7 @@
   --ink-soft: #45423c;
   --indigo: #1e3a4c;
   --stone: #a8a196;
+  --stone-text: #645e55; /* darker than --stone: passes WCAG AA (~5.3:1) on --paper for small text */
   --stone-line: #d8d2c4;
   --seal: #b33a3a;
 
@@ -27,7 +28,7 @@ a { color: var(--indigo); text-underline-offset: 3px; }
 a:hover { color: var(--seal); }
 a:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
 
-.eyebrow { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); }
+.eyebrow { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stone-text); }
 .rule { border: none; border-top: 1px solid var(--stone-line); margin: var(--space-4) 0; }
 .card { border: 1px solid var(--stone-line); border-radius: 4px; padding: var(--space-3); background: var(--paper-raised); margin-bottom: var(--space-3); }
 .skip-link { position: absolute; inset-inline-start: -999px; top: 0; background: var(--ink); color: var(--paper); padding: var(--space-1) var(--space-2); z-index: 100; }
