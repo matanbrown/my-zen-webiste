@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const items = (await getCollection("inspirations", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="השראה" description="שירה ויצירות שמלוות אותי בדרך">
+  <p class="eyebrow">יצירות של אחרים שמלוות אותי</p>
+  <h1>השראה</h1>
+
+  {items.map((item) => (
+    <article class="card">
+      <p class="eyebrow">{item.data.author}{item.data.source ? ` · ${item.data.source}` : ""}</p>
+      <h2><a href={`/inspirations/${item.id}/`}>{item.data.title}</a></h2>
+    </article>
+  ))}
+
+  {items.length === 0 && <p>עדיין אין כאן כלום — בקרוב.</p>}
+</BaseLayout>
