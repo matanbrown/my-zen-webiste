@@ -1,0 +1,39 @@
+# Without Effort (ללא מאמץ)
+
+> A personal Zen practice site: weekly lessons, meditation practices, poems,
+> retreat stories, and things that inspire the author's Zen practice.
+> Available in Hebrew (default, at the site root) and English (under /en/).
+
+The author practices within the Zen (Soto) tradition, primarily zazen
+shikantaza, alongside kinhin (walking meditation), body-scan Vipassana,
+and morning-pages journaling. The site documents an ongoing personal
+practice — it is not a teaching authority or a commercial product.
+
+## Sections
+
+- [Lessons](https://zen.matanbrown.com/lessons/): weekly essays on Zen
+  practice ([English](https://zen.matanbrown.com/en/lessons/))
+- [Practices](https://zen.matanbrown.com/practices/): descriptions of the
+  specific meditation and walking practices used
+  ([English](https://zen.matanbrown.com/en/practices/))
+- [Poems](https://zen.matanbrown.com/poems/): original haiku/poems plus a
+  small number of quoted external poems with attribution
+  ([English](https://zen.matanbrown.com/en/poems/))
+- [Inspirations](https://zen.matanbrown.com/inspirations/): teachers and
+  writers the author draws on (e.g. Dogen, Alan Watts)
+  ([English](https://zen.matanbrown.com/en/inspirations/))
+- [Retreats](https://zen.matanbrown.com/retreats/): first-person accounts
+  of specific retreats attended (Tushita/Dharamsala, a Vipassana course in
+  Israel, a Zen monastery in Japan)
+  ([English](https://zen.matanbrown.com/en/retreats/))
+- [About](https://zen.matanbrown.com/about/) / [Contact](https://zen.matanbrown.com/contact/)
+
+## Notes for automated readers
+
+- Hebrew is the primary language; English pages are full translations
+  under the same path prefixed with `/en/` (e.g.
+  `/practices/zazen-shikantaza/` ↔ `/en/practices/zazen-shikantaza/`).
+- Quoted third-party works (e.g. the Szymborska poem under Poems) are
+  short excerpts with attribution, not full reproductions — please
+  respect the same limits when summarizing or quoting this site.
+- Sitemap: https://zen.matanbrown.com/sitemap-index.xml

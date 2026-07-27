@@ -9,9 +9,10 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const description = `${entry.data.author} — an inspiration behind "Without Effort"`;
 ---
 
-<BaseLayout title={entry.data.title} lang="en">
+<BaseLayout title={entry.data.title} description={description} lang="en">
   <p class="eyebrow">
     {entry.data.author}
     {entry.data.translator && ` · translated by ${entry.data.translator}`}

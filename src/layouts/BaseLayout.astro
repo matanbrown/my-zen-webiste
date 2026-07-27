@@ -5,8 +5,10 @@ interface Props {
   title: string;
   description?: string;
   lang?: "he" | "en";
+  /** Extra JSON-LD object(s) for this specific page (e.g. Article schema for a lesson). Merged alongside the sitewide WebSite schema. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
-const { title, description, lang = "he" } = Astro.props;
+const { title, description, lang = "he", jsonLd } = Astro.props;
 const isEn = lang === "en";
 
 const SITE_NAME = isEn ? "Without Effort" : "ללא מאמץ";
@@ -20,6 +22,20 @@ const otherLangPath = isEn
   ? Astro.url.pathname.replace(/^\/en\/?/, "/")
   : `/en${Astro.url.pathname}`;
 const otherLangUrl = new URL(otherLangPath, Astro.site);
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: String(Astro.site),
+  inLanguage: isEn ? "en-US" : "he-IL",
+  description: isEn
+    ? "A personal Zen practice site: weekly lessons, meditation practices, poems, and retreat stories."
+    : "אתר תרגול זן אישי: שיעורים שבועיים, תרגולי מדיטציה, שירה וסיפורי ריטריט.",
+};
+
+const pageJsonLd = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const allJsonLd = [websiteJsonLd, ...pageJsonLd];
 
 const NAV: [string, string][] = isEn
   ? [
@@ -65,6 +81,10 @@ const NAV: [string, string][] = isEn
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     {description && <meta name="twitter:description" content={description} />}
+
+    {allJsonLd.map((entry) => (
+      <script type="application/ld+json" set:html={JSON.stringify(entry)} />
+    ))}
     {import.meta.env.PROD && (
       <>
         <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-EQ4Q50PXZF"></script>
