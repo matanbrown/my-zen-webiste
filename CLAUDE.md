@@ -37,26 +37,7 @@ labels, hreflang `<link>` tags, and the language-switcher link (computed
 from `Astro.url.pathname`, so it only works correctly if routes really do
 mirror 1:1 by path).
 
-**⚠️ In-progress / incomplete as of the last session** (an MCP disconnect
-interrupted the work mid-way — check current file contents before
-assuming any of this is done, then finish it):
-- `BaseLayout.astro` needs the `lang` prop + translated nav + hreflang +
-  language-switcher wired in — as of the disconnect it was still
-  Hebrew-only with no `lang` prop.
-- `src/content/en/**` — Hebrew content already has English mirror files
-  (lessons, poems incl. the Szymborska entry, retreats, inspirations,
-  practices) with matching filenames. Verify these still exist and are
-  complete before redoing them.
-- `src/pages/en/**` — page twins (index, lessons, poems, practices,
-  inspirations, retreats, about, contact) most likely **do not exist
-  yet** — this is the main remaining work. Contact's Pages Function
-  (`functions/api/contact.js`) is language-agnostic and needs no changes,
-  just an English-language form page hitting the same `/api/contact`.
-- After building, run `npm run build` locally and check `dist/en/**`
-  actually generated before pushing.
-- Consider adding `@astrojs/sitemap`'s `i18n` option (`locales: { he:
-  'he-IL', en: 'en-US' }`) once `/en/` routes exist, so `sitemap-index.xml`
-  gets proper hreflang annotations.
+**Status: complete** as of the last session — `BaseLayout.astro` has the `lang` prop, translated nav, hreflang tags, and language switcher; `src/content/en/**` and `src/pages/en/**` both exist with a full 1:1 mirror of every Hebrew page/entry. Verified via `npm run build` (49 pages, 24 of them under `/en/`, sitemap confirms exact 1:1 parity). If you add a new page or collection entry, remember the rule above: add the English twin with the same filename/slug at the same time.
 
 ### Contact form (`/contact/`, `functions/api/contact.js`)
 
