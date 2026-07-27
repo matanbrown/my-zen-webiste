@@ -2,6 +2,12 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+const FORM_LABELS: Record<string, string> = {
+  haiku: "הייקו",
+  poem: "שיר",
+  quote: "ציטוט",
+};
+
 export async function getStaticPaths() {
   const poems = await getCollection("poems");
   return poems.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
@@ -13,7 +19,7 @@ const { Content } = await render(entry);
 
 <BaseLayout title={entry.data.title}>
   <p class="eyebrow">
-    {entry.data.form}
+    {FORM_LABELS[entry.data.form] ?? entry.data.form}
     {entry.data.author && ` · ${entry.data.author}`}
     {entry.data.translator && ` · תרגום: ${entry.data.translator}`}
   </p>

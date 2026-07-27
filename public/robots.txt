@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zen.matanbrown.com/sitemap-index.xml

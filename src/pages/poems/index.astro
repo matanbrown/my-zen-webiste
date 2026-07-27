@@ -2,6 +2,12 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+const FORM_LABELS: Record<string, string> = {
+  haiku: "הייקו",
+  poem: "שיר",
+  quote: "ציטוט",
+};
+
 const poems = (await getCollection("poems", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
@@ -12,7 +18,7 @@ const poems = (await getCollection("poems", ({ data }) => !data.draft))
 
   {poems.map((poem) => (
     <article class="card">
-      <p class="eyebrow">{poem.data.form}{poem.data.author ? ` · ${poem.data.author}` : ""}</p>
+      <p class="eyebrow">{FORM_LABELS[poem.data.form] ?? poem.data.form}{poem.data.author ? ` · ${poem.data.author}` : ""}</p>
       <h2><a href={`/poems/${poem.id}/`}>{poem.data.title}</a></h2>
     </article>
   ))}

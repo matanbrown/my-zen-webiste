@@ -1,11 +1,16 @@
 ---
 import "../styles/global.css";
 
+const SITE_NAME = "ללא מאמץ";
+
 interface Props {
   title: string;
   description?: string;
 }
 const { title, description } = Astro.props;
+
+const pageTitle = title === SITE_NAME ? SITE_NAME : `${title} — ${SITE_NAME}`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -13,9 +18,21 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} — ללא מאמץ</title>
+    <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:url" content={canonicalUrl} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:locale" content="he_IL" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
     {import.meta.env.PROD && (
       <>
         <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-EQ4Q50PXZF"></script>
