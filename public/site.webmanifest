@@ -1,0 +1,13 @@
+{
+  "name": "Without Effort",
+  "short_name": "Without Effort",
+  "description": "A personal Zen practice site: weekly lessons, meditation practices, poems, and retreat stories.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ede9e1",
+  "theme_color": "#ede9e1",
+  "icons": [
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

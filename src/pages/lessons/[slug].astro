@@ -38,9 +38,23 @@ const articleJsonLd = {
     <Content />
   </div>
 
+  {entry.data.tags && entry.data.tags.length > 0 && (
+    <p class="tags">
+      {entry.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+    </p>
+  )}
+
   <p><a href="/lessons/">← כל השיעורים</a></p>
 </BaseLayout>
 
 <style>
   .media-embed { width: 100%; margin-bottom: var(--space-3); border-radius: 4px; }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-3); }
+  .tag {
+    font-size: .78rem;
+    color: var(--ink-soft);
+    border: 1px solid var(--stone-line);
+    border-radius: 999px;
+    padding: .15rem .7rem;
+  }
 </style>

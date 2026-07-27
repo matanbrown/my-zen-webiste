@@ -7,6 +7,7 @@ const lessons = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     summary: z.string().optional(),
+    tags: z.array(z.string()).optional(), // free-form topic tags, e.g. ["zazen", "kinhin"]
     audioUrl: z.string().url().optional(),
     videoUrl: z.string().url().optional(),
     coverImage: z.string().optional(), // path under /media/ synced from Drive
