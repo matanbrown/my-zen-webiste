@@ -36,4 +36,18 @@ const retreats = defineCollection({
   }),
 });
 
-export const collections = { lessons, poems, retreats };
+const inspirations = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/inspirations" }),
+  schema: z.object({
+    title: z.string(),
+    author: z.string(),
+    translator: z.string().optional(),
+    source: z.string().optional(), // book/collection title
+    date: z.coerce.date(),
+    externalUrl: z.string().url().optional(),
+    externalLabel: z.string().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { lessons, poems, retreats, inspirations };
