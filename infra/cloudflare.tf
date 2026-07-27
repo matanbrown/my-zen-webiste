@@ -68,7 +68,7 @@ resource "cloudflare_record" "site" {
 
 resource "cloudflare_r2_bucket" "media" {
   account_id = var.cloudflare_account_id
-  name       = "zen-matanbrown-media"
+  name       = "zen-matanbrown"
   location   = "EEUR" # closest region to Israel; adjust if you'd rather WEUR
 }
 
