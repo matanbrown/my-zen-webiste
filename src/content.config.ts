@@ -11,6 +11,7 @@ const lessons = defineCollection({
     audioUrl: z.string().url().optional(),
     videoUrl: z.string().url().optional(),
     coverImage: z.string().optional(), // path under /media/ synced from Drive
+    coverImageAlt: z.string().optional(), // describe what's actually in the image; falls back to title
     draft: z.boolean().default(false),
   }),
 });
@@ -38,6 +39,7 @@ const retreats = defineCollection({
     year: z.number().optional(),
     order: z.number().default(0), // manual display order
     coverImage: z.string().optional(),
+    coverImageAlt: z.string().optional(), // describe what's actually in the image; falls back to title
     draft: z.boolean().default(false),
   }),
 });

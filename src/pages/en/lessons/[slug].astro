@@ -25,7 +25,7 @@ const articleJsonLd = {
   <p class="eyebrow">{entry.data.date.toLocaleDateString("en-US")}</p>
   <h1>{entry.data.title}</h1>
 
-  {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt="" />}
+  {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} />}
 
   {entry.data.videoUrl && (
     <div class="media-embed">

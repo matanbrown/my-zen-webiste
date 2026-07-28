@@ -15,7 +15,7 @@ const description = `${entry.data.place}${entry.data.year ? " · " + entry.data.
 <BaseLayout title={entry.data.title} description={description} image={entry.data.coverImage} lang="en">
   <p class="eyebrow">{entry.data.place}{entry.data.year ? ` · ${entry.data.year}` : ""}</p>
   <h1>{entry.data.title}</h1>
-  {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt="" />}
+  {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} />}
   <div class="prose">
     <Content />
   </div>
