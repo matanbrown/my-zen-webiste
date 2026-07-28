@@ -1,7 +1,7 @@
 ---
 title: "Morning Pages"
 order: 6
-draft: false
+draft: true
 ---
 
 *(content to be added here)*

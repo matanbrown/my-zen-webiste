@@ -1,7 +1,7 @@
 ---
 title: "Wandering"
 order: 3
-draft: false
+draft: true
 ---
 
 *(content to be added here)*

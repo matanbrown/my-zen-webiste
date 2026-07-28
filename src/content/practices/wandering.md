@@ -1,7 +1,7 @@
 ---
 title: "שוטטות"
 order: 3
-draft: false
+draft: true
 ---
 
 *(כאן יתווסף התוכן)*

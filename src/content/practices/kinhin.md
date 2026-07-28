@@ -1,7 +1,7 @@
 ---
 title: "קין הין"
 order: 4
-draft: false
+draft: true
 ---
 
 *(כאן יתווסף התוכן)*

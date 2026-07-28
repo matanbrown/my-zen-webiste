@@ -2,7 +2,7 @@
 title: "יובל אידו טל"
 author: "יובל אידו טל"
 date: 2026-07-27
-draft: false
+draft: true
 ---
 
 *(כאן יתווסף התוכן)*

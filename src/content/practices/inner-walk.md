@@ -1,7 +1,7 @@
 ---
 title: "איינר ווק"
 order: 2
-draft: false
+draft: true
 ---
 
 *(כאן יתווסף התוכן)*

@@ -2,7 +2,7 @@
 title: "Retreat at a Monastery in Japan"
 place: "Zen monastery, Japan"
 order: 3
-draft: false
+draft: true
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit — placeholder for

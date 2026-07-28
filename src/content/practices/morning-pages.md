@@ -1,7 +1,7 @@
 ---
 title: "דפי בוקר"
 order: 6
-draft: false
+draft: true
 ---
 
 *(כאן יתווסף התוכן)*

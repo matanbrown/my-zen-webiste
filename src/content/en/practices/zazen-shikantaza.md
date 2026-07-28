@@ -1,7 +1,7 @@
 ---
 title: "Zazen Shikantaza Meditation"
 order: 1
-draft: false
+draft: true
 ---
 
 *(content to be added here)*

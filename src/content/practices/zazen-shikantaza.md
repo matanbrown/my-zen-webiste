@@ -1,7 +1,7 @@
 ---
 title: "מדיטציית זאזן שיקנטזה"
 order: 1
-draft: false
+draft: true
 ---
 
 *(כאן יתווסף התוכן)*

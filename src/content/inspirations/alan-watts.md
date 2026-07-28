@@ -2,7 +2,7 @@
 title: "אלן ווטס"
 author: "אלן ווטס"
 date: 2026-07-27
-draft: false
+draft: true
 ---
 
 *(כאן יתווסף התוכן)*

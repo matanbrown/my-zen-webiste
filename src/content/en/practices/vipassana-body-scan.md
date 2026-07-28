@@ -1,7 +1,7 @@
 ---
 title: "Vipassana Body Scan Meditation"
 order: 5
-draft: false
+draft: true
 ---
 
 *(content to be added here)*

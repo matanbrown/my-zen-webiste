@@ -1,7 +1,7 @@
 ---
 title: "Inner Walk"
 order: 2
-draft: false
+draft: true
 ---
 
 *(content to be added here)*

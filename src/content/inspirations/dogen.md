@@ -2,7 +2,7 @@
 title: "דוגן"
 author: "דוגן"
 date: 2026-07-27
-draft: false
+draft: true
 ---
 
 *(כאן יתווסף התוכן)*

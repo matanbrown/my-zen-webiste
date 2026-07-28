@@ -9,7 +9,7 @@ const FORM_LABELS: Record<string, string> = {
 };
 
 export async function getStaticPaths() {
-  const poems = await getCollection("poemsEn");
+  const poems = await getCollection("poemsEn", ({ data }) => !data.draft);
   return poems.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
