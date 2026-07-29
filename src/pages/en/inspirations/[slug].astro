@@ -12,13 +12,20 @@ const { Content } = await render(entry);
 const description = `${entry.data.author} — an inspiration behind "Without Effort"`;
 ---
 
-<BaseLayout title={entry.data.title} description={description} lang="en">
+<BaseLayout title={entry.data.title} description={description} image={entry.data.image} lang="en">
   <p class="eyebrow">
     {entry.data.author}
     {entry.data.translator && ` · translated by ${entry.data.translator}`}
   </p>
   <h1>{entry.data.title}</h1>
   {entry.data.source && <p class="eyebrow">From: {entry.data.source}</p>}
+
+  {entry.data.image && (
+    <figure class="portrait">
+      <img src={entry.data.image} alt={entry.data.imageAlt ?? entry.data.title} />
+      {entry.data.imageCredit && <figcaption class="eyebrow">{entry.data.imageCredit}</figcaption>}
+    </figure>
+  )}
 
   <div class="prose">
     <Content />
@@ -34,3 +41,18 @@ const description = `${entry.data.author} — an inspiration behind "Without Eff
 
   <p><a href="/en/inspirations/">← All inspirations</a></p>
 </BaseLayout>
+
+<style>
+  .portrait {
+    margin: var(--space-3) 0;
+  }
+  .portrait img {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 4px;
+    display: block;
+  }
+  .portrait figcaption {
+    margin-top: var(--space-1);
+  }
+</style>

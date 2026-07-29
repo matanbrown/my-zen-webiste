@@ -12,6 +12,9 @@ const items = (await getCollection("inspirationsEn", ({ data }) => !data.draft))
 
   {items.map((item) => (
     <article class="card">
+      {item.data.image && (
+        <img class="thumb" src={item.data.image} alt={item.data.imageAlt ?? item.data.title} />
+      )}
       <p class="eyebrow">{item.data.author}{item.data.source ? ` · ${item.data.source}` : ""}</p>
       <h2><a href={`/en/inspirations/${item.id}/`}>{item.data.title}</a></h2>
     </article>
@@ -19,3 +22,13 @@ const items = (await getCollection("inspirationsEn", ({ data }) => !data.draft))
 
   {items.length === 0 && <p>Nothing here yet — coming soon.</p>}
 </BaseLayout>
+
+<style>
+  .thumb {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: var(--space-2);
+  }
+</style>

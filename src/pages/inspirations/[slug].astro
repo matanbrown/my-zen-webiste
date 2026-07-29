@@ -12,13 +12,20 @@ const { Content } = await render(entry);
 const description = `${entry.data.author} — השראה מתוך "ללא מאמץ"`;
 ---
 
-<BaseLayout title={entry.data.title} description={description}>
+<BaseLayout title={entry.data.title} description={description} image={entry.data.image}>
   <p class="eyebrow">
     {entry.data.author}
     {entry.data.translator && ` · תרגום: ${entry.data.translator}`}
   </p>
   <h1>{entry.data.title}</h1>
   {entry.data.source && <p class="eyebrow">מתוך: {entry.data.source}</p>}
+
+  {entry.data.image && (
+    <figure class="portrait">
+      <img src={entry.data.image} alt={entry.data.imageAlt ?? entry.data.title} />
+      {entry.data.imageCredit && <figcaption class="eyebrow">{entry.data.imageCredit}</figcaption>}
+    </figure>
+  )}
 
   <div class="prose">
     <Content />
@@ -34,3 +41,18 @@ const description = `${entry.data.author} — השראה מתוך "ללא מאמ
 
   <p><a href="/inspirations/">← כל ההשראות</a></p>
 </BaseLayout>
+
+<style>
+  .portrait {
+    margin: var(--space-3) 0;
+  }
+  .portrait img {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 4px;
+    display: block;
+  }
+  .portrait figcaption {
+    margin-top: var(--space-1);
+  }
+</style>

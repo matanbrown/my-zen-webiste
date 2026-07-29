@@ -54,6 +54,9 @@ const inspirations = defineCollection({
     date: z.coerce.date(),
     externalUrl: z.string().url().optional(),
     externalLabel: z.string().optional(),
+    image: z.string().optional(), // path under /images/ (or /media/ if synced from Drive)
+    imageAlt: z.string().optional(), // describe what's actually in the image; falls back to title
+    imageCredit: z.string().optional(), // required for anything CC-licensed — name + link back to license/source
     draft: z.boolean().default(false),
   }),
 });
