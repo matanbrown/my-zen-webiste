@@ -22,7 +22,13 @@ const description = `${entry.data.author} — השראה מתוך "ללא מאמ
 
   {entry.data.image && (
     <figure class="portrait">
-      <img src={entry.data.image} alt={entry.data.imageAlt ?? entry.data.title} />
+      <img
+        src={entry.data.image}
+        alt={entry.data.imageAlt ?? entry.data.title}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
       {entry.data.imageCredit && <figcaption class="eyebrow">{entry.data.imageCredit}</figcaption>}
     </figure>
   )}
@@ -44,15 +50,34 @@ const description = `${entry.data.author} — השראה מתוך "ללא מאמ
 
 <style>
   .portrait {
-    margin: var(--space-3) 0;
+    float: inline-end;
+    inline-size: 38%;
+    max-inline-size: 220px;
+    margin-inline-start: var(--space-3);
+    margin-block-end: var(--space-3);
   }
   .portrait img {
     width: 100%;
-    max-width: 320px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
     border-radius: 4px;
     display: block;
   }
   .portrait figcaption {
     margin-top: var(--space-1);
+    font-size: 0.7rem;
+  }
+  /* Headings always start fresh below the floated portrait, so later
+     sections never awkwardly wrap beside it. */
+  .prose :global(h2) {
+    clear: both;
+  }
+  @media (max-width: 32rem) {
+    .portrait {
+      float: none;
+      inline-size: 100%;
+      max-inline-size: 280px;
+      margin-inline: 0;
+    }
   }
 </style>
