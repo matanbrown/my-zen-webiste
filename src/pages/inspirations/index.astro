@@ -10,51 +10,33 @@ const items = (await getCollection("inspirations", ({ data }) => !data.draft))
   <p class="eyebrow">יצירות של אחרים שמלוות אותי</p>
   <h1>השראה</h1>
 
-  <ul class="inspiration-list">
-    {items.map((item) => (
-      <li>
-        <h2>
-          <a class="row" href={`/inspirations/${item.id}/`}>
-            {item.data.image && (
-              <img class="avatar" src={item.data.image} alt="" loading="lazy" decoding="async" />
-            )}
-            <span class="row-text">
-              <span class="name">{item.data.title}</span>
-              {(item.data.author !== item.data.title || item.data.source) && (
-                <span class="eyebrow">
-                  {item.data.author !== item.data.title && item.data.author}
-                  {item.data.source ? ` · ${item.data.source}` : ""}
-                </span>
-              )}
-            </span>
-          </a>
-        </h2>
-      </li>
-    ))}
-  </ul>
+  {items.map((item) => (
+    <article class="card">
+      <div class="row">
+        {item.data.image && (
+          <img class="avatar" src={item.data.image} alt="" loading="lazy" decoding="async" />
+        )}
+        <div class="row-text">
+          {(item.data.author !== item.data.title || item.data.source) && (
+            <p class="eyebrow">
+              {item.data.author !== item.data.title && item.data.author}
+              {item.data.source ? ` · ${item.data.source}` : ""}
+            </p>
+          )}
+          <h2><a href={`/inspirations/${item.id}/`}>{item.data.title}</a></h2>
+        </div>
+      </div>
+    </article>
+  ))}
 
   {items.length === 0 && <p>עדיין אין כאן כלום — בקרוב.</p>}
 </BaseLayout>
 
 <style>
-  .inspiration-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .inspiration-list li {
-    border-bottom: 1px solid var(--stone-line);
-  }
-  .inspiration-list li:first-child {
-    border-top: 1px solid var(--stone-line);
-  }
   .row {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-2) 0;
-    text-decoration: none;
-    color: inherit;
   }
   .avatar {
     inline-size: 44px;
@@ -62,17 +44,5 @@ const items = (await getCollection("inspirations", ({ data }) => !data.draft))
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-  }
-  .row-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .name {
-    font-size: 1rem;
-    font-weight: 500;
-  }
-  .row:hover .name {
-    color: var(--indigo);
   }
 </style>
