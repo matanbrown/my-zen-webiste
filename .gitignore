@@ -29,3 +29,6 @@ terraform.tfvars
 infra/terraform.tfstate
 infra/terraform.tfstate.backup
 infra/.terraform/
+
+# never commit this — raw Cloudflare API token
+cf_token
