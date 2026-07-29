@@ -98,6 +98,24 @@ To test without waiting for the schedule: repo → **Actions** tab →
 
 ## Adding photos
 
+Images live in R2 (`zen-matanbrown` bucket), served via a public custom
+domain — never committed to git.
+
+**One-time setup** (do this once, in the Cloudflare dashboard — not
+Terraform; see `infra/cloudflare.tf` for why):
+1. Cloudflare dashboard → R2 → bucket `zen-matanbrown` → **Settings** →
+   **Public access** → **Custom Domains** → **Connect Domain**
+2. Enter a domain, e.g. `media.matanbrown.com`. Cloudflare auto-creates the
+   DNS record since the zone is already on Cloudflare.
+3. Once connected, anything uploaded to the bucket is reachable at
+   `https://media.matanbrown.com/<object-key>`.
+
+**Uploading a single photo** (e.g. a portrait for an `inspirations` entry):
+drag it straight into the bucket through the R2 dashboard's file browser —
+no CLI needed for a one-off image. Then reference it in frontmatter as
+`image: "https://media.matanbrown.com/<whatever-key-you-uploaded-as>.jpg"`.
+
+**Bulk/ongoing photos** (e.g. lesson cover images synced from your phone):
 1. Drop images into the shared Google Drive folder.
 2. Go to the repo's **Actions** tab → **Sync Drive photos to R2** → **Run workflow**.
    It's manual-trigger only, run it whenever you've added new photos.

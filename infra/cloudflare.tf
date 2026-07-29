@@ -72,6 +72,16 @@ resource "cloudflare_r2_bucket" "media" {
   location   = "EEUR" # closest region to Israel; adjust if you'd rather WEUR
 }
 
+# Public access (custom domain binding) for this bucket is set up manually
+# via the Cloudflare dashboard for now, NOT here in Terraform: the resource
+# for it, cloudflare_r2_custom_domain, only exists in the Cloudflare
+# provider v5 line. This repo is pinned to "~> 4.0", and upgrading to v5 is
+# a real migration with breaking schema changes across every resource in
+# this file (Pages project/domain, DNS, this bucket) — not something to do
+# as a side effect of adding a photo. See README for the dashboard steps,
+# and revisit formalizing this in Terraform if/when a deliberate v4→v5
+# migration happens.
+
 output "pages_subdomain" {
   value = cloudflare_pages_project.site.subdomain
 }
