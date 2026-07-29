@@ -22,7 +22,9 @@ didn't suit him.
 Of the many books he wrote, *The Way of Zen* (1957) is the best
 recommendation for someone just starting out — a clear, comprehensive
 introduction to Zen, to its roots in Taoism and Buddhism, and to its
-expression in art and everyday life in the East.
+expression in art and everyday life in the East. You can find it
+[in English](https://www.amazon.com/Way-Zen-Alan-W-Watts/dp/0679723013)
+or [in Hebrew](https://e-vrit.co.il/product/6875/%D7%93%D7%A8%D7%9A-%D7%94%D7%96%D7%9F).
 
 ## How I got to know him
 
