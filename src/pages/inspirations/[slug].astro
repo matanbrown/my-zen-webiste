@@ -13,13 +13,6 @@ const description = `${entry.data.author} — השראה מתוך "ללא מאמ
 ---
 
 <BaseLayout title={entry.data.title} description={description} image={entry.data.image}>
-  <p class="eyebrow">
-    {entry.data.author}
-    {entry.data.translator && ` · תרגום: ${entry.data.translator}`}
-  </p>
-  <h1>{entry.data.title}</h1>
-  {entry.data.source && <p class="eyebrow">מתוך: {entry.data.source}</p>}
-
   {entry.data.image && (
     <figure class="portrait">
       <img
@@ -32,6 +25,15 @@ const description = `${entry.data.author} — השראה מתוך "ללא מאמ
       {entry.data.imageCredit && <figcaption class="eyebrow">{entry.data.imageCredit}</figcaption>}
     </figure>
   )}
+
+  {entry.data.author !== entry.data.title && (
+    <p class="eyebrow">
+      {entry.data.author}
+      {entry.data.translator && ` · תרגום: ${entry.data.translator}`}
+    </p>
+  )}
+  <h1>{entry.data.title}</h1>
+  {entry.data.source && <p class="eyebrow">מתוך: {entry.data.source}</p>}
 
   <div class="prose">
     <Content />

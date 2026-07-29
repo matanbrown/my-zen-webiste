@@ -15,7 +15,12 @@ const items = (await getCollection("inspirationsEn", ({ data }) => !data.draft))
       {item.data.image && (
         <img class="thumb" src={item.data.image} alt={item.data.imageAlt ?? item.data.title} loading="lazy" decoding="async" />
       )}
-      <p class="eyebrow">{item.data.author}{item.data.source ? ` · ${item.data.source}` : ""}</p>
+      {(item.data.author !== item.data.title || item.data.source) && (
+        <p class="eyebrow">
+          {item.data.author !== item.data.title && item.data.author}
+          {item.data.source ? ` · ${item.data.source}` : ""}
+        </p>
+      )}
       <h2><a href={`/en/inspirations/${item.id}/`}>{item.data.title}</a></h2>
     </article>
   ))}
