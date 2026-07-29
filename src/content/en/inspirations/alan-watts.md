@@ -2,6 +2,8 @@
 title: "Alan Watts"
 author: "Alan Watts"
 date: 2026-07-29
+image: "https://media.matanbrown.com/inspirations/alan-watts/portrait.jpg"
+imageAlt: "Historical photograph of Alan Watts"
 draft: false
 ---
 

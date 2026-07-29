@@ -2,6 +2,8 @@
 title: "אלן ווטס"
 author: "אלן ווטס"
 date: 2026-07-29
+image: "https://media.matanbrown.com/inspirations/alan-watts/portrait.jpg"
+imageAlt: "תצלום היסטורי של אלן ווטס"
 draft: false
 ---
 
