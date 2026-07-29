@@ -40,8 +40,7 @@ draft: false
 
 ## מוזיקה
 
-יש מישהו שהלחין שיחות מוקלטות של אלן ווטס, וזה משהו שאני מאוד אוהב
-ומתחבר אליו. שתי יצירות שכדאי להכיר:
+האמן הבריטי Akira The Don הלחין שיחות מוקלטות של אלן ווטס על רקע מוזיקלי, וזה משהו שאני מאוד אוהב ומתחבר אליו. שתי יצירות שכדאי להכיר:
 
-- [יצירה ראשונה](https://open.spotify.com/album/551sQFomfnjhZgmR7jO90n?si=ABo_cuBGSKyOS_c_Nv_gcw)
-- [יצירה שנייה — המומלצת מבחינתי](https://open.spotify.com/album/6G6IBLmohF15EvVRQLVEEq?si=QMCaA6OLQWOWQNYXMMdrYQ)
+- [WATTSWAVE V: The Web of Life](https://open.spotify.com/album/6G6IBLmohF15EvVRQLVEEq?si=QMCaA6OLQWOWQNYXMMdrYQ) — המומלצת מבחינתי
+- [WATTSWAVE II: How To Be A Better Person](https://open.spotify.com/album/551sQFomfnjhZgmR7jO90n?si=ABo_cuBGSKyOS_c_Nv_gcw)

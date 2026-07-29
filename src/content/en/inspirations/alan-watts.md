@@ -45,8 +45,7 @@ forget that this is only part of reality, not reality itself.
 
 ## Music
 
-Someone set recorded talks by Alan Watts to music, and it's something I
-really love and connect with. Two pieces worth knowing:
+The British musician Akira The Don set recorded Alan Watts talks to music, and it's something I really love and connect with. Two pieces worth knowing:
 
-- [First piece](https://open.spotify.com/album/551sQFomfnjhZgmR7jO90n?si=ABo_cuBGSKyOS_c_Nv_gcw)
-- [Second piece — my favorite of the two](https://open.spotify.com/album/6G6IBLmohF15EvVRQLVEEq?si=QMCaA6OLQWOWQNYXMMdrYQ)
+- [WATTSWAVE V: The Web of Life](https://open.spotify.com/album/6G6IBLmohF15EvVRQLVEEq?si=QMCaA6OLQWOWQNYXMMdrYQ) — my favorite of the two
+- [WATTSWAVE II: How To Be A Better Person](https://open.spotify.com/album/551sQFomfnjhZgmR7jO90n?si=ABo_cuBGSKyOS_c_Nv_gcw)
