@@ -29,11 +29,16 @@ const items = (await getCollection("inspirationsEn", ({ data }) => !data.draft))
 </BaseLayout>
 
 <style>
+  .card {
+    display: flow-root;
+  }
   .thumb {
-    width: 100%;
-    aspect-ratio: 16 / 9;
+    float: inline-end;
+    inline-size: 25%;
+    max-inline-size: 96px;
+    aspect-ratio: 4 / 5;
     object-fit: cover;
     border-radius: 4px;
-    margin-bottom: var(--space-2);
+    margin-inline-start: var(--space-2);
   }
 </style>
