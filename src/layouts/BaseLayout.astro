@@ -128,6 +128,97 @@ const NAV: [string, string][] = isEn
         }
       </script>
     )}
+
+    <script is:inline>
+      (function () {
+        var toggle = document.getElementById("search-toggle");
+        var panel = document.getElementById("search-panel");
+        var input = document.getElementById("search-input");
+        var results = document.getElementById("search-results");
+        var empty = document.getElementById("search-empty");
+        if (!toggle || !panel || !input) return;
+
+        var pagefindPromise = null;
+        function getPagefind() {
+          if (!pagefindPromise) {
+            pagefindPromise = import("/pagefind/pagefind.js")
+              .then(function (mod) {
+                return mod.init().then(function () { return mod; });
+              })
+              .catch(function (err) {
+                console.warn("Search index not available (only exists in production builds):", err);
+                return null;
+              });
+          }
+          return pagefindPromise;
+        }
+
+        function openPanel() {
+          panel.hidden = false;
+          toggle.setAttribute("aria-expanded", "true");
+          input.focus();
+          getPagefind();
+        }
+        function closePanel() {
+          panel.hidden = true;
+          toggle.setAttribute("aria-expanded", "false");
+        }
+
+        toggle.addEventListener("click", function () {
+          if (panel.hidden) openPanel();
+          else closePanel();
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!panel.hidden && !panel.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) {
+            closePanel();
+          }
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && !panel.hidden) {
+            closePanel();
+            toggle.focus();
+          }
+        });
+
+        var debounceTimer;
+        input.addEventListener("input", function () {
+          clearTimeout(debounceTimer);
+          var query = input.value.trim();
+          debounceTimer = setTimeout(function () { runSearch(query); }, 150);
+        });
+
+        function runSearch(query) {
+          results.innerHTML = "";
+          empty.hidden = true;
+          if (!query) return;
+
+          getPagefind().then(function (pagefind) {
+            if (!pagefind) return;
+            pagefind.search(query).then(function (search) {
+              if (input.value.trim() !== query) return; // stale response
+              if (search.results.length === 0) {
+                empty.hidden = false;
+                return;
+              }
+              Promise.all(search.results.slice(0, 8).map(function (r) { return r.data(); })).then(function (items) {
+                results.innerHTML = items
+                  .map(function (item) {
+                    var excerpt = item.excerpt || "";
+                    return (
+                      '<li><a href="' + item.url + '">' +
+                      '<span class="result-title">' + item.meta.title + "</span>" +
+                      '<span class="result-excerpt">' + excerpt + "</span>" +
+                      "</a></li>"
+                    );
+                  })
+                  .join("");
+              });
+            });
+          });
+        }
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">{isEn ? "Skip to content" : "דלג לתוכן הדף"}</a>
@@ -144,6 +235,31 @@ const NAV: [string, string][] = isEn
             {isEn ? "עברית" : "English"}
           </a>
         </nav>
+        <div class="search">
+          <button
+            id="search-toggle"
+            class="search-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="search-panel"
+          >
+            <span class="sr-only">{isEn ? "Search" : "חיפוש"}</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+          <div id="search-panel" class="search-panel" hidden>
+            <input
+              id="search-input"
+              type="search"
+              placeholder={isEn ? "Search…" : "חיפוש…"}
+              autocomplete="off"
+            />
+            <ul id="search-results" class="search-results"></ul>
+            <p id="search-empty" class="search-empty eyebrow" hidden>{isEn ? "No results" : "אין תוצאות"}</p>
+          </div>
+        </div>
         <button
           id="nav-toggle"
           class="nav-toggle"
@@ -155,7 +271,7 @@ const NAV: [string, string][] = isEn
           <span class="nav-toggle-bars" aria-hidden="true"></span>
         </button>
       </header>
-      <main id="main" class="content">
+      <main id="main" class="content" data-pagefind-body>
         <slot />
       </main>
       <footer class="site-footer">
@@ -203,6 +319,89 @@ const NAV: [string, string][] = isEn
       nav a:hover { color: var(--indigo); }
       .lang-switch { border-inline-start: 1px solid var(--stone-line); padding-inline-start: var(--space-2); }
       .site-footer { margin-top: var(--space-5); }
+
+      .search { position: relative; }
+      .search-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        margin-inline-start: var(--space-2);
+        background: none;
+        border: none;
+        color: var(--ink-soft);
+        cursor: pointer;
+      }
+      .search-toggle:hover { color: var(--indigo); }
+      .search-panel {
+        position: absolute;
+        inset-inline-end: 0;
+        top: calc(100% + var(--space-1));
+        width: 20rem;
+        max-width: calc(100vw - 2 * var(--space-3));
+        background: var(--paper-raised);
+        border: 1px solid var(--stone-line);
+        border-radius: 6px;
+        padding: var(--space-2);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        z-index: 60;
+      }
+      .search-panel input {
+        width: 100%;
+        font: inherit;
+        padding: 0.5rem 0.7rem;
+        border: 1px solid var(--stone-line);
+        border-radius: 4px;
+        background: var(--paper);
+        color: var(--ink);
+      }
+      .search-panel input:focus-visible {
+        outline: 2px solid var(--indigo);
+        outline-offset: 1px;
+      }
+      .search-results {
+        list-style: none;
+        padding: 0;
+        margin: var(--space-1) 0 0;
+        max-height: 60vh;
+        overflow-y: auto;
+      }
+      .search-results li + li { border-top: 1px solid var(--stone-line); }
+      .search-results a {
+        display: block;
+        padding: var(--space-1) 0;
+        text-decoration: none;
+        color: inherit;
+      }
+      .search-results .result-title {
+        display: block;
+        font-family: var(--font-display);
+        color: var(--ink);
+      }
+      .search-results a:hover .result-title { color: var(--indigo); }
+      .search-results .result-excerpt {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--ink-soft);
+        margin-top: 2px;
+      }
+      .search-results .result-excerpt :global(mark) {
+        background: none;
+        color: var(--seal);
+        font-weight: 600;
+      }
+      .search-empty { margin: var(--space-2) 0 0; }
+
+      @media (max-width: 640px) {
+        .search-panel {
+          position: fixed;
+          inset-inline: var(--space-2);
+          top: 4.5rem;
+          width: auto;
+          max-width: none;
+        }
+      }
 
       .nav-toggle {
         display: none;
