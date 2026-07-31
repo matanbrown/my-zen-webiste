@@ -12,10 +12,38 @@ const practices = (await getCollection("practices", ({ data }) => !data.draft))
 
   {practices.map((practice) => (
     <article class="card">
-      <h2><a href={`/practices/${practice.id}/`}>{practice.data.title}</a></h2>
-      {practice.data.subtitle && <p>{practice.data.subtitle}</p>}
+      <div class="row">
+        {practice.data.coverImage && (
+          <img class="avatar" src={practice.data.coverImage} alt="" loading="lazy" decoding="async" />
+        )}
+        <div class="row-text">
+          <h2><a href={`/practices/${practice.id}/`}>{practice.data.title}</a></h2>
+          {practice.data.subtitle && <p>{practice.data.subtitle}</p>}
+        </div>
+      </div>
     </article>
   ))}
 
   {practices.length === 0 && <p>עדיין אין תרגולים כאן — בקרוב.</p>}
 </BaseLayout>
+
+<style>
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .avatar {
+    inline-size: 44px;
+    block-size: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .row-text h2 {
+    margin: 0;
+  }
+  .row-text p {
+    margin: 2px 0 0;
+  }
+</style>

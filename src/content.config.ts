@@ -68,6 +68,8 @@ const practices = defineCollection({
     title: z.string(),
     subtitle: z.string().optional(), // תיאור קצר, שורה אחת
     order: z.number().default(0), // סדר תצוגה ברשימה
+    coverImage: z.string().optional(),
+    coverImageAlt: z.string().optional(), // describe what's actually in the image; falls back to title
     draft: z.boolean().default(false),
   }),
 });

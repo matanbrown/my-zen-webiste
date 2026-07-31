@@ -12,11 +12,18 @@ const { Content } = await render(entry);
 const description = entry.data.subtitle ?? `${entry.data.title} — תרגול מדיטציה מתוך "ללא מאמץ"`;
 ---
 
-<BaseLayout title={entry.data.title} description={description}>
+<BaseLayout title={entry.data.title} description={description} image={entry.data.coverImage}>
   <h1>{entry.data.title}</h1>
   {entry.data.subtitle && <p class="eyebrow">{entry.data.subtitle}</p>}
+  {entry.data.coverImage && (
+    <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} loading="eager" fetchpriority="high" decoding="async" />
+  )}
   <div class="prose">
     <Content />
   </div>
   <p><a href="/practices/">← כל התרגולים</a></p>
 </BaseLayout>
+
+<style>
+  .cover { width: 100%; border-radius: 4px; margin-block: var(--space-3); }
+</style>

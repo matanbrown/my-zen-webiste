@@ -1,6 +1,8 @@
 ---
 title: "איינר ווק"
 order: 2
+coverImage: "https://media.matanbrown.com/practices/inner-walk/cover.jpg"
+coverImageAlt: "שביל עץ מוביל דרך יער"
 draft: false
 ---
 

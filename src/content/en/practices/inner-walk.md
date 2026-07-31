@@ -1,6 +1,8 @@
 ---
 title: "Inner Walk"
 order: 2
+coverImage: "https://media.matanbrown.com/practices/inner-walk/cover.jpg"
+coverImageAlt: "A wooden path leading through a forest"
 draft: false
 ---
 
