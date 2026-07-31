@@ -10,19 +10,44 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
+function estimateReadingMinutes(text) {
+  const words = (text ?? "").trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+const readingMinutes = estimateReadingMinutes(entry.body);
+
+const allLessons = (await getCollection("lessonsEn", ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.date.valueOf() - b.data.date.valueOf()
+);
+const currentIndex = allLessons.findIndex((l) => l.id === entry.id);
+const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
+const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+
+const related = (entry.data.tags?.length
+  ? allLessons.filter((l) => l.id !== entry.id && l.data.tags?.some((t) => entry.data.tags.includes(t)))
+  : []
+).slice(0, 3);
+
+const modifiedDate = entry.data.updated ?? entry.data.date;
+
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: entry.data.title,
   description: entry.data.summary,
   datePublished: entry.data.date.toISOString(),
+  dateModified: modifiedDate.toISOString(),
   inLanguage: "en-US",
   url: `https://zen.matanbrown.com/en/lessons/${entry.id}/`,
 };
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.summary} jsonLd={articleJsonLd} image={entry.data.coverImage} lang="en">
-  <p class="eyebrow">{entry.data.date.toLocaleDateString("en-US")}</p>
+  <p class="eyebrow">
+    {entry.data.date.toLocaleDateString("en-US")}
+    {" · "}{readingMinutes} min read
+    {entry.data.updated && ` · updated ${entry.data.updated.toLocaleDateString("en-US")}`}
+  </p>
   <h1>{entry.data.title}</h1>
 
   {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} />}
@@ -46,6 +71,32 @@ const articleJsonLd = {
     </p>
   )}
 
+  {related.length > 0 && (
+    <section class="related">
+      <p class="eyebrow">Related lessons</p>
+      <ul>
+        {related.map((r) => (
+          <li><a href={`/en/lessons/${r.id}/`}>{r.data.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <nav class="lesson-nav" aria-label="Lesson navigation">
+    {prevLesson ? (
+      <a href={`/en/lessons/${prevLesson.id}/`}>
+        <span class="eyebrow">← Previous</span>
+        <span>{prevLesson.data.title}</span>
+      </a>
+    ) : <span />}
+    {nextLesson ? (
+      <a href={`/en/lessons/${nextLesson.id}/`} class="next">
+        <span class="eyebrow">Next →</span>
+        <span>{nextLesson.data.title}</span>
+      </a>
+    ) : <span />}
+  </nav>
+
   <p><a href="/en/lessons/">← All lessons</a></p>
 </BaseLayout>
 
@@ -65,4 +116,26 @@ const articleJsonLd = {
     color: var(--indigo);
     border-color: var(--indigo);
   }
+  .related { margin-top: var(--space-4); }
+  .related ul { list-style: none; padding: 0; margin: var(--space-1) 0 0; }
+  .related li { padding: 0.3rem 0; border-bottom: 1px solid var(--stone-line); }
+  .related li:first-child { border-top: 1px solid var(--stone-line); }
+  .lesson-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--stone-line);
+  }
+  .lesson-nav a {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-decoration: none;
+    color: inherit;
+    max-width: 45%;
+  }
+  .lesson-nav .next { text-align: end; margin-inline-start: auto; }
+  .lesson-nav a:hover span:last-child { color: var(--indigo); }
 </style>

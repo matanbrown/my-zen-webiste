@@ -282,6 +282,12 @@ const NAV: [string, string][] = isEn
             if (!pagefind) return;
             pagefind.search(query).then(function (search) {
               if (input.value.trim() !== query) return; // stale response
+              if (window.gtag) {
+                window.gtag("event", "search", {
+                  search_term: query,
+                  result_count: search.results.length,
+                });
+              }
               if (search.results.length === 0) {
                 empty.hidden = false;
                 return;
