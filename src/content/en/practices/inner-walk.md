@@ -1,7 +1,7 @@
 ---
 title: "Inner Walk"
 order: 2
-draft: true
+draft: false
 ---
 
 Inner Walk was founded by Phra Olarn, a Thai Buddhist monk, on the island

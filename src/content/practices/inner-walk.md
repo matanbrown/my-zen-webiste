@@ -1,7 +1,7 @@
 ---
 title: "איינר ווק"
 order: 2
-draft: true
+draft: false
 ---
 
 איינר ווק (Inner Walk) הוא תרגול שנוסד על ידי פְרַה אולארן (Phra Olarn),
