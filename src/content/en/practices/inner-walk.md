@@ -39,6 +39,12 @@ with more clarity day to day.
 - [The "How to walk" video — the project's official guide](https://www.youtube.com/watch?v=V0_KY21xqnI)
 - [innerwalk.org — the official site](https://www.innerwalk.org/)
 
----
+## How I got to know it
 
-*(I'll add my personal take on this practice here)*
+After meeting [Yuval Plok Birman](/en/inspirations/yuval-plok-birman/) I started
+practicing Inner Walk. I found a practice that was physically simple for
+me, and at the same time helped me observe my own mind and the thoughts
+running through my head. For me it's like sitting in zazen shikantaza,
+just while walking. What speaks to me most is that there are no rules —
+no "do it this way, do it that way" — just letting whatever comes up,
+come up.
