@@ -2,7 +2,8 @@
 title: "Inner Walk"
 order: 2
 coverImage: "https://media.matanbrown.com/practices/inner-walk/cover.jpg"
-coverImageAlt: "Buddhist monks walking in a forest at a meditation center in Sri Lanka"
+coverImageAlt: "Inner Walk logo"
+coverImageCredit: "Logo: innerwalk.org"
 draft: false
 ---
 

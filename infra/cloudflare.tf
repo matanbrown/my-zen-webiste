@@ -3,7 +3,7 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
@@ -21,6 +21,12 @@ variable "cloudflare_zone_id" {
 variable "domain_name" {
   type    = string
   default = "zen.matanbrown.com"
+}
+
+variable "r2_public_domain" {
+  description = "Public custom domain for the R2 media bucket, e.g. media.matanbrown.com"
+  type        = string
+  default     = "media.matanbrown.com"
 }
 
 provider "cloudflare" {
@@ -48,18 +54,20 @@ resource "cloudflare_pages_project" "site" {
 resource "cloudflare_pages_domain" "custom" {
   account_id   = var.cloudflare_account_id
   project_name = cloudflare_pages_project.site.name
-  domain       = var.domain_name
+  name         = var.domain_name
 }
 
+# cloudflare_record was renamed to cloudflare_dns_record in provider v5.
 # Cloudflare auto-manages the DNS record for a Pages custom domain once the
 # zone lives on Cloudflare, but declaring it explicitly keeps it visible
 # and reproducible in state.
-resource "cloudflare_record" "site" {
+resource "cloudflare_dns_record" "site" {
   zone_id = var.cloudflare_zone_id
   name    = "zen"
   type    = "CNAME"
   content = cloudflare_pages_project.site.subdomain
   proxied = true
+  ttl     = 1 # "Automatic" — required alongside proxied in v5
 }
 
 # ---------------------------------------------------------------------------
@@ -72,15 +80,19 @@ resource "cloudflare_r2_bucket" "media" {
   location   = "EEUR" # closest region to Israel; adjust if you'd rather WEUR
 }
 
-# Public access (custom domain binding) for this bucket is set up manually
-# via the Cloudflare dashboard for now, NOT here in Terraform: the resource
-# for it, cloudflare_r2_custom_domain, only exists in the Cloudflare
-# provider v5 line. This repo is pinned to "~> 4.0", and upgrading to v5 is
-# a real migration with breaking schema changes across every resource in
-# this file (Pages project/domain, DNS, this bucket) — not something to do
-# as a side effect of adding a photo. See README for the dashboard steps,
-# and revisit formalizing this in Terraform if/when a deliberate v4→v5
-# migration happens.
+# New in provider v5 — didn't exist at all in v4, which is the whole reason
+# for this migration. Binds a public custom domain to the bucket so objects
+# are reachable at https://${var.r2_public_domain}/<object-key>, served
+# through Cloudflare's CDN (not the rate-limited public .r2.dev subdomain).
+# Cloudflare auto-manages the DNS for this binding, same as the Pages
+# domain above — no separate cloudflare_dns_record needed for it.
+resource "cloudflare_r2_custom_domain" "media" {
+  account_id  = var.cloudflare_account_id
+  bucket_name = cloudflare_r2_bucket.media.name
+  zone_id     = var.cloudflare_zone_id
+  domain      = var.r2_public_domain
+  enabled     = true
+}
 
 output "pages_subdomain" {
   value = cloudflare_pages_project.site.subdomain
@@ -88,4 +100,8 @@ output "pages_subdomain" {
 
 output "r2_bucket_name" {
   value = cloudflare_r2_bucket.media.name
+}
+
+output "r2_public_domain" {
+  value = cloudflare_r2_custom_domain.media.domain
 }

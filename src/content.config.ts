@@ -70,6 +70,7 @@ const practices = defineCollection({
     order: z.number().default(0), // סדר תצוגה ברשימה
     coverImage: z.string().optional(),
     coverImageAlt: z.string().optional(), // describe what's actually in the image; falls back to title
+    coverImageCredit: z.string().optional(), // name + link back to source/license, when required
     draft: z.boolean().default(false),
   }),
 });
