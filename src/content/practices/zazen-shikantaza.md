@@ -1,6 +1,7 @@
 ---
 title: "מדיטציית זאזן שיקנטזה"
 order: 1
+coverImage: "https://media.matanbrown.com/practices/shikantaza/cover.webp"
 draft: false
 ---
 
