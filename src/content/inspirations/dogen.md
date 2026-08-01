@@ -1,7 +1,7 @@
 ---
 title: "דוגן"
 author: "דוגן"
-coverImage: "https://media.matanbrown.com/inspirations/dogen/cover.webp"
+image: "https://media.matanbrown.com/inspirations/dogen/cover.webp"
 date: 2026-08-01
 draft: false
 ---
