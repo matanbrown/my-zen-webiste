@@ -185,7 +185,11 @@ const NAV: [string, string][] = isEn
       </main>
       <footer class="site-footer">
         <hr class="rule" />
-        <p class="eyebrow">zen.matanbrown.com</p>
+        <p class="eyebrow">
+          zen.matanbrown.com
+          {" · "}
+          <a href={isEn ? "/en/colophon/" : "/colophon/"}>{isEn ? "How this site is built" : "איך האתר בנוי"}</a>
+        </p>
       </footer>
     </div>
 

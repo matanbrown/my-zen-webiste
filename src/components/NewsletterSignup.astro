@@ -1,0 +1,135 @@
+---
+interface Props {
+  lang?: "he" | "en";
+}
+const { lang = "he" } = Astro.props;
+const isEn = lang === "en";
+const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
+---
+
+<div class="newsletter" dir={isEn ? "ltr" : "rtl"}>
+  <p class="eyebrow">{isEn ? "Get new lessons by email" : "לקבל שיעורים חדשים במייל"}</p>
+  <form id="newsletter-form" novalidate>
+    <input
+      type="email"
+      name="email"
+      required
+      autocomplete="email"
+      placeholder={isEn ? "you@example.com" : "האימייל שלך"}
+      aria-label={isEn ? "Email address" : "כתובת אימייל"}
+    />
+
+    <!-- honeypot — hidden from real people, only bots fill this in -->
+    <div class="hp" aria-hidden="true">
+      <label>
+        {isEn ? "Website" : "אתר"}
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+
+    <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>
+
+    <button type="submit">{isEn ? "Subscribe" : "הרשמה"}</button>
+  </form>
+  <p id="newsletter-status" role="status" class="eyebrow"></p>
+</div>
+
+<script async src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+<script type="module">
+  const form = document.getElementById("newsletter-form");
+  const status = document.getElementById("newsletter-status");
+  if (form) {
+    const submitButton = form.querySelector("button[type=submit]");
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      submitButton.disabled = true;
+      status.textContent = form.dir === "ltr" ? "Sending…" : "שולח…";
+
+      const data = new FormData(form);
+      const payload = {
+        email: data.get("email"),
+        website: data.get("website"),
+        turnstileToken: data.get("cf-turnstile-response"),
+      };
+
+      try {
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const result = await res.json();
+
+        if (result.ok) {
+          status.textContent = form.dir === "ltr" ? "Subscribed — thank you!" : "נרשמת, תודה!";
+          form.reset();
+          if (window.turnstile) window.turnstile.reset();
+        } else {
+          status.textContent =
+            form.dir === "ltr" ? "Something failed. Try again later." : "משהו נכשל. אפשר לנסות שוב מאוחר יותר.";
+          submitButton.disabled = false;
+        }
+      } catch {
+        status.textContent =
+          form.dir === "ltr" ? "Something failed. Try again later." : "משהו נכשל. אפשר לנסות שוב מאוחר יותר.";
+        submitButton.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .newsletter {
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--stone-line);
+  }
+  #newsletter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+    align-items: center;
+    margin-top: var(--space-1);
+  }
+  #newsletter-form input[type="email"] {
+    flex: 1 1 14rem;
+    font: inherit;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--stone-line);
+    border-radius: 4px;
+    background: var(--paper-raised);
+    color: var(--ink);
+  }
+  #newsletter-form input:focus-visible {
+    outline: 2px solid var(--indigo);
+    outline-offset: 1px;
+  }
+  .hp {
+    position: absolute;
+    inset-inline-start: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  #newsletter-form button {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    font: inherit;
+    cursor: pointer;
+  }
+  #newsletter-form button:hover {
+    background: var(--seal);
+    border-color: var(--seal);
+  }
+  #newsletter-form button:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  #newsletter-status {
+    min-height: 1.2em;
+    margin-top: var(--space-1);
+  }
+</style>

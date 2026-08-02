@@ -9,11 +9,21 @@ export async function getStaticPaths({ paginate }) {
 }
 
 const { page } = Astro.props;
+const allLessons = await getCollection("lessonsEn", ({ data }) => !data.draft);
+const allLessonIds = allLessons.map((l) => l.id);
 ---
 
 <BaseLayout title="Lessons" description="Weekly Zen lessons" lang="en">
   <p class="eyebrow">A new lesson every week</p>
   <h1>Lessons</h1>
+
+  {allLessonIds.length > 1 && (
+    <p>
+      <a href="#" id="random-lesson-link" data-ids={JSON.stringify(allLessonIds)} data-base="/en/lessons/">
+        🎲 Random lesson
+      </a>
+    </p>
+  )}
 
   {page.data.map((lesson) => (
     <article class="card">
@@ -33,6 +43,19 @@ const { page } = Astro.props;
     </nav>
   )}
 </BaseLayout>
+
+<script is:inline>
+  (function () {
+    var link = document.getElementById("random-lesson-link");
+    if (!link) return;
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      var ids = JSON.parse(link.dataset.ids);
+      var pick = ids[Math.floor(Math.random() * ids.length)];
+      window.location.href = link.dataset.base + pick + "/";
+    });
+  })();
+</script>
 
 <style>
   .pagination {

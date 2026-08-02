@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="איך האתר הזה בנוי" description="קצת על התשתית שמאחורי האתר">
+  <p class="eyebrow">קצת מאחורי הקלעים</p>
+  <h1>איך האתר הזה בנוי</h1>
+
+  <p>
+    האתר בנוי ב-<a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>,
+    מתארח כאתר סטטי על Cloudflare Pages, והתמונות מתארחות ב-Cloudflare R2
+    ומוגשות דרך <code>media.matanbrown.com</code>.
+  </p>
+
+  <p>
+    כל דף באתר קיים בשתי גרסאות — עברית ואנגלית — עם אותו מבנה נתיבים
+    בדיוק (<code>/practices/x/</code> מול <code>/en/practices/x/</code>), כדי
+    שקישור לעברית תמיד יידע למצוא את התאום האנגלי שלו, ולהפך.
+  </p>
+
+  <p>
+    החיפוש באתר לא מסתמך על שירות חיצוני — הוא נבנה עם
+    <a href="https://pagefind.app" target="_blank" rel="noopener noreferrer">Pagefind</a>,
+    שיוצר אינדקס חיפוש סטטי בזמן ה-build ורץ כולו בדפדפן, בלי שרת ובלי
+    עלות שוטפת.
+  </p>
+
+  <p>
+    חלק מהתוכן כאן נכתב בעזרתו של Claude — הן בכתיבה ישירה בשיחה, והן
+    דרך תהליך אוטומטי: פעמיים בשבוע נשלף נושא מרשימה שאני מכין מראש,
+    Claude כותב טיוטה בעברית ובאנגלית, ופותח לכך Pull Request בגיטהאב.
+    שום דבר לא מתפרסם אוטומטית — אני קורא, עורך אם צריך, ורק אז מפרסם
+    בעצמי.
+  </p>
+
+  <p>
+    טופס יצירת הקשר וטופס ההרשמה לעדכונים מוגנים ב-
+    <a href="https://developers.cloudflare.com/turnstile/" target="_blank" rel="noopener noreferrer">Cloudflare Turnstile</a>
+    (קאפצ'ה בלתי-נראית) כדי לחסום בוטים, וכל התוכן מוגש דרך Cloudflare
+    Function שלי — לא דרך שירות טפסים חיצוני.
+  </p>
+
+  <p><a href="/">← חזרה לדף הבית</a></p>
+</BaseLayout>
