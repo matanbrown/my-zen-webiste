@@ -50,6 +50,7 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
         email: data.get("email"),
         website: data.get("website"),
         turnstileToken: data.get("cf-turnstile-response"),
+        lang: form.dir === "ltr" ? "en" : "he",
       };
 
       try {
