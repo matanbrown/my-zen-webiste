@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CommentsSection from "../../../components/CommentsSection.astro";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessonsEn", ({ data }) => !data.draft);
@@ -98,6 +99,8 @@ const articleJsonLd = {
   </nav>
 
   <p><a href="/en/lessons/">← All lessons</a></p>
+
+  <CommentsSection lang="en" />
 </BaseLayout>
 
 <style>

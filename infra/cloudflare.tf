@@ -49,6 +49,17 @@ resource "cloudflare_pages_project" "site" {
   # deliberate, not an oversight — a `source { type = "github" }` block
   # would make Cloudflare *also* auto-build on push, double-deploying
   # every commit.
+
+  # Deliberately NOT managing `deployment_configs` here (which is where a
+  # D1 binding would technically go) — the TURNSTILE_SECRET_KEY and
+  # RESEND_API_KEY secrets already live in this same nested object,
+  # set out-of-band via `wrangler pages secret put`, not tracked in this
+  # file. Terraform doesn't merge nested attribute maps: declaring
+  # deployment_configs here with only d1_databases in it risks Terraform
+  # trying to null out those secrets on apply. So: this resource only
+  # creates the D1 database itself; the binding is done manually in the
+  # Cloudflare dashboard (Pages project → Settings → Functions →
+  # D1 database bindings), same as the two secrets already are.
 }
 
 resource "cloudflare_pages_domain" "custom" {
@@ -92,6 +103,21 @@ resource "cloudflare_r2_custom_domain" "media" {
   zone_id     = var.cloudflare_zone_id
   domain      = var.r2_public_domain
   enabled     = true
+}
+
+# ---------------------------------------------------------------------------
+# D1 — comments database. One table (see functions/api/comments.js for the
+# schema/init SQL), bound to the Pages project as COMMENTS_DB so Functions
+# can reach it via context.env.COMMENTS_DB.
+# ---------------------------------------------------------------------------
+
+resource "cloudflare_d1_database" "comments" {
+  account_id = var.cloudflare_account_id
+  name       = "zen-matanbrown-comments"
+}
+
+output "comments_db_id" {
+  value = cloudflare_d1_database.comments.id
 }
 
 output "pages_subdomain" {

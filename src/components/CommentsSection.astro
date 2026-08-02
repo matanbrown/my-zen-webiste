@@ -1,0 +1,196 @@
+---
+interface Props {
+  lang?: "he" | "en";
+}
+const { lang = "he" } = Astro.props;
+const isEn = lang === "en";
+const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
+---
+
+<section class="comments" dir={isEn ? "ltr" : "rtl"}>
+  <p class="eyebrow">{isEn ? "Comments" : "תגובות"}</p>
+  <div id="comments-list"></div>
+  <p id="comments-empty" class="eyebrow" hidden>
+    {isEn ? "No comments yet — be the first." : "עדיין אין תגובות — אפשר להיות הראשון/ה."}
+  </p>
+
+  <form id="comment-form" novalidate>
+    <input
+      type="text"
+      name="name"
+      required
+      maxlength="80"
+      placeholder={isEn ? "Your name" : "השם שלך"}
+      aria-label={isEn ? "Your name" : "השם שלך"}
+    />
+    <textarea
+      name="comment"
+      rows="4"
+      required
+      maxlength="2000"
+      placeholder={isEn ? "Write something…" : "כתוב/י משהו…"}
+      aria-label={isEn ? "Comment" : "תגובה"}
+    ></textarea>
+
+    <!-- honeypot — hidden from real people, only bots fill this in -->
+    <div class="hp" aria-hidden="true">
+      <label>
+        {isEn ? "Website" : "אתר"}
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+
+    <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>
+
+    <button type="submit">{isEn ? "Submit" : "שליחה"}</button>
+  </form>
+  <p id="comment-status" role="status" class="eyebrow"></p>
+</section>
+
+<script async src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+<script type="module" define:vars={{ isEn }}>
+  const list = document.getElementById("comments-list");
+  const empty = document.getElementById("comments-empty");
+  const form = document.getElementById("comment-form");
+  const status = document.getElementById("comment-status");
+  const pagePath = location.pathname;
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  async function loadComments() {
+    try {
+      const res = await fetch(`/api/comments?path=${encodeURIComponent(pagePath)}`);
+      const data = await res.json();
+      const comments = data.comments || [];
+      if (comments.length === 0) {
+        empty.hidden = false;
+        return;
+      }
+      list.innerHTML = comments
+        .map((c) => {
+          const date = new Date(c.created_at + "Z").toLocaleDateString(isEn ? "en-US" : "he-IL");
+          return (
+            `<article class="comment">` +
+            `<p class="eyebrow">${escapeHtml(c.name)} · ${date}</p>` +
+            `<p>${escapeHtml(c.body)}</p>` +
+            `</article>`
+          );
+        })
+        .join("");
+    } catch {
+      // Fail quietly — comments are a nice-to-have, not core content.
+    }
+  }
+  loadComments();
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submitButton = form.querySelector("button[type=submit]");
+    submitButton.disabled = true;
+    status.textContent = isEn ? "Sending…" : "שולח…";
+
+    const data = new FormData(form);
+    const payload = {
+      path: pagePath,
+      lang: isEn ? "en" : "he",
+      name: data.get("name"),
+      comment: data.get("comment"),
+      website: data.get("website"),
+      turnstileToken: data.get("cf-turnstile-response"),
+    };
+
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json();
+      if (result.ok) {
+        status.textContent = isEn
+          ? "Thanks — your comment is pending review and will appear once approved."
+          : "תודה — התגובה שלך ממתינה לאישור ותופיע לאחר בדיקה.";
+        form.reset();
+        if (window.turnstile) window.turnstile.reset();
+      } else {
+        status.textContent = isEn ? "Something failed. Try again later." : "משהו נכשל. אפשר לנסות שוב מאוחר יותר.";
+        submitButton.disabled = false;
+      }
+    } catch {
+      status.textContent = isEn ? "Something failed. Try again later." : "משהו נכשל. אפשר לנסות שוב מאוחר יותר.";
+      submitButton.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .comments {
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--stone-line);
+  }
+  .comment {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--stone-line);
+  }
+  .comment p:last-child {
+    margin: 4px 0 0;
+  }
+  #comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 28rem;
+    margin-top: var(--space-3);
+  }
+  #comment-form input,
+  #comment-form textarea {
+    font: inherit;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--stone-line);
+    border-radius: 4px;
+    background: var(--paper-raised);
+    color: var(--ink);
+  }
+  #comment-form textarea {
+    resize: vertical;
+  }
+  #comment-form input:focus-visible,
+  #comment-form textarea:focus-visible {
+    outline: 2px solid var(--indigo);
+    outline-offset: 1px;
+  }
+  .hp {
+    position: absolute;
+    inset-inline-start: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  #comment-form button {
+    align-self: flex-start;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    font: inherit;
+    cursor: pointer;
+  }
+  #comment-form button:hover {
+    background: var(--seal);
+    border-color: var(--seal);
+  }
+  #comment-form button:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  #comment-status {
+    min-height: 1.2em;
+    margin-top: var(--space-1);
+  }
+</style>
