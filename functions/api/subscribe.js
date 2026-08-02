@@ -106,10 +106,11 @@ async function verifyTurnstile({ token, secret, remoteIp }) {
 
 async function sendWelcomeEmail({ apiKey, email, isEn }) {
   if (!apiKey) return;
+  const unsubscribeUrl = `https://zen.matanbrown.com${isEn ? "/en" : ""}/unsubscribe/?email=${encodeURIComponent(email)}`;
   const subject = isEn ? "Thanks for subscribing to Without Effort" : "תודה שנרשמת ל\"ללא מאמץ\"";
   const text = isEn
-    ? `Thanks for subscribing! You'll get an email whenever a new lesson goes up on the site.\n\nIn the meantime, you can start here: https://zen.matanbrown.com/en/lessons/\n\nIf you ever want to stop, just reply to any of these emails and let me know.`
-    : `תודה שנרשמת! מעכשיו תקבל/י מייל בכל פעם שיעלה שיעור חדש באתר.\n\nבינתיים, אפשר להתחיל כאן: https://zen.matanbrown.com/lessons/\n\nאם בשלב כלשהו תרצה/י להפסיק, פשוט תגיב/י לכל אחד מהמיילים האלה ותגיד/י לי.`;
+    ? `Thanks for subscribing! You'll get an email whenever a new lesson goes up on the site.\n\nIn the meantime, you can start here: https://zen.matanbrown.com/en/lessons/\n\nThis inbox isn't monitored, so replying won't reach anyone — to unsubscribe, use this link instead: ${unsubscribeUrl}`
+    : `תודה שנרשמת! מעכשיו תקבל/י מייל בכל פעם שיעלה שיעור חדש באתר.\n\nבינתיים, אפשר להתחיל כאן: https://zen.matanbrown.com/lessons/\n\nתיבת הדואר הזו לא מנוטרת, אז תגובה לא תגיע לאף אחד — להסרה מהרשימה, אפשר להשתמש בלינק הזה במקום: ${unsubscribeUrl}`;
 
   await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -122,6 +123,9 @@ async function sendWelcomeEmail({ apiKey, email, isEn }) {
       to: [email],
       subject,
       text,
+      headers: {
+        "List-Unsubscribe": `<${unsubscribeUrl}>`,
+      },
     }),
   });
 }

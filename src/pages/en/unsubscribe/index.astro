@@ -1,0 +1,103 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Unsubscribe" description="Unsubscribe from the mailing list" lang="en">
+  <p class="eyebrow">Mailing list</p>
+  <h1>Unsubscribe</h1>
+  <p>You'll stop getting emails about new lessons on the site.</p>
+
+  <form id="unsub-form" novalidate>
+    <input
+      type="email"
+      name="email"
+      required
+      autocomplete="email"
+      placeholder="you@example.com"
+      aria-label="Email address"
+    />
+    <button type="submit">Unsubscribe me</button>
+  </form>
+  <p id="unsub-status" role="status" class="eyebrow"></p>
+
+  <p><a href="/en/">← Back to homepage</a></p>
+</BaseLayout>
+
+<script type="module">
+  const form = document.getElementById("unsub-form");
+  const status = document.getElementById("unsub-status");
+  const params = new URLSearchParams(location.search);
+  const prefill = params.get("email");
+  if (prefill) form.email.value = prefill;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submitButton = form.querySelector("button[type=submit]");
+    submitButton.disabled = true;
+    status.textContent = "Removing…";
+
+    try {
+      const res = await fetch("/api/unsubscribe", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: form.email.value }),
+      });
+      const result = await res.json();
+      if (result.ok) {
+        status.textContent = "Done — you won't get any more emails from the site.";
+        form.hidden = true;
+      } else {
+        status.textContent = "Something failed. Try again later.";
+        submitButton.disabled = false;
+      }
+    } catch {
+      status.textContent = "Something failed. Try again later.";
+      submitButton.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  #unsub-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+    margin-top: var(--space-2);
+    max-width: 28rem;
+  }
+  #unsub-form input {
+    flex: 1 1 14rem;
+    font: inherit;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--stone-line);
+    border-radius: 4px;
+    background: var(--paper-raised);
+    color: var(--ink);
+  }
+  #unsub-form input:focus-visible {
+    outline: 2px solid var(--indigo);
+    outline-offset: 1px;
+  }
+  #unsub-form button {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    font: inherit;
+    cursor: pointer;
+  }
+  #unsub-form button:hover {
+    background: var(--seal);
+    border-color: var(--seal);
+  }
+  #unsub-form button:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  #unsub-status {
+    min-height: 1.2em;
+    margin-top: var(--space-2);
+  }
+</style>
