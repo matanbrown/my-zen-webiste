@@ -62,7 +62,11 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
         const result = await res.json();
 
         if (result.ok) {
-          status.textContent = form.dir === "ltr" ? "Subscribed — thank you!" : "נרשמת, תודה!";
+          if (result.alreadySubscribed) {
+            status.textContent = form.dir === "ltr" ? "You're already subscribed!" : "אתה/את כבר רשום/ה במערכת!";
+          } else {
+            status.textContent = form.dir === "ltr" ? "Subscribed — thank you!" : "נרשמת, תודה!";
+          }
           form.reset();
           if (window.turnstile) window.turnstile.reset();
         } else {

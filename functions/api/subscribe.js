@@ -50,6 +50,42 @@ export async function onRequestPost({ request, env }) {
       return jsonResponse({ ok: false, error: "turnstile_failed" }, 403);
     }
 
+    // Check explicitly rather than guessing at whatever status code a
+    // duplicate POST /contacts would return — this way we know for sure,
+    // and can tell a returning visitor "you're already on the list"
+    // instead of just silently pretending it worked like a fresh signup.
+    // Also handles someone who previously unsubscribed and is now trying
+    // to opt back in — that should resubscribe them, not tell them
+    // they're "already subscribed" when they're actually not receiving
+    // anything right now.
+    const existsRes = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
+      headers: { authorization: `Bearer ${env.RESEND_API_KEY}` },
+    });
+
+    if (existsRes.ok) {
+      const existing = await existsRes.json();
+      const isUnsubscribed = existing.unsubscribed ?? existing.data?.unsubscribed ?? false;
+      if (!isUnsubscribed) {
+        return jsonResponse({ ok: true, alreadySubscribed: true });
+      }
+      // Exists but currently unsubscribed — resubscribe them.
+      const resub = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({ unsubscribed: false }),
+      });
+      if (!resub.ok) {
+        return jsonResponse({ ok: false, error: "send_failed" }, 502);
+      }
+      await sendWelcomeEmail({ apiKey: env.RESEND_API_KEY, email, isEn }).catch((err) => {
+        console.error("welcome email failed:", err);
+      });
+      return jsonResponse({ ok: true });
+    }
+
     const res = await fetch("https://api.resend.com/contacts", {
       method: "POST",
       headers: {
@@ -64,9 +100,6 @@ export async function onRequestPost({ request, env }) {
     });
 
     if (res.ok) {
-      // Only a genuinely new contact gets the welcome email — resending
-      // it to someone re-submitting an already-subscribed address would
-      // just be noise, not a nice touch.
       await sendWelcomeEmail({ apiKey: env.RESEND_API_KEY, email, isEn }).catch((err) => {
         // Don't fail the whole signup just because the welcome note
         // couldn't be sent — the subscription itself already succeeded.
@@ -75,11 +108,12 @@ export async function onRequestPost({ request, env }) {
       return jsonResponse({ ok: true });
     }
 
-    // Resend errors if the contact (identified globally by email) already
-    // exists — treat that as a success from the visitor's point of view,
-    // not a failure, but skip the welcome email in this case.
+    // Belt-and-suspenders: if the explicit exists-check above somehow
+    // missed it (e.g. a race with a duplicate near-simultaneous signup),
+    // still treat a conflict-shaped failure as "already subscribed"
+    // rather than a hard error.
     if (res.status === 409) {
-      return jsonResponse({ ok: true });
+      return jsonResponse({ ok: true, alreadySubscribed: true });
     }
 
     return jsonResponse({ ok: false, error: "send_failed" }, 502);
