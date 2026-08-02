@@ -80,7 +80,7 @@ export async function onRequestPost({ request, env }) {
       if (!resub.ok) {
         return jsonResponse({ ok: false, error: "send_failed" }, 502);
       }
-      await sendWelcomeEmail({ apiKey: env.RESEND_API_KEY, email, isEn }).catch((err) => {
+      await sendWelcomeEmail({ apiKey: env.RESEND_API_KEY, email, isEn, unsubSecret: env.UNSUB_SECRET }).catch((err) => {
         console.error("welcome email failed:", err);
       });
       return jsonResponse({ ok: true });
@@ -100,7 +100,7 @@ export async function onRequestPost({ request, env }) {
     });
 
     if (res.ok) {
-      await sendWelcomeEmail({ apiKey: env.RESEND_API_KEY, email, isEn }).catch((err) => {
+      await sendWelcomeEmail({ apiKey: env.RESEND_API_KEY, email, isEn, unsubSecret: env.UNSUB_SECRET }).catch((err) => {
         // Don't fail the whole signup just because the welcome note
         // couldn't be sent — the subscription itself already succeeded.
         console.error("welcome email failed:", err);
@@ -138,9 +138,26 @@ async function verifyTurnstile({ token, secret, remoteIp }) {
   return data.success === true;
 }
 
-async function sendWelcomeEmail({ apiKey, email, isEn }) {
+// HMAC-SHA256(email, secret), hex-encoded. Used to build a signed
+// unsubscribe link that proves whoever clicks it actually received this
+// specific email, rather than just knowing the address exists.
+async function signEmail(email, secret) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(email.trim().toLowerCase()));
+  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function sendWelcomeEmail({ apiKey, email, isEn, unsubSecret }) {
   if (!apiKey) return;
-  const unsubscribeUrl = `https://zen.matanbrown.com${isEn ? "/en" : ""}/unsubscribe/?email=${encodeURIComponent(email)}`;
+  const token = unsubSecret ? await signEmail(email, unsubSecret) : "";
+  const unsubscribeUrl = `https://zen.matanbrown.com${isEn ? "/en" : ""}/unsubscribe/?email=${encodeURIComponent(email)}${token ? `&token=${token}` : ""}`;
   const subject = isEn ? "Thanks for subscribing to Without Effort" : "תודה שנרשמת ל\"ללא מאמץ\"";
   const text = isEn
     ? `Thanks for subscribing! You'll get an email whenever a new lesson goes up on the site.\n\nIn the meantime, you can start here: https://zen.matanbrown.com/en/lessons/\n\nThis inbox isn't monitored, so replying won't reach anyone — to unsubscribe, use this link instead: ${unsubscribeUrl}`

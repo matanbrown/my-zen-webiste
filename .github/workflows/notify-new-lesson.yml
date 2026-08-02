@@ -1,0 +1,21 @@
+name: Notify new lesson
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # need the previous commit too, to compare draft state
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: node scripts/notify-new-lesson.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

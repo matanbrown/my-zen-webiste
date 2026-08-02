@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
 ---
 
 <BaseLayout title="Unsubscribe" description="Unsubscribe from the mailing list" lang="en">
@@ -16,6 +18,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
       placeholder="you@example.com"
       aria-label="Email address"
     />
+    <div id="turnstile-wrap" class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} hidden></div>
     <button type="submit">Unsubscribe me</button>
   </form>
   <p id="unsub-status" role="status" class="eyebrow"></p>
@@ -23,12 +26,22 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
   <p><a href="/en/">← Back to homepage</a></p>
 </BaseLayout>
 
+<script async src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
 <script type="module">
   const form = document.getElementById("unsub-form");
   const status = document.getElementById("unsub-status");
+  const turnstileWrap = document.getElementById("turnstile-wrap");
   const params = new URLSearchParams(location.search);
-  const prefill = params.get("email");
-  if (prefill) form.email.value = prefill;
+  const prefillEmail = params.get("email");
+  const token = params.get("token");
+  if (prefillEmail) form.email.value = prefillEmail;
+
+  // A signed token proves this link came from an actual email we sent —
+  // no need for a CAPTCHA in that case. Only show Turnstile when someone
+  // is unsubscribing "by hand" without a token.
+  if (!token) {
+    turnstileWrap.hidden = false;
+  }
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -36,11 +49,18 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     submitButton.disabled = true;
     status.textContent = "Removing…";
 
+    const payload = { email: form.email.value };
+    if (token) {
+      payload.token = token;
+    } else {
+      payload.turnstileToken = new FormData(form).get("cf-turnstile-response");
+    }
+
     try {
       const res = await fetch("/api/unsubscribe", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: form.email.value }),
+        body: JSON.stringify(payload),
       });
       const result = await res.json();
       if (result.ok) {
