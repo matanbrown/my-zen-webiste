@@ -68,14 +68,22 @@ const latestPoem = poems[0];
   .latest {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
     margin-top: var(--space-3);
+  }
+  .latest-item {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--stone-line);
+  }
+  .latest-item:first-child {
+    padding-top: 0;
+    border-top: none;
   }
   .latest-item h2 {
     margin-top: var(--space-1);
   }
   .more-link {
-    margin-top: calc(-1 * var(--space-2));
+    margin-top: 0;
   }
 
   .explore {
