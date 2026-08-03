@@ -12,10 +12,38 @@ const retreats = (await getCollection("retreats", ({ data }) => !data.draft))
 
   {retreats.map((retreat) => (
     <article class="card">
-      <p class="eyebrow">{retreat.data.place}{retreat.data.year ? ` · ${retreat.data.year}` : ""}</p>
-      <h2><a href={`/retreats/${retreat.id}/`}>{retreat.data.title}</a></h2>
+      <div class="row">
+        {retreat.data.coverImage && (
+          <img class="avatar" src={retreat.data.coverImage} alt="" loading="lazy" decoding="async" />
+        )}
+        <div class="row-text">
+          <p class="eyebrow">{retreat.data.place}{retreat.data.year ? ` · ${retreat.data.year}` : ""}</p>
+          <h2><a href={`/retreats/${retreat.id}/`}>{retreat.data.title}</a></h2>
+        </div>
+      </div>
     </article>
   ))}
 
   {retreats.length === 0 && <p>עדיין אין סיפורים כאן — בקרוב.</p>}
 </BaseLayout>
+
+<style>
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .avatar {
+    inline-size: 44px;
+    block-size: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .row-text h2 {
+    margin: 0;
+  }
+  .row-text .eyebrow {
+    margin: 0 0 2px;
+  }
+</style>
