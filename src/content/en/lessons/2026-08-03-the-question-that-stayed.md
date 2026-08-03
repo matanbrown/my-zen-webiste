@@ -2,6 +2,9 @@
 title: "The Question That Stayed With Me"
 date: 2026-08-03
 summary: "Pain during meditation"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-03-the-question-that-stayed/cover.jpg"
+coverImageAlt: "An open notebook with a handwritten line, a candle, a mountain view in the background, and a question mark on a screen"
+avatarImage: "https://media.matanbrown.com/lessons/2026-08-03-the-question-that-stayed/avatar.jpg"
 draft: false
 ---
 

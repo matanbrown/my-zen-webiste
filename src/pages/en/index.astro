@@ -23,6 +23,15 @@ const latestPoem = poems[0];
   <section class="latest">
     {latestLesson && (
       <div class="latest-item">
+        {(latestLesson.data.avatarImage || latestLesson.data.coverImage) && (
+          <img
+            class="avatar"
+            src={latestLesson.data.avatarImage ?? latestLesson.data.coverImage}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        )}
         <p class="eyebrow">Latest lesson · {latestLesson.data.date.toLocaleDateString("en-US")}</p>
         <h2><a href={`/en/lessons/${latestLesson.id}/`}>{latestLesson.data.title}</a></h2>
         {latestLesson.data.summary && <p>{latestLesson.data.summary}</p>}
@@ -74,6 +83,15 @@ const latestPoem = poems[0];
   .latest-item {
     padding-top: var(--space-3);
     border-top: 1px solid var(--stone-line);
+    display: flow-root;
+  }
+  .latest-item .avatar {
+    float: inline-end;
+    inline-size: 56px;
+    block-size: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-inline-start: var(--space-2);
   }
   .latest-item:first-child {
     padding-top: 0;

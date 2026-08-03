@@ -2,6 +2,9 @@
 title: "השאלה שנשארה איתי"
 date: 2026-08-03
 summary: "כאב בזמן מדיטציה"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-03-the-question-that-stayed/cover.jpg"
+coverImageAlt: "מחברת פתוחה עם משפט, מול נר, נוף הרים ברקע וסימן שאלה על מסך"
+avatarImage: "https://media.matanbrown.com/lessons/2026-08-03-the-question-that-stayed/avatar.jpg"
 draft: false
 ---
 

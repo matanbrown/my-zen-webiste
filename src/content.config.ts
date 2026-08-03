@@ -13,6 +13,7 @@ const lessons = defineCollection({
     videoUrl: z.string().url().optional(),
     coverImage: z.string().optional(), // path under /media/ synced from Drive
     coverImageAlt: z.string().optional(), // describe what's actually in the image; falls back to title
+    avatarImage: z.string().optional(), // optional square crop for small circular thumbnails (e.g. homepage "latest lesson"); falls back to coverImage if unset
     draft: z.boolean().default(false),
   }),
 });
