@@ -3,6 +3,12 @@ name: Notify new lesson
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      lesson_slug:
+        description: "Optional: force-send notification for this lesson slug (e.g. 2026-08-03-the-question-that-stayed), bypassing auto-detection. Leave empty for normal auto-detect behavior."
+        required: false
+        type: string
 
 jobs:
   notify:
@@ -19,3 +25,4 @@ jobs:
       - run: node scripts/notify-new-lesson.mjs
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          LESSON_SLUG: ${{ github.event.inputs.lesson_slug }}

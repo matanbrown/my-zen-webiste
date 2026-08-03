@@ -86,6 +86,18 @@ async function main() {
     return;
   }
 
+  // Manual override for catch-up runs (e.g. triggered via workflow_dispatch
+  // after the auto-detected push already happened) — bypasses git-diff
+  // detection entirely and just sends for this one slug.
+  const forcedSlug = process.env.LESSON_SLUG;
+  if (forcedSlug) {
+    const relPath = `src/content/lessons/${forcedSlug}.md`;
+    const fm = parseFrontmatter(readFileSync(path.join(ROOT, relPath), "utf-8"));
+    console.log(`Manual override: sending notification for ${relPath} regardless of git history.`);
+    await sendBroadcast({ apiKey, slug: forcedSlug, title: fm.title, summary: fm.summary });
+    return;
+  }
+
   let changedLines;
   try {
     changedLines = sh(`git diff --name-status HEAD~1 HEAD -- src/content/lessons`)
