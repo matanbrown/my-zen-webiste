@@ -6,7 +6,7 @@ author: "ויסלבה שימבורסקה"
 translator: "רפי וייכרט"
 source: "סוף והתחלה"
 externalUrl: "https://open.spotify.com/episode/2IEOXntGknPRss7uU3yOOm"
-externalLabel: "לפרק פודקאסט שדן בשיר →"
+externalLabel: "← לפרק פודקאסט שדן בשיר"
 draft: false
 ---
 
