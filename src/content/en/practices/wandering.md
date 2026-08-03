@@ -1,7 +1,7 @@
 ---
 title: "Wandering"
 order: 3
-draft: true
+draft: false
 ---
 
 For me, the best way to explain what wandering is is through a scene:
