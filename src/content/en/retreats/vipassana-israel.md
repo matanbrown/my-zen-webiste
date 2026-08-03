@@ -3,6 +3,8 @@ title: "Vipassana, February 2019"
 place: "Dhamma Pamoda, near Kibbutz Deganya Bet"
 year: 2019
 order: 2
+coverImage: "https://media.matanbrown.com/retreats/vipassana-israel/cover.webp"
+coverImageAlt: "Meditation hall at the Vipassana center"
 draft: false
 ---
 

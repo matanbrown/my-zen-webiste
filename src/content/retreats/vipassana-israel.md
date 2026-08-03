@@ -1,8 +1,10 @@
 ---
-title: "ויפאסנה, פברואר 2019"
+title: "ויפאסנה ישראל"
 place: "דהאמה פאמודה (Dhamma Pamoda), ליד קיבוץ דגניה ב'"
 year: 2019
 order: 2
+coverImage: "https://media.matanbrown.com/retreats/vipassana-israel/cover.webp"
+coverImageAlt: "אולם מדיטציה במרכז ויפאסנה"
 draft: false
 ---
 
