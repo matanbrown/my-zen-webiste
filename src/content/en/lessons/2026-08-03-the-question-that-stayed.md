@@ -26,3 +26,7 @@ My heart started racing. For a few minutes I hesitated over whether to speak or 
 I said I'd come back from a retreat at a monastery in Japan, that my mind too kept asking why go through this pain. I shared that I'd met Yuval, and hadn't found the answer I was looking for there either. I said I understood that I'd have to find this answer myself, and that something in me knows this is part of the path I've chosen for myself.
 
 Today it seems to me that I'm less in a hurry to find an answer. The question is still with me, but my relationship with it has changed. Maybe one day I'll find an answer too.
+
+Maybe it's worth taking a moment today to ask ourselves:
+What question has been accompanying me during this period?
+Do I really need an answer for it, or is it maybe enough, right now, to just stay with it

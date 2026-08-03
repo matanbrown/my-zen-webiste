@@ -160,8 +160,8 @@ async function sendWelcomeEmail({ apiKey, email, isEn, unsubSecret }) {
   const unsubscribeUrl = `https://zen.matanbrown.com${isEn ? "/en" : ""}/unsubscribe/?email=${encodeURIComponent(email)}${token ? `&token=${token}` : ""}`;
   const subject = isEn ? "Thanks for subscribing to Without Effort" : "תודה שנרשמת ל\"ללא מאמץ\"";
   const text = isEn
-    ? `Thanks for subscribing! You'll get an email whenever a new lesson goes up on the site.\n\nIn the meantime, you can start here: https://zen.matanbrown.com/en/lessons/\n\nThis inbox isn't monitored, so replying won't reach anyone — to unsubscribe, use this link instead: ${unsubscribeUrl}`
-    : `תודה שנרשמת! מעכשיו תקבל/י מייל בכל פעם שיעלה שיעור חדש באתר.\n\nבינתיים, אפשר להתחיל כאן: https://zen.matanbrown.com/lessons/\n\nתיבת הדואר הזו לא מנוטרת, אז תגובה לא תגיע לאף אחד — להסרה מהרשימה, אפשר להשתמש בלינק הזה במקום: ${unsubscribeUrl}`;
+    ? `Thanks for subscribing! You'll get an email whenever a new lesson goes up on the site.\n\nIn the meantime, you can start here: https://zen.matanbrown.com/en/lessons/\n\nTip: if this email landed in Promotions or Updates instead of Primary, drag it into Primary once — that teaches Gmail to put future emails from me there too.\n\nThis inbox isn't monitored, so replying won't reach anyone — to unsubscribe, use this link instead: ${unsubscribeUrl}`
+    : `תודה שנרשמת! מעכשיו תקבל/י מייל בכל פעם שיעלה שיעור חדש באתר.\n\nבינתיים, אפשר להתחיל כאן: https://zen.matanbrown.com/lessons/\n\nטיפ: אם המייל הזה נחת בטאב 'עדכונים' או 'מבצעים' במקום ב-Primary, כדאי לגרור אותו ל-Primary פעם אחת — זה מלמד את ג'ימייל להציג גם מיילים הבאים ממני שם.\n\nתיבת הדואר הזו לא מנוטרת, אז תגובה לא תגיע לאף אחד — להסרה מהרשימה, אפשר להשתמש בלינק הזה במקום: ${unsubscribeUrl}`;
 
   await fetch("https://api.resend.com/emails", {
     method: "POST",

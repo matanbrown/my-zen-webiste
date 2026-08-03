@@ -53,11 +53,13 @@ async function sendBroadcast({ apiKey, slug, title, summary }) {
     `שיעור חדש עלה לאתר: ${title}\n\n` +
     (summary ? `${summary}\n\n` : "") +
     `לקרוא: ${heUrl}\n(English version: ${enUrl})\n\n` +
+    `טיפ: אם המייל הזה נחת בטאב 'עדכונים' או 'מבצעים' במקום ב-Primary, כדאי לגרור אותו ל-Primary פעם אחת.\n\n` +
     `להסרה מרשימת התפוצה: {{{RESEND_UNSUBSCRIBE_URL}}}`;
   const html =
     `<p>שיעור חדש עלה לאתר: <strong>${title}</strong></p>` +
     (summary ? `<p>${summary}</p>` : "") +
     `<p><a href="${heUrl}">לקרוא בעברית</a> · <a href="${enUrl}">Read in English</a></p>` +
+    `<p style="font-size:12px;color:#888;">טיפ: אם המייל הזה נחת בטאב 'עדכונים'/'מבצעים', כדאי לגרור אותו ל-Primary פעם אחת.</p>` +
     `<p style="font-size:12px;color:#888;">להסרה מרשימת התפוצה: {{{RESEND_UNSUBSCRIBE_URL}}}</p>`;
 
   const res = await fetch("https://api.resend.com/broadcasts", {
