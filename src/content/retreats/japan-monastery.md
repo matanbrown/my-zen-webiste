@@ -2,6 +2,8 @@
 title: "ריטריט במנזר ביפן"
 place: "אנטאיג'י (Antaiji), יפן"
 order: 3
+coverImage: "https://media.matanbrown.com/retreats/japan-monastery/cover.webp"
+coverImageAlt: "מסדרון במנזר זן ביפן"
 draft: false
 ---
 

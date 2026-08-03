@@ -2,6 +2,8 @@
 title: "A Retreat at a Monastery in Japan"
 place: "Antaiji, Japan"
 order: 3
+coverImage: "https://media.matanbrown.com/retreats/japan-monastery/cover.webp"
+coverImageAlt: "A corridor at a Zen monastery in Japan"
 draft: false
 ---
 
