@@ -20,41 +20,73 @@ const latestPoem = poems[0];
     <p class="eyebrow">שיעור זן חדש כל שבוע</p>
   </section>
 
-  <hr class="rule" />
+  <section class="latest">
+    {latestLesson && (
+      <div class="latest-item">
+        <p class="eyebrow">השיעור האחרון · {latestLesson.data.date.toLocaleDateString("he-IL")}</p>
+        <h2><a href={`/lessons/${latestLesson.id}/`}>{latestLesson.data.title}</a></h2>
+        {latestLesson.data.summary && <p>{latestLesson.data.summary}</p>}
+      </div>
+    )}
 
-  {latestLesson && (
-    <article class="card">
-      <p class="eyebrow">השיעור האחרון · {latestLesson.data.date.toLocaleDateString("he-IL")}</p>
-      <h2><a href={`/lessons/${latestLesson.id}/`}>{latestLesson.data.title}</a></h2>
-      {latestLesson.data.summary && <p>{latestLesson.data.summary}</p>}
-    </article>
-  )}
+    {latestPoem && (
+      <div class="latest-item">
+        <p class="eyebrow">שירה אחרונה</p>
+        <h2><a href={`/poems/${latestPoem.id}/`}>{latestPoem.data.title}</a></h2>
+      </div>
+    )}
 
-  {latestPoem && (
-    <article class="card">
-      <p class="eyebrow">שירה אחרונה</p>
-      <h2><a href={`/poems/${latestPoem.id}/`}>{latestPoem.data.title}</a></h2>
-    </article>
-  )}
+    <p class="more-link"><a href="/lessons/">כל השיעורים ←</a></p>
+  </section>
 
-  <p><a href="/lessons/">כל השיעורים ←</a></p>
-
-  <hr class="rule" />
-
-  <p class="eyebrow">עוד באתר</p>
-  <ul class="explore">
-    <li><a href="/practices/">תרגולים</a> — תרגולי מדיטציה והליכה שאני מתרגל</li>
-    <li><a href="/poems/">שירה</a> — מילים קצרות, הרבה מרווח</li>
-    <li><a href="/inspirations/">השראה</a> — מורים וכותבים שמלווים אותי</li>
-    <li><a href="/retreats/">ריטריטים</a> — סיפורים אישיים ממנזרים וריטריטים</li>
-  </ul>
+  <section class="explore">
+    <p class="eyebrow">עוד באתר</p>
+    <ul>
+      <li><a href="/practices/">תרגולים</a> — תרגולי מדיטציה והליכה שאני מתרגל</li>
+      <li><a href="/poems/">שירה</a> — מילים קצרות, הרבה מרווח</li>
+      <li><a href="/inspirations/">השראה</a> — מורים וכותבים שמלווים אותי</li>
+      <li><a href="/retreats/">ריטריטים</a> — סיפורים אישיים ממנזרים וריטריטים</li>
+    </ul>
+  </section>
 
   <NewsletterSignup lang="he" />
 </BaseLayout>
 
 <style>
-  .hero { padding-block: var(--space-2); }
-  .hero h1 { margin-top: var(--space-2); max-width: 16ch; }
-  .explore { list-style: none; padding: 0; display: flex; flex-direction: column; gap: var(--space-1); }
-  .explore a { font-family: var(--font-display); }
+  .hero {
+    padding-block: var(--space-3) var(--space-4);
+  }
+  .hero h1 {
+    margin-top: var(--space-2);
+    max-width: 16ch;
+  }
+
+  .latest {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  .latest-item h2 {
+    margin-top: var(--space-1);
+  }
+  .more-link {
+    margin-top: calc(-1 * var(--space-2));
+  }
+
+  .explore {
+    margin-top: var(--space-5);
+  }
+  .explore ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-2) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .explore a {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+  }
 </style>
