@@ -18,13 +18,17 @@ const { Content } = await render(entry);
 const description = entry.data.author ? `${FORM_LABELS[entry.data.form] ?? entry.data.form} מאת ${entry.data.author}, מתוך "ללא מאמץ"` : `${FORM_LABELS[entry.data.form] ?? entry.data.form} מתוך "ללא מאמץ"`;
 ---
 
-<BaseLayout title={entry.data.title} description={description}>
+<BaseLayout title={entry.data.title} description={description} image={entry.data.coverImage}>
   <p class="eyebrow">
     {FORM_LABELS[entry.data.form] ?? entry.data.form}
     {entry.data.author && ` · ${entry.data.author}`}
     {entry.data.translator && ` · תרגום: ${entry.data.translator}`}
   </p>
   {entry.data.source && <p class="eyebrow">מתוך: {entry.data.source}</p>}
+
+  {entry.data.coverImage && (
+    <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} loading="eager" fetchpriority="high" decoding="async" />
+  )}
 
   <div class="poem-body">
     <Content />
@@ -42,6 +46,7 @@ const description = entry.data.author ? `${FORM_LABELS[entry.data.form] ?? entry
 </BaseLayout>
 
 <style>
+  .cover { width: 100%; max-width: var(--measure); border-radius: 4px; margin-block: var(--space-3); }
   .poem-body {
     font-family: var(--font-display);
     font-size: 1.2rem;

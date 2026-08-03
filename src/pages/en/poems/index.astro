@@ -18,10 +18,38 @@ const poems = (await getCollection("poemsEn", ({ data }) => !data.draft))
 
   {poems.map((poem) => (
     <article class="card">
-      <p class="eyebrow">{FORM_LABELS[poem.data.form] ?? poem.data.form}{poem.data.author ? ` · ${poem.data.author}` : ""}</p>
-      <h2><a href={`/en/poems/${poem.id}/`}>{poem.data.title}</a></h2>
+      <div class="row">
+        {poem.data.coverImage && (
+          <img class="avatar" src={poem.data.coverImage} alt="" loading="lazy" decoding="async" />
+        )}
+        <div class="row-text">
+          <p class="eyebrow">{FORM_LABELS[poem.data.form] ?? poem.data.form}{poem.data.author ? ` · ${poem.data.author}` : ""}</p>
+          <h2><a href={`/en/poems/${poem.id}/`}>{poem.data.title}</a></h2>
+        </div>
+      </div>
     </article>
   ))}
 
   {poems.length === 0 && <p>No poems here yet — coming soon.</p>}
 </BaseLayout>
+
+<style>
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .avatar {
+    inline-size: 44px;
+    block-size: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .row-text h2 {
+    margin: 0;
+  }
+  .row-text .eyebrow {
+    margin: 0 0 2px;
+  }
+</style>

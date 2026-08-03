@@ -29,6 +29,8 @@ const poems = defineCollection({
     source: z.string().optional(),
     externalUrl: z.string().url().optional(),
     externalLabel: z.string().optional(),
+    coverImage: z.string().optional(),
+    coverImageAlt: z.string().optional(), // describe what's actually in the image; falls back to title
     draft: z.boolean().default(false),
   }),
 });
