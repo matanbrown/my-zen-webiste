@@ -14,11 +14,28 @@
 
   --measure: 34rem;
   --space-1: .5rem; --space-2: 1rem; --space-3: 1.75rem; --space-4: 3rem; --space-5: 5rem;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --paper: #1e1c19;
+  --paper-raised: #28251f;
+  --ink: #ede7dc;
+  --ink-soft: #c4bcac;
+  --indigo: #8fb3c4;
+  --stone: #7a7466;
+  --stone-text: #b8b0a0; /* lighter than --stone: passes WCAG AA on dark --paper for small text */
+  --stone-line: #3a362e;
+  --seal: #d97b6e;
+
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink);
-  font-family: var(--font-body); font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  font-family: var(--font-body); font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+  transition: background-color .2s ease, color .2s ease; }
 
 h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.25; margin: 0 0 var(--space-2); }
 h1 { font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem); }

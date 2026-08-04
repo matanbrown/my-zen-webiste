@@ -8,10 +8,16 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
 ---
 
 <section class="comments" dir={isEn ? "ltr" : "rtl"}>
-  <p class="eyebrow">{isEn ? "Comments" : "תגובות"}</p>
+  <p class="eyebrow">{isEn ? "Reflections & Questions" : "הרהורים ומשוב"}</p>
   <div id="comments-list"></div>
   <p id="comments-empty" class="eyebrow" hidden>
-    {isEn ? "No comments yet — be the first." : "עדיין אין תגובות — אפשר להיות הראשון/ה."}
+    {isEn ? "No reflections yet — be the first." : "עדיין אין הרהורים — אפשר להיות הראשון/ה."}
+  </p>
+
+  <p class="invite">
+    {isEn
+      ? "Feel free to share a thought or a question that came up for you while reading."
+      : "מוזמנ/ת לשתף מחשבה או שאלה שעלתה בך בעקבות הקריאה."}
   </p>
 
   <form id="comment-form" novalidate>
@@ -132,6 +138,11 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
     margin-top: var(--space-4);
     padding-top: var(--space-3);
     border-top: 1px solid var(--stone-line);
+  }
+  .invite {
+    margin: var(--space-1) 0 var(--space-2);
+    color: var(--ink-soft);
+    font-size: 0.92rem;
   }
   .comment {
     padding: var(--space-2) 0;
