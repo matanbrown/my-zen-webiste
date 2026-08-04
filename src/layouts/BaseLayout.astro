@@ -150,9 +150,6 @@ const NAV: [string, string][] = isEn
         </a>
         <nav aria-label={isEn ? "Main navigation" : "ניווט ראשי"} id="site-nav">
           {NAV.map(([href, label]) => <a href={href}>{label}</a>)}
-          <a href={otherLangUrl.pathname} class="lang-switch" hreflang={isEn ? "he" : "en"}>
-            {isEn ? "עברית" : "English"}
-          </a>
         </nav>
         <div class="header-actions">
           <div class="search">
@@ -195,6 +192,9 @@ const NAV: [string, string][] = isEn
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
             </svg>
           </button>
+          <a href={otherLangUrl.pathname} class="lang-switch" hreflang={isEn ? "he" : "en"}>
+            {isEn ? "עברית" : "English"}
+          </a>
           <button
             id="nav-toggle"
             class="nav-toggle"
@@ -378,14 +378,16 @@ const NAV: [string, string][] = isEn
         text-decoration: none; color: var(--ink); font-family: var(--font-display); font-size: 1.15rem; }
       .brand-mark { color: var(--seal); font-size: 1.5rem; }
       .header-actions { order: 2; margin-inline-start: auto; display: flex; align-items: center; gap: var(--space-1); }
-      /* Keep the main links grouped together near the brand's edge, and
-         anchor the language switch to the opposite edge — so the nav row's
-         two ends line up with the brand/actions row above it, without
-         stretching a handful of short links across the full width. */
-      nav#site-nav { order: 3; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+      /* The language switch lives here with the other utility controls
+         (search, theme, menu) rather than inside the nav — it's a persistent
+         setting, not a page link, and keeping it here means the nav row
+         below is just a plain cluster of links with no artificial spacing. */
+      .lang-switch { font-size: .85rem; text-decoration: none; color: var(--ink-soft);
+        padding-inline-start: var(--space-2); border-inline-start: 1px solid var(--stone-line); }
+      .lang-switch:hover { color: var(--indigo); }
+      nav { order: 3; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
       nav a { font-size: .92rem; text-decoration: none; color: var(--ink-soft); }
       nav a:hover { color: var(--indigo); }
-      .lang-switch { margin-inline-start: auto; border-inline-start: 1px solid var(--stone-line); padding-inline-start: var(--space-2); }
       .site-footer { margin-top: var(--space-5); }
 
       .search { position: relative; }
@@ -530,13 +532,6 @@ const NAV: [string, string][] = isEn
           border-top: 1px solid var(--stone-line);
         }
         nav a:first-child { border-top: none; }
-        .lang-switch {
-          margin-inline-start: 0;
-          border-inline-start: none;
-          padding-inline-start: 0;
-          border-top: 1px solid var(--stone-line);
-          padding-top: .7rem;
-        }
       }
     </style>
   </body>
