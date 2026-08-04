@@ -378,9 +378,11 @@ const NAV: [string, string][] = isEn
         text-decoration: none; color: var(--ink); font-family: var(--font-display); font-size: 1.15rem; }
       .brand-mark { color: var(--seal); font-size: 1.5rem; }
       .header-actions { order: 2; margin-inline-start: auto; display: flex; align-items: center; gap: var(--space-1); }
-      nav#site-nav { order: 3; width: 100%; }
-      nav a { margin-inline-start: var(--space-2); font-size: .92rem; text-decoration: none; color: var(--ink-soft); }
-      nav a:first-child { margin-inline-start: 0; }
+      /* Spread the links edge-to-edge so the nav row lines up with the
+         brand/actions row above it, instead of hugging the start side and
+         leaving a gap that makes the actions look wider than the nav. */
+      nav#site-nav { order: 3; width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; }
+      nav a { font-size: .92rem; text-decoration: none; color: var(--ink-soft); }
       nav a:hover { color: var(--indigo); }
       .lang-switch { border-inline-start: 1px solid var(--stone-line); padding-inline-start: var(--space-2); }
       .site-footer { margin-top: var(--space-5); }
@@ -518,11 +520,11 @@ const NAV: [string, string][] = isEn
           display: none;
           flex-direction: column;
           align-items: stretch;
+          justify-content: flex-start;
           padding-top: var(--space-2);
         }
         nav.is-open { display: flex; }
         nav a {
-          margin-inline-start: 0;
           padding: .7rem 0;
           border-top: 1px solid var(--stone-line);
         }
