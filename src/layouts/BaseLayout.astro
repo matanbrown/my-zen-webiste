@@ -378,13 +378,14 @@ const NAV: [string, string][] = isEn
         text-decoration: none; color: var(--ink); font-family: var(--font-display); font-size: 1.15rem; }
       .brand-mark { color: var(--seal); font-size: 1.5rem; }
       .header-actions { order: 2; margin-inline-start: auto; display: flex; align-items: center; gap: var(--space-1); }
-      /* Spread the links edge-to-edge so the nav row lines up with the
-         brand/actions row above it, instead of hugging the start side and
-         leaving a gap that makes the actions look wider than the nav. */
-      nav#site-nav { order: 3; width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; }
+      /* Keep the main links grouped together near the brand's edge, and
+         anchor the language switch to the opposite edge — so the nav row's
+         two ends line up with the brand/actions row above it, without
+         stretching a handful of short links across the full width. */
+      nav#site-nav { order: 3; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
       nav a { font-size: .92rem; text-decoration: none; color: var(--ink-soft); }
       nav a:hover { color: var(--indigo); }
-      .lang-switch { border-inline-start: 1px solid var(--stone-line); padding-inline-start: var(--space-2); }
+      .lang-switch { margin-inline-start: auto; border-inline-start: 1px solid var(--stone-line); padding-inline-start: var(--space-2); }
       .site-footer { margin-top: var(--space-5); }
 
       .search { position: relative; }
@@ -530,6 +531,7 @@ const NAV: [string, string][] = isEn
         }
         nav a:first-child { border-top: none; }
         .lang-switch {
+          margin-inline-start: 0;
           border-inline-start: none;
           padding-inline-start: 0;
           border-top: 1px solid var(--stone-line);
