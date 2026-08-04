@@ -3,6 +3,8 @@ title: "Tushita, Dharamsala"
 place: "Tushita Meditation Centre, McLeod Ganj, Dharamsala"
 year: 2015
 order: 1
+coverImage: "https://media.matanbrown.com/retreats/tushita/cover.webp"
+coverImageAlt: "Meditation hall at the Tushita center"
 draft: false
 ---
 

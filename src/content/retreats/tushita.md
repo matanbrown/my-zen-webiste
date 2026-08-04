@@ -3,6 +3,8 @@ title: "טושיטה, דרמסלה"
 place: "טושיטה (Tushita Meditation Centre), מקלאוד גאנג', דהרמסלה"
 year: 2015
 order: 1
+coverImage: "https://media.matanbrown.com/retreats/tushita/cover.webp"
+coverImageAlt: "אולם מדיטציה במרכז טושיטה"
 draft: false
 ---
 
