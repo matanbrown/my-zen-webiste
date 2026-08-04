@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="התחילו כאן" description="שלוש דרכים אפשריות להיכנס לאתר, לפי מה שמעניין אתכם">
+  <p class="eyebrow">לא בטוחים מאיפה להתחיל?</p>
+  <h1>התחילו כאן</h1>
+
+  <p>
+    יש כאן כמה שכבות של תוכן — תרגול, לימוד, וכתיבה אישית. הן לא חייבות
+    להיקרא בסדר מסוים, אז הנה שלוש נקודות כניסה אפשריות, לפי מה שמושך
+    אתכם עכשיו.
+  </p>
+
+  <section class="entry">
+    <h2>אני רוצה להתחיל לתרגל</h2>
+    <p>
+      הכי פשוט להתחיל מ<a href="/practices/zazen-shikantaza/">זאזן שיקנטזה</a> —
+      זה התרגול המרכזי שהאתר הזה בנוי סביבו, ישיבה בלי מטרה חיצונית
+      להשיג. אם ישיבה סטטית פחות מדברת אליכם, <a href="/practices/inner-walk/">איינר ווק</a>
+      ו<a href="/practices/wandering/">שוטטות</a> הן שתי דרכים אחרות
+      לאותו כיוון, דרך הליכה.
+    </p>
+    <p><a href="/practices/">← כל התרגולים</a></p>
+  </section>
+
+  <section class="entry">
+    <h2>אני רוצה להבין יותר בודהיזם</h2>
+    <p>
+      <a href="/inspirations/dogen/">דוגן</a> הוא נקודת התחלה טובה אם
+      מעניין אתכם המקור — הוא זה שהביא את הסוטו זן ליפן, ועם זה שינוי
+      מושגי מרכזי בהבנת התרגול. <a href="/inspirations/alan-watts/">אלן ווטס</a>
+      הולך בכיוון הפוך — הוא זה שהביא את הזן לקהל מערבי רחב, בשפה
+      נגישה ולא-דתית. וב<a href="/retreats/tushita/">ריטריט הראשון שלי בטושיטה</a>
+      אפשר לקרוא איך נראה מפגש ראשון עם הבודהיזם בפועל, לא רק בתיאוריה.
+    </p>
+    <p><a href="/inspirations/">← כל ההשראה</a></p>
+  </section>
+
+  <section class="entry">
+    <h2>אני רוצה לקרוא על הדרך</h2>
+    <p>
+      <a href="/lessons/">השיעורים</a> הם הכתיבה האישית ביותר באתר —
+      רגעים אמיתיים מהתרגול שלי, לא תמיד עם תשובה בסוף. אפשר להתחיל מ<a href="/lessons/2026-08-03-the-question-that-stayed/">השאלה שנשארה איתי</a>,
+      או פשוט לדפדף ב<a href="/lessons/">רשימת השיעורים</a> ולראות מה
+      מושך. <a href="/retreats/">הריטריטים</a> ו<a href="/poems/">השירה</a>
+      הן שתי דרכים נוספות לאותו מקום, מזוויות שונות.
+    </p>
+  </section>
+
+  <p><a href="/">← חזרה לדף הבית</a></p>
+</BaseLayout>
+
+<style>
+  .entry {
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--stone-line);
+  }
+  .entry:first-of-type {
+    margin-top: var(--space-3);
+  }
+  .entry h2 {
+    margin-top: 0;
+  }
+</style>

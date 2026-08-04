@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Start Here" description="Three possible ways into the site, depending on what interests you" lang="en">
+  <p class="eyebrow">Not sure where to begin?</p>
+  <h1>Start Here</h1>
+
+  <p>
+    There are a few different layers of content here — practice,
+    learning, and personal writing. None of them need to be read in any
+    particular order, so here are three possible entry points, depending
+    on what's pulling you right now.
+  </p>
+
+  <section class="entry">
+    <h2>I want to start practicing</h2>
+    <p>
+      The simplest place to start is <a href="/en/practices/zazen-shikantaza/">zazen shikantaza</a> —
+      the central practice this whole site is built around, sitting with
+      no external goal to achieve. If static sitting doesn't speak to
+      you as much, <a href="/en/practices/inner-walk/">Inner Walk</a> and
+      <a href="/en/practices/wandering/">Wandering</a> are two other
+      routes toward the same thing, through walking instead.
+    </p>
+    <p><a href="/en/practices/">← All practices</a></p>
+  </section>
+
+  <section class="entry">
+    <h2>I want to understand Buddhism better</h2>
+    <p>
+      <a href="/en/inspirations/dogen/">Dogen</a> is a good place to
+      start if you're interested in the source — he's the one who
+      brought Soto Zen to Japan, along with a core conceptual shift in
+      how practice is understood. <a href="/en/inspirations/alan-watts/">Alan Watts</a>
+      goes the opposite direction — he's the one who brought Zen to a
+      wide Western audience, in accessible, non-religious language. And
+      in <a href="/en/retreats/tushita/">my first retreat at Tushita</a>
+      you can read what a first encounter with Buddhism actually looked
+      like, not just in theory.
+    </p>
+    <p><a href="/en/inspirations/">← All inspirations</a></p>
+  </section>
+
+  <section class="entry">
+    <h2>I want to read about the path</h2>
+    <p>
+      <a href="/en/lessons/">The lessons</a> are the most personal
+      writing on the site — real moments from my own practice, not
+      always with an answer at the end. You can start with
+      <a href="/en/lessons/2026-08-03-the-question-that-stayed/">The Question That Stayed With Me</a>,
+      or just browse the <a href="/en/lessons/">lesson list</a> and see
+      what draws you in. <a href="/en/retreats/">The retreats</a> and
+      <a href="/en/poems/">the poems</a> are two other routes to the
+      same place, from different angles.
+    </p>
+  </section>
+
+  <p><a href="/en/">← Back to homepage</a></p>
+</BaseLayout>
+
+<style>
+  .entry {
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--stone-line);
+  }
+  .entry:first-of-type {
+    margin-top: var(--space-3);
+  }
+  .entry h2 {
+    margin-top: 0;
+  }
+</style>
