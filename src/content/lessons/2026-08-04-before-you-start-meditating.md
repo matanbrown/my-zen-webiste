@@ -95,3 +95,5 @@ draft: false
 לא כדי להירגע.
 
 פשוט כדי לגלות בעצמכם איך זה מרגיש.
+
+![כמה מהמיתוסים הנפוצים ביותר סביב מדיטציה](https://media.matanbrown.com/lessons/2026-08-04-before-you-start-meditating/meditation-myths.webp)

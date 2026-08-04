@@ -98,3 +98,5 @@ Not to succeed.
 Not to relax.
 
 Just to find out for yourself how it feels.
+
+![A few of the most common myths around meditation](https://media.matanbrown.com/lessons/2026-08-04-before-you-start-meditating/meditation-myths.webp)
