@@ -6,11 +6,11 @@ import NewsletterSignup from "../components/NewsletterSignup.astro";
 
 const lessons = (await getCollection("lessons", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const poems = (await getCollection("poems", ({ data }) => !data.draft))
+const inspirations = (await getCollection("inspirations", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const latestLesson = lessons[0];
-const latestPoem = poems[0];
+const latestInspiration = inspirations[0];
 ---
 
 <BaseLayout title="ללא מאמץ" description="שיעורים, שירה וסיפורי ריטריט בדרך הזן">
@@ -43,10 +43,10 @@ const latestPoem = poems[0];
       </div>
     )}
 
-    {latestPoem && (
+    {latestInspiration && (
       <div class="latest-item">
-        <p class="eyebrow">שירה אחרונה</p>
-        <h2><a href={`/poems/${latestPoem.id}/`}>{latestPoem.data.title}</a></h2>
+        <p class="eyebrow">השראה אחרונה</p>
+        <h2><a href={`/inspirations/${latestInspiration.id}/`}>{latestInspiration.data.title}</a></h2>
       </div>
     )}
 

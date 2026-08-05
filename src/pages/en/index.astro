@@ -6,11 +6,11 @@ import NewsletterSignup from "../../components/NewsletterSignup.astro";
 
 const lessons = (await getCollection("lessonsEn", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const poems = (await getCollection("poemsEn", ({ data }) => !data.draft))
+const inspirations = (await getCollection("inspirationsEn", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const latestLesson = lessons[0];
-const latestPoem = poems[0];
+const latestInspiration = inspirations[0];
 ---
 
 <BaseLayout title="Without Effort" description="Weekly lessons, poems, and retreat stories on the Zen path" lang="en">
@@ -43,10 +43,10 @@ const latestPoem = poems[0];
       </div>
     )}
 
-    {latestPoem && (
+    {latestInspiration && (
       <div class="latest-item">
-        <p class="eyebrow">Latest poem</p>
-        <h2><a href={`/en/poems/${latestPoem.id}/`}>{latestPoem.data.title}</a></h2>
+        <p class="eyebrow">Latest inspiration</p>
+        <h2><a href={`/en/inspirations/${latestInspiration.id}/`}>{latestInspiration.data.title}</a></h2>
       </div>
     )}
 
