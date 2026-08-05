@@ -1,0 +1,59 @@
+---
+// src/components/SaveButton.astro
+interface Props {
+  collection: "lessons" | "practices";
+  id: string;
+  lang?: "he" | "en";
+  size?: "sm" | "md";
+}
+const { collection, id, lang = "he", size = "md" } = Astro.props;
+const label = {
+  he: { save: "שמור לקריאה מאוחר יותר" },
+  en: { save: "Save for later" },
+}[lang];
+---
+
+<button
+  class:list={["save-btn", `save-btn--${size}`]}
+  data-save-btn
+  data-collection={collection}
+  data-id={id}
+  aria-pressed="false"
+  aria-label={label.save}
+  title={label.save}
+>
+  <svg class="save-btn__icon save-btn__icon--outline" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <path d="M6 3.75A1.75 1.75 0 0 1 7.75 2h8.5A1.75 1.75 0 0 1 18 3.75v17.1a.75.75 0 0 1-1.16.63L12 18.24l-4.84 3.24A.75.75 0 0 1 6 20.85V3.75Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+  </svg>
+  <svg class="save-btn__icon save-btn__icon--filled" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <path d="M6 3.75A1.75 1.75 0 0 1 7.75 2h8.5A1.75 1.75 0 0 1 18 3.75v17.1a.75.75 0 0 1-1.16.63L12 18.24l-4.84 3.24A.75.75 0 0 1 6 20.85V3.75Z" fill="currentColor"></path>
+  </svg>
+</button>
+
+<style>
+  .save-btn { display: inline-flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0.3rem; border-radius: 999px; color: var(--ink-soft); transition: color 0.15s ease, transform 0.1s ease; }
+  .save-btn:hover { color: var(--seal); }
+  .save-btn:active { transform: scale(0.92); }
+  .save-btn__icon--filled { display: none; }
+  .save-btn[aria-pressed="true"] .save-btn__icon--outline { display: none; }
+  .save-btn[aria-pressed="true"] .save-btn__icon--filled { display: block; }
+  .save-btn[aria-pressed="true"] { color: var(--seal); }
+</style>
+
+<script>
+  import { isSaved, toggleSaved } from "../utils/savedItems.js";
+
+  function initButton(btn: HTMLButtonElement) {
+    const collection = btn.dataset.collection as "lessons" | "practices";
+    const id = btn.dataset.id as string;
+    const sync = () => btn.setAttribute("aria-pressed", String(isSaved(collection, id)));
+    sync();
+    btn.addEventListener("click", () => {
+      toggleSaved(collection, id);
+      sync();
+    });
+    window.addEventListener("zen:saved-changed", sync);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-save-btn]").forEach(initButton);
+</script>

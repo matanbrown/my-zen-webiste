@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CommentsSection from "../../components/CommentsSection.astro";
 import PracticeInvitation from "../../components/PracticeInvitation.astro";
+import SaveButton from "../../components/SaveButton.astro";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons", ({ data }) => !data.draft);
@@ -51,6 +52,7 @@ const articleJsonLd = {
     {entry.data.updated && ` · עודכן ב-${entry.data.updated.toLocaleDateString("he-IL")}`}
   </p>
   <h1>{entry.data.title}</h1>
+  <SaveButton collection="lessons" id={entry.id} lang="he" />
 
   {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} />}
 

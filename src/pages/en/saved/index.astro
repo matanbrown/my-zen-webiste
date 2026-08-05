@@ -1,0 +1,72 @@
+---
+// src/pages/en/saved/index.astro
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const lessons = await getCollection("lessonsEn", ({ data }) => !data.draft);
+const practices = await getCollection("practicesEn", ({ data }) => !data.draft);
+
+const catalog = [
+  ...lessons.map((e) => ({ collection: "lessons", id: e.id, title: e.data.title, summary: e.data.summary ?? "", url: `/en/lessons/${e.id}/` })),
+  ...practices.map((e) => ({ collection: "practices", id: e.id, title: e.data.title, summary: e.data.subtitle ?? "", url: `/en/practices/${e.id}/` })),
+];
+---
+
+<BaseLayout title="Saved for later" description="Lessons and practices you've saved to read later" lang="en">
+  <p class="eyebrow">Your list</p>
+  <h1>Saved for later</h1>
+  <p>What you save stays in this browser only — not synced across devices.</p>
+
+  <div id="saved-empty" hidden>
+    <p>Nothing saved yet. Tap the bookmark icon on any lesson or practice to add it here.</p>
+  </div>
+
+  <ul id="saved-list" class="saved-list" aria-live="polite"></ul>
+
+  <script type="application/json" id="saved-catalog" set:html={JSON.stringify(catalog)} />
+
+  <script>
+    import { getSavedItems, removeSaved } from "../../../utils/savedItems.js";
+    const catalog = JSON.parse(document.getElementById("saved-catalog")!.textContent || "[]") as Array<{ collection: string; id: string; title: string; summary: string; url: string; }>;
+    const listEl = document.getElementById("saved-list")!;
+    const emptyEl = document.getElementById("saved-empty")!;
+
+    function render() {
+      const saved = getSavedItems().sort((a, b) => b.savedAt - a.savedAt);
+      listEl.innerHTML = "";
+      emptyEl.hidden = saved.length !== 0;
+      for (const item of saved) {
+        const meta = catalog.find((c) => c.collection === item.collection && c.id === item.id);
+        if (!meta) continue;
+        const li = document.createElement("li");
+        li.className = "card saved-item";
+        li.innerHTML = `
+          <a href="${meta.url}">
+            <h2>${meta.title}</h2>
+            ${meta.summary ? `<p>${meta.summary}</p>` : ""}
+          </a>
+          <button class="saved-item__remove" data-remove-collection="${item.collection}" data-remove-id="${item.id}" aria-label="Remove from saved">✕</button>
+        `;
+        listEl.appendChild(li);
+      }
+      listEl.querySelectorAll<HTMLButtonElement>("[data-remove-collection]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          removeSaved(btn.dataset.removeCollection!, btn.dataset.removeId!);
+          render();
+        });
+      });
+    }
+    render();
+    window.addEventListener("zen:saved-changed", render);
+  </script>
+
+  <style>
+    .saved-list { list-style: none; padding: 0; }
+    .saved-item { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
+    .saved-item a { flex: 1; text-decoration: none; color: inherit; }
+    .saved-item h2 { margin: 0 0 4px; }
+    .saved-item p { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
+    .saved-item__remove { background: none; border: none; cursor: pointer; color: var(--stone-text); padding: var(--space-1); }
+    .saved-item__remove:hover { color: var(--seal); }
+  </style>
+</BaseLayout>

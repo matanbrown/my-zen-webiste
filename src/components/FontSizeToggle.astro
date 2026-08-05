@@ -1,0 +1,47 @@
+---
+// src/components/FontSizeToggle.astro
+interface Props {
+  lang?: "he" | "en";
+}
+const { lang = "he" } = Astro.props;
+const label = {
+  he: { smaller: "הקטן טקסט", larger: "הגדל טקסט" },
+  en: { smaller: "Decrease text size", larger: "Increase text size" },
+}[lang];
+---
+
+<div class="font-size-toggle">
+  <button type="button" id="font-decrease" class="font-size-toggle__btn" aria-label={label.smaller} title={label.smaller}>
+    <span aria-hidden="true">A−</span>
+  </button>
+  <button type="button" id="font-increase" class="font-size-toggle__btn" aria-label={label.larger} title={label.larger}>
+    <span aria-hidden="true">A+</span>
+  </button>
+</div>
+
+<style>
+  .font-size-toggle { display: inline-flex; align-items: center; gap: 2px; }
+  .font-size-toggle__btn { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background: none; border: none; color: var(--ink-soft); cursor: pointer; font-size: 0.78rem; }
+  .font-size-toggle__btn:hover { color: var(--indigo); }
+</style>
+
+<script is:inline>
+  (function () {
+    var STORAGE_KEY = "zen:font-scale";
+    var MIN = 0.875, MAX = 1.375, STEP = 0.125;
+    function getScale() {
+      var v = parseFloat(localStorage.getItem(STORAGE_KEY));
+      return isFinite(v) ? v : 1;
+    }
+    function applyScale(v) {
+      var clamped = Math.min(MAX, Math.max(MIN, v));
+      document.documentElement.style.setProperty("--prose-font-scale", String(clamped));
+      localStorage.setItem(STORAGE_KEY, String(clamped));
+    }
+    applyScale(getScale());
+    var dec = document.getElementById("font-decrease");
+    var inc = document.getElementById("font-increase");
+    if (dec) dec.addEventListener("click", function () { applyScale(getScale() - STEP); });
+    if (inc) inc.addEventListener("click", function () { applyScale(getScale() + STEP); });
+  })();
+</script>

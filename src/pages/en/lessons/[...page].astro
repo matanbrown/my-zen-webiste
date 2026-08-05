@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import TagFilter from "../../../components/TagFilter.astro";
+import SaveButton from "../../../components/SaveButton.astro";
 
 export async function getStaticPaths({ paginate }) {
   const lessons = (await getCollection("lessonsEn", ({ data }) => !data.draft))
@@ -11,6 +13,7 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 const allLessons = await getCollection("lessonsEn", ({ data }) => !data.draft);
 const allLessonIds = allLessons.map((l) => l.id);
+const allTags = [...new Set(allLessons.flatMap((l) => l.data.tags ?? []))].sort();
 ---
 
 <BaseLayout title="Lessons" description="Weekly Zen lessons" lang="en">
@@ -25,13 +28,18 @@ const allLessonIds = allLessons.map((l) => l.id);
     </p>
   )}
 
-  {page.data.map((lesson) => (
-    <article class="card">
-      <p class="eyebrow">{lesson.data.date.toLocaleDateString("en-US")}</p>
-      <h2><a href={`/en/lessons/${lesson.id}/`}>{lesson.data.title}</a></h2>
-      {lesson.data.summary && <p>{lesson.data.summary}</p>}
-    </article>
-  ))}
+  <TagFilter tags={allTags} lang="en" />
+
+  <div id="filterable-list">
+    {page.data.map((lesson) => (
+      <article class="card" data-tags={(lesson.data.tags ?? []).join(",")}>
+        <p class="eyebrow">{lesson.data.date.toLocaleDateString("en-US")}</p>
+        <h2><a href={`/en/lessons/${lesson.id}/`}>{lesson.data.title}</a></h2>
+        {lesson.data.summary && <p>{lesson.data.summary}</p>}
+        <SaveButton collection="lessons" id={lesson.id} lang="en" size="sm" />
+      </article>
+    ))}
+  </div>
 
   {page.data.length === 0 && <p>No lessons here yet — coming soon.</p>}
 

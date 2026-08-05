@@ -14,6 +14,7 @@
 
   --measure: 34rem;
   --space-1: .5rem; --space-2: 1rem; --space-3: 1.75rem; --space-4: 3rem; --space-5: 5rem;
+  --prose-font-scale: 1;
 
   color-scheme: light;
 }
@@ -41,6 +42,7 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.
 h1 { font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem); }
 h2 { font-size: 1.4rem; margin-top: var(--space-4); }
 p { margin: 0 0 var(--space-3); max-width: var(--measure); }
+.prose { font-size: calc(1rem * var(--prose-font-scale)); }
 .prose img { max-width: var(--measure); width: 100%; height: auto; border-radius: 4px; display: block; margin: var(--space-3) 0; }
 a { color: var(--indigo); text-underline-offset: 3px; }
 a:hover { color: var(--seal); }

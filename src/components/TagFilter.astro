@@ -1,0 +1,95 @@
+---
+// src/components/TagFilter.astro
+// Currently wired for `lessons` only - `practices` has no `tags` field yet.
+interface Props {
+  tags: string[];
+  lang?: "he" | "en";
+  listSelector?: string;
+}
+const { tags, lang = "he", listSelector = "#filterable-list" } = Astro.props;
+const label = {
+  he: { all: "הכל", noResults: "לא נמצאו שיעורים עם הטאגים שנבחרו" },
+  en: { all: "All", noResults: "No lessons match the selected tags" },
+}[lang];
+---
+
+{tags.length > 0 && (
+  <div class="tag-filter" data-list-selector={listSelector}>
+    <div class="tag-filter__chips" role="group" aria-label={label.all}>
+      <button type="button" class="tag-filter__chip" data-tag-all aria-pressed="true">{label.all}</button>
+      {tags.map((tag) => (
+        <button type="button" class="tag-filter__chip" data-tag={tag} aria-pressed="false">{tag}</button>
+      ))}
+    </div>
+    <p class="tag-filter__empty eyebrow" data-tag-empty hidden>{label.noResults}</p>
+  </div>
+)}
+
+<style>
+  .tag-filter__chips { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-3); }
+  .tag-filter__chip { border: 1px solid var(--stone-line); background: none; color: var(--ink-soft); border-radius: 999px; padding: 0.3rem 0.85rem; font-size: 0.85rem; cursor: pointer; transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease; }
+  .tag-filter__chip:hover { border-color: var(--indigo); color: var(--indigo); }
+  .tag-filter__chip[aria-pressed="true"] { background: var(--indigo); border-color: var(--indigo); color: var(--paper); }
+  .tag-filter__empty { padding: var(--space-2) 0; }
+</style>
+
+<script>
+  function initTagFilter(root: HTMLElement) {
+    const listSelector = root.dataset.listSelector || "#filterable-list";
+    const list = document.querySelector<HTMLElement>(listSelector);
+    if (!list) return;
+    const allChip = root.querySelector<HTMLButtonElement>("[data-tag-all]")!;
+    const tagChips = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-tag]:not([data-tag-all])"));
+    const emptyMsg = root.querySelector<HTMLElement>("[data-tag-empty]")!;
+    const cards = Array.from(list.children) as HTMLElement[];
+
+    function getSelected(): string[] {
+      return tagChips.filter((c) => c.getAttribute("aria-pressed") === "true").map((c) => c.dataset.tag!);
+    }
+
+    function applyFilter() {
+      const selected = getSelected();
+      const params = new URLSearchParams(window.location.search);
+      if (selected.length === 0) {
+        allChip.setAttribute("aria-pressed", "true");
+        params.delete("tag");
+        cards.forEach((card) => (card.hidden = false));
+        emptyMsg.hidden = true;
+      } else {
+        allChip.setAttribute("aria-pressed", "false");
+        params.set("tag", selected.join(","));
+        let visible = 0;
+        cards.forEach((card) => {
+          const cardTags = (card.dataset.tags || "").split(",").map((t) => t.trim()).filter(Boolean);
+          const match = cardTags.some((t) => selected.includes(t));
+          card.hidden = !match;
+          if (match) visible++;
+        });
+        emptyMsg.hidden = visible > 0;
+      }
+      const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
+      history.replaceState(null, "", newUrl);
+    }
+
+    allChip.addEventListener("click", () => {
+      tagChips.forEach((c) => c.setAttribute("aria-pressed", "false"));
+      applyFilter();
+    });
+    tagChips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        chip.setAttribute("aria-pressed", String(chip.getAttribute("aria-pressed") !== "true"));
+        applyFilter();
+      });
+    });
+
+    const initialTags = new URLSearchParams(window.location.search).get("tag")?.split(",").filter(Boolean) ?? [];
+    if (initialTags.length > 0) {
+      tagChips.forEach((chip) => {
+        if (initialTags.includes(chip.dataset.tag!)) chip.setAttribute("aria-pressed", "true");
+      });
+      applyFilter();
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>(".tag-filter").forEach(initTagFilter);
+</script>

@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import CookieConsent from "../components/CookieConsent.astro";
+import FontSizeToggle from "../components/FontSizeToggle.astro";
 
 interface Props {
   title: string;
@@ -50,6 +51,7 @@ const NAV: [string, string][] = isEn
       ["/en/retreats/", "Retreats"],
       ["/en/about/", "About"],
       ["/en/contact/", "Contact"],
+      ["/en/saved/", "Saved"],
     ]
   : [
       ["/start-here/", "התחילו כאן"],
@@ -59,6 +61,7 @@ const NAV: [string, string][] = isEn
       ["/retreats/", "ריטריטים"],
       ["/about/", "אודות"],
       ["/contact/", "צור קשר"],
+      ["/saved/", "שמורים"],
     ];
 ---
 
@@ -73,6 +76,14 @@ const NAV: [string, string][] = isEn
         var saved = localStorage.getItem("theme");
         var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
         if (theme === "dark") document.documentElement.setAttribute("data-theme", "dark");
+      })();
+    </script>
+    <script is:inline>
+      // Same flash-prevention pattern as the theme script above, for the
+      // reader's saved font-size preference.
+      (function () {
+        var scale = localStorage.getItem("zen:font-scale");
+        if (scale) document.documentElement.style.setProperty("--prose-font-scale", scale);
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -152,6 +163,7 @@ const NAV: [string, string][] = isEn
           {NAV.map(([href, label]) => <a href={href}>{label}</a>)}
         </nav>
         <div class="header-actions">
+          <FontSizeToggle lang={lang} />
           <div class="search">
             <button
               id="search-toggle"
