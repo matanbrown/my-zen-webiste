@@ -15,20 +15,14 @@
  *   vibrates on supporting devices, and reveals the reflection screen.
  *   This is a functional end-signal only (not the future "gong" feature).
  *
- * Reflection submit posts to the real /api/comments contract (verified
- * against functions/api/comments.js):
- *   POST { path, lang, name, comment, website, turnstileToken }
- * `name` and `turnstileToken` are required by the endpoint, so both are
- * included here even though the original spec mockup didn't show a name
- * field. Site key below is the same public key used in CommentsSection.astro.
- *
- * OPEN (deliberately not resolved yet, per Matan): every lesson page also
- * renders <CommentsSection lang="he" /> at the bottom, which reads/writes
- * the same /api/comments?path=<same path>. That means approved reflections
- * submitted here will currently surface in the normal public comment
- * thread too, since both share the same path. Decision on whether to keep,
- * hide, or separate that is intentionally deferred — do not "fix" this
- * without checking first.
+ * RESOLVED (2026-08-05, per Matan): this component no longer has its
+ * own reflection form/Turnstile widget. Having a second form on the
+ * same page as the standard <CommentsSection> caused two separate
+ * comment surfaces and a duplicate Turnstile script/widget, which
+ * broke submission. Since both would write to the same
+ * /api/comments?path=<same path> storage anyway, the reflection step
+ * now just prompts with the same questions and points down to the
+ * single CommentsSection at the bottom of the page.
  *
  * TODO before shipping:
  * - Add an English (/en/) copy of the invitation/reflection strings when
@@ -39,7 +33,6 @@ interface Props {
 }
 const { lang = "he" } = Astro.props;
 const isEn = lang === "en";
-const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
 ---
 
 <section class="practice-invitation" data-practice-invitation dir={isEn ? "ltr" : "rtl"}>
@@ -93,32 +86,12 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
     <p>יש רק את מה שפגשתם.</p>
     <p>בסופו של דבר, אף אחד לא יכול לענות על השאלה הזאת במקומכם.</p>
     <p>אם תרצו, קחו רגע לכתוב לעצמכם כמה מילים.</p>
-    <p>ואם מתחשק לכם לשתף, אשמח לקרוא גם כאן בתגובות.</p>
-
-    <form class="practice-reflection-form" data-reflection-form novalidate>
-      <label for="practice-reflection-name">השם שלך</label>
-      <input id="practice-reflection-name" type="text" name="name" required maxlength="80" />
-
-      <label for="practice-reflection-text">מה שמתם לב שהיה שם?</label>
-      <textarea id="practice-reflection-text" name="comment" rows="4" required maxlength="2000"></textarea>
-
-      <!-- honeypot — same convention as CommentsSection.astro -->
-      <div class="practice-reflection-hp" aria-hidden="true">
-        <label>
-          אתר
-          <input type="text" name="website" tabindex="-1" autocomplete="off" />
-        </label>
-      </div>
-
-      <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>
-
-      <button type="submit" class="practice-btn practice-btn--submit">שלח תגובה</button>
-    </form>
-    <p id="practice-reflection-status" role="status"></p>
+    <p>
+      ואם מתחשק לכם לשתף — אשמח לקרוא, ותוכלו לכתוב כמה מילים
+      <a href="#comments" data-reflection-jump>בתגובות בתחתית העמוד</a>.
+    </p>
   </div>
 </section>
-
-<script async src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
 
 <style>
   /* Uses the site's real global tokens from src/styles/global.css. */
@@ -127,17 +100,23 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
     margin-top: var(--space-4);
     padding-top: var(--space-3);
     border-top: 1px solid var(--stone-line);
-    text-align: center;
   }
 
   .practice-invitation p {
     color: var(--ink-soft);
-    margin: 0.4rem auto var(--space-1);
+    margin: 0.4rem 0 var(--space-1);
     max-width: var(--measure);
   }
 
   .practice-invitation h2 {
     margin-bottom: var(--space-2);
+  }
+
+  /* Timer step alone is centered - it's a standalone widget (breathing
+     circle + countdown + button), not running prose, so centering it
+     reads intentionally rather than inconsistent with the rest of the site. */
+  .practice-step--timer {
+    text-align: center;
   }
 
   .practice-invitation h2[tabindex="-1"]:focus {
@@ -215,58 +194,8 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
   }
 
   /* --- Reflection step --- */
-  .practice-reflection-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    max-width: 28rem;
-    margin: var(--space-3) auto 0;
-    text-align: start;
-  }
-
-  .practice-reflection-form label {
-    font-size: 0.9rem;
-    color: var(--ink-soft);
-  }
-
-  .practice-reflection-form input,
-  .practice-reflection-form textarea {
-    font: inherit;
-    padding: 0.5rem 0.7rem;
-    border: 1px solid var(--stone-line);
-    border-radius: 4px;
-    background: var(--paper-raised);
-    color: var(--ink);
-  }
-
-  .practice-reflection-form textarea {
-    resize: vertical;
-  }
-
-  .practice-reflection-form input:focus-visible,
-  .practice-reflection-form textarea:focus-visible {
-    outline: 2px solid var(--indigo);
-    outline-offset: 1px;
-  }
-
-  .practice-reflection-form .practice-btn {
-    align-self: flex-start;
-    margin-top: 0.25rem;
-  }
-
-  .practice-reflection-hp {
-    position: absolute;
-    inset-inline-start: -9999px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-  }
-
-  #practice-reflection-status {
-    min-height: 1.2em;
-    margin-top: var(--space-1);
-    font-size: 0.85rem;
-    color: var(--ink-soft);
+  [data-reflection-jump] {
+    font-weight: 600;
   }
 </style>
 
@@ -282,7 +211,6 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
     const display = root.querySelector<HTMLElement>('[data-timer-display]');
     const startBtn = root.querySelector<HTMLButtonElement>('[data-action="start"]');
     const finishBtn = root.querySelector<HTMLButtonElement>('[data-action="finish"]');
-    const form = root.querySelector<HTMLFormElement>('[data-reflection-form]');
 
     let remaining = DURATION_SECONDS;
     let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -368,50 +296,6 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
     });
 
     finishBtn?.addEventListener('click', finishPractice);
-
-    const status = root.querySelector<HTMLElement>('#practice-reflection-status');
-    const isEnRoot = root.getAttribute('dir') === 'ltr';
-
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const submitBtn = form.querySelector<HTMLButtonElement>('.practice-btn--submit');
-      if (submitBtn) submitBtn.disabled = true;
-      if (status) status.textContent = isEnRoot ? 'Sending…' : 'שולח…';
-
-      const data = new FormData(form);
-      const payload = {
-        path: location.pathname,
-        lang: isEnRoot ? 'en' : 'he',
-        name: data.get('name'),
-        comment: data.get('comment'),
-        website: data.get('website'),
-        turnstileToken: data.get('cf-turnstile-response'),
-      };
-
-      try {
-        const res = await fetch('/api/comments', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const result = await res.json();
-        if (result.ok) {
-          if (status) {
-            status.textContent = isEnRoot
-              ? 'Thank you. No need to write more than what felt true.'
-              : 'תודה. אין צורך לכתוב יותר ממה שהרגיש נכון.';
-          }
-          form.reset();
-          if ((window as any).turnstile) (window as any).turnstile.reset();
-        } else {
-          if (status) status.textContent = isEnRoot ? 'Something failed. Try again later.' : 'משהו נכשל. אפשר לנסות שוב מאוחר יותר.';
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      } catch {
-        if (status) status.textContent = isEnRoot ? 'Something failed. Try again later.' : 'משהו נכשל. אפשר לנסות שוב מאוחר יותר.';
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    });
   }
 
   document

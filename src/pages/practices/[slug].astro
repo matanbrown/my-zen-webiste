@@ -14,8 +14,10 @@ const description = entry.data.subtitle ?? `${entry.data.title} — תרגול �
 ---
 
 <BaseLayout title={entry.data.title} description={description} image={entry.data.coverImage}>
-  <h1>{entry.data.title}</h1>
-  <SaveButton collection="practices" id={entry.id} lang="he" />
+  <div class="title-row">
+    <h1>{entry.data.title}</h1>
+    <SaveButton collection="practices" id={entry.id} lang="he" />
+  </div>
   {entry.data.subtitle && <p class="eyebrow">{entry.data.subtitle}</p>}
   {entry.data.coverImage && (
     <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} loading="eager" fetchpriority="high" decoding="async" />

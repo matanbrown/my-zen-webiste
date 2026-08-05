@@ -51,8 +51,10 @@ const articleJsonLd = {
     {" · "}קריאה של {readingMinutes} דק׳
     {entry.data.updated && ` · עודכן ב-${entry.data.updated.toLocaleDateString("he-IL")}`}
   </p>
-  <h1>{entry.data.title}</h1>
-  <SaveButton collection="lessons" id={entry.id} lang="he" />
+  <div class="title-row">
+    <h1>{entry.data.title}</h1>
+    <SaveButton collection="lessons" id={entry.id} lang="he" />
+  </div>
 
   {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} />}
 

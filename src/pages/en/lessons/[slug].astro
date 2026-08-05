@@ -51,8 +51,10 @@ const articleJsonLd = {
     {" · "}{readingMinutes} min read
     {entry.data.updated && ` · updated ${entry.data.updated.toLocaleDateString("en-US")}`}
   </p>
-  <h1>{entry.data.title}</h1>
-  <SaveButton collection="lessons" id={entry.id} lang="en" />
+  <div class="title-row">
+    <h1>{entry.data.title}</h1>
+    <SaveButton collection="lessons" id={entry.id} lang="en" />
+  </div>
 
   {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} />}
 
