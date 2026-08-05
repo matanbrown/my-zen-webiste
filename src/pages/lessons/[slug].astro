@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CommentsSection from "../../components/CommentsSection.astro";
+import PracticeInvitation from "../../components/PracticeInvitation.astro";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons", ({ data }) => !data.draft);
@@ -65,6 +66,8 @@ const articleJsonLd = {
   <div class="prose">
     <Content />
   </div>
+
+  {entry.id === "2026-08-05-before-the-first-sitting" && <PracticeInvitation lang="he" />}
 
   {entry.data.tags && entry.data.tags.length > 0 && (
     <p class="tags">

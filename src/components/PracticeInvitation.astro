@@ -1,0 +1,420 @@
+---
+/**
+ * PracticeInvitation.astro
+ *
+ * Reusable "stop reading, start sitting" component for the end of
+ * "Getting Started with Meditation" lessons — built for the lesson
+ * "לפני הישיבה הראשונה" (2026-08-05-before-the-first-sitting).
+ *
+ * Flow: invitation -> 3-minute timer -> reflection
+ * - No settings, no configurable duration (fixed 180s) — future versions
+ *   may add 5/10 min options, gong sound, wake lock, etc. Not in v1.
+ * - "סיימתי" (I'm done) is treated identically to the timer running out —
+ *   there is no "failure" path.
+ * - On end (natural or via "סיימתי"): plays a short synthesized tone,
+ *   vibrates on supporting devices, and reveals the reflection screen.
+ *   This is a functional end-signal only (not the future "gong" feature).
+ *
+ * Reflection submit posts to the real /api/comments contract (verified
+ * against functions/api/comments.js):
+ *   POST { path, lang, name, comment, website, turnstileToken }
+ * `name` and `turnstileToken` are required by the endpoint, so both are
+ * included here even though the original spec mockup didn't show a name
+ * field. Site key below is the same public key used in CommentsSection.astro.
+ *
+ * OPEN (deliberately not resolved yet, per Matan): every lesson page also
+ * renders <CommentsSection lang="he" /> at the bottom, which reads/writes
+ * the same /api/comments?path=<same path>. That means approved reflections
+ * submitted here will currently surface in the normal public comment
+ * thread too, since both share the same path. Decision on whether to keep,
+ * hide, or separate that is intentionally deferred — do not "fix" this
+ * without checking first.
+ *
+ * TODO before shipping:
+ * - Add an English (/en/) copy of the invitation/reflection strings when
+ *   the EN mirror of the lesson is written.
+ */
+interface Props {
+  lang?: "he" | "en";
+}
+const { lang = "he" } = Astro.props;
+const isEn = lang === "en";
+const TURNSTILE_SITE_KEY = "0x4AAAAAAD_AbQsAare0umvG";
+---
+
+<section class="practice-invitation" data-practice-invitation dir={isEn ? "ltr" : "rtl"}>
+  <!-- STATE 1: Invitation -->
+  <div class="practice-step practice-step--invitation" data-step="invitation">
+    <h2>עכשיו תורכם</h2>
+    <p>עד עכשיו קראתם.</p>
+    <p>עכשיו הגיע הזמן להתנסות.</p>
+    <p>אין צורך בכרית מדיטציה.</p>
+    <p>אין צורך בתנוחה מיוחדת.</p>
+    <p>אפשר לשבת על כיסא.</p>
+    <p>אפשר לשבת על כרית.</p>
+    <p>אפשר לשבת ברגליים משוכלות או כשהרגליים מונחות על הרצפה.</p>
+    <p>אין צורך להפסיק לחשוב.</p>
+    <p>אין צורך להירגע.</p>
+    <p>אין צורך לנשום בצורה מסוימת.</p>
+    <p>ואין שום דבר שאתם צריכים להצליח בו.</p>
+    <p>פשוט עצמו את העיניים.</p>
+    <p>ושימו לב למה שקורה.</p>
+
+    <p class="practice-invitation__sound-hint">
+      מומלץ לוודא שהסאונד במכשיר פועל, כדי שתשמעו את הצליל בסיום התרגול.
+    </p>
+
+    <button type="button" class="practice-btn practice-btn--start" data-action="start">
+      ▶︎ התחילו תרגול של 3 דקות
+    </button>
+  </div>
+
+  <!-- STATE 2: Timer -->
+  <div class="practice-step practice-step--timer" data-step="timer" hidden>
+    <div class="practice-timer__breath" aria-hidden="true"></div>
+    <div class="practice-timer__display" data-timer-display>03:00</div>
+    <button type="button" class="practice-btn practice-btn--done" data-action="finish">
+      סיימתי
+    </button>
+  </div>
+
+  <!-- STATE 3: Reflection -->
+  <div class="practice-step practice-step--reflection" data-step="reflection" hidden>
+    <h2 tabindex="-1" data-reflection-heading>תודה שבחרתם לעצור לרגע.</h2>
+    <p>עכשיו קחו רגע ושאלו את עצמכם:</p>
+    <p><strong>מה שמתם לב שהיה שם?</strong></p>
+    <p>אולי שמתם לב למחשבות.</p>
+    <p>אולי לחוסר שקט.</p>
+    <p>אולי לשעמום.</p>
+    <p>אולי פשוט לזה שהיה לכם קשה לעצור.</p>
+    <p>ואולי אפילו גיליתם שלא הצלחתם לשבת את כל שלוש הדקות וקמתם באמצע.</p>
+    <p>גם זאת חוויה שאפשר לשים אליה לב.</p>
+    <p>אין תשובה נכונה.</p>
+    <p>יש רק את מה שפגשתם.</p>
+    <p>בסופו של דבר, אף אחד לא יכול לענות על השאלה הזאת במקומכם.</p>
+    <p>אם תרצו, קחו רגע לכתוב לעצמכם כמה מילים.</p>
+    <p>ואם מתחשק לכם לשתף, אשמח לקרוא גם כאן בתגובות.</p>
+
+    <form class="practice-reflection-form" data-reflection-form novalidate>
+      <label for="practice-reflection-name">השם שלך</label>
+      <input id="practice-reflection-name" type="text" name="name" required maxlength="80" />
+
+      <label for="practice-reflection-text">מה שמתם לב שהיה שם?</label>
+      <textarea id="practice-reflection-text" name="comment" rows="4" required maxlength="2000"></textarea>
+
+      <!-- honeypot — same convention as CommentsSection.astro -->
+      <div class="practice-reflection-hp" aria-hidden="true">
+        <label>
+          אתר
+          <input type="text" name="website" tabindex="-1" autocomplete="off" />
+        </label>
+      </div>
+
+      <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>
+
+      <button type="submit" class="practice-btn practice-btn--submit">שלח תגובה</button>
+    </form>
+    <p id="practice-reflection-status" role="status"></p>
+  </div>
+</section>
+
+<script async src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+
+<style>
+  /* Uses the site's real global tokens from src/styles/global.css. */
+  .practice-invitation {
+    max-width: var(--measure);
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--stone-line);
+    text-align: center;
+  }
+
+  .practice-invitation p {
+    color: var(--ink-soft);
+    margin: 0.4rem auto var(--space-1);
+    max-width: var(--measure);
+  }
+
+  .practice-invitation h2 {
+    margin-bottom: var(--space-2);
+  }
+
+  .practice-invitation h2[tabindex="-1"]:focus {
+    outline: 2px solid var(--indigo);
+    outline-offset: 4px;
+  }
+
+  .practice-invitation__sound-hint {
+    font-size: 0.9rem;
+    color: var(--stone-text);
+    margin-top: var(--space-2);
+  }
+
+  .practice-btn {
+    display: inline-block;
+    margin-top: var(--space-3);
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .practice-btn:hover {
+    background: var(--seal);
+    border-color: var(--seal);
+  }
+
+  .practice-btn:focus-visible {
+    outline: 2px solid var(--indigo);
+    outline-offset: 3px;
+  }
+
+  .practice-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  /* --- Timer step --- */
+  .practice-step--timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem 0;
+  }
+
+  .practice-timer__breath {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--indigo);
+    opacity: 0.25;
+    animation: pi-breathe 6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .practice-timer__breath {
+      animation: none;
+    }
+  }
+
+  @keyframes pi-breathe {
+    0%, 100% { transform: scale(0.85); opacity: 0.2; }
+    50% { transform: scale(1.15); opacity: 0.4; }
+  }
+
+  .practice-timer__display {
+    font-variant-numeric: tabular-nums;
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+
+  /* --- Reflection step --- */
+  .practice-reflection-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 28rem;
+    margin: var(--space-3) auto 0;
+    text-align: start;
+  }
+
+  .practice-reflection-form label {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .practice-reflection-form input,
+  .practice-reflection-form textarea {
+    font: inherit;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--stone-line);
+    border-radius: 4px;
+    background: var(--paper-raised);
+    color: var(--ink);
+  }
+
+  .practice-reflection-form textarea {
+    resize: vertical;
+  }
+
+  .practice-reflection-form input:focus-visible,
+  .practice-reflection-form textarea:focus-visible {
+    outline: 2px solid var(--indigo);
+    outline-offset: 1px;
+  }
+
+  .practice-reflection-form .practice-btn {
+    align-self: flex-start;
+    margin-top: 0.25rem;
+  }
+
+  .practice-reflection-hp {
+    position: absolute;
+    inset-inline-start: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  #practice-reflection-status {
+    min-height: 1.2em;
+    margin-top: var(--space-1);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+</style>
+
+<script>
+  const DURATION_SECONDS = 180;
+
+  function initPracticeInvitation(root: HTMLElement) {
+    const steps: Record<string, HTMLElement | null> = {
+      invitation: root.querySelector('[data-step="invitation"]'),
+      timer: root.querySelector('[data-step="timer"]'),
+      reflection: root.querySelector('[data-step="reflection"]'),
+    };
+    const display = root.querySelector<HTMLElement>('[data-timer-display]');
+    const startBtn = root.querySelector<HTMLButtonElement>('[data-action="start"]');
+    const finishBtn = root.querySelector<HTMLButtonElement>('[data-action="finish"]');
+    const form = root.querySelector<HTMLFormElement>('[data-reflection-form]');
+
+    let remaining = DURATION_SECONDS;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    let audioCtx: AudioContext | null = null;
+
+    function showStep(name: string) {
+      for (const [key, el] of Object.entries(steps)) {
+        if (el) el.hidden = key !== name;
+      }
+    }
+
+    function formatTime(totalSeconds: number) {
+      const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+      const s = (totalSeconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function primeAudio() {
+      try {
+        const Ctx = window.AudioContext || (window as any).webkitAudioContext;
+        if (Ctx) {
+          audioCtx = new Ctx();
+          if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+        }
+      } catch {
+        audioCtx = null;
+      }
+    }
+
+    function playEndSound() {
+      if (!audioCtx) return;
+      try {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(528, now);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.2, now + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 2.3);
+      } catch {
+        // Silent fail — visual timer + reflection screen remain the fallback.
+      }
+    }
+
+    function vibrateEnd() {
+      try {
+        if ('vibrate' in navigator) {
+          navigator.vibrate([200, 100, 200]);
+        }
+      } catch {
+        // Unsupported (e.g. iOS Safari) — no-op.
+      }
+    }
+
+    function finishPractice() {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+      playEndSound();
+      vibrateEnd();
+      showStep('reflection');
+      const heading = root.querySelector<HTMLElement>('[data-reflection-heading]');
+      heading?.focus();
+    }
+
+    function tick() {
+      remaining -= 1;
+      if (display) display.textContent = formatTime(Math.max(remaining, 0));
+      if (remaining <= 0) finishPractice();
+    }
+
+    startBtn?.addEventListener('click', () => {
+      primeAudio();
+      remaining = DURATION_SECONDS;
+      if (display) display.textContent = formatTime(remaining);
+      showStep('timer');
+      intervalId = setInterval(tick, 1000);
+    });
+
+    finishBtn?.addEventListener('click', finishPractice);
+
+    const status = root.querySelector<HTMLElement>('#practice-reflection-status');
+    const isEnRoot = root.getAttribute('dir') === 'ltr';
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = form.querySelector<HTMLButtonElement>('.practice-btn--submit');
+      if (submitBtn) submitBtn.disabled = true;
+      if (status) status.textContent = isEnRoot ? 'Sending…' : 'שולח…';
+
+      const data = new FormData(form);
+      const payload = {
+        path: location.pathname,
+        lang: isEnRoot ? 'en' : 'he',
+        name: data.get('name'),
+        comment: data.get('comment'),
+        website: data.get('website'),
+        turnstileToken: data.get('cf-turnstile-response'),
+      };
+
+      try {
+        const res = await fetch('/api/comments', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await res.json();
+        if (result.ok) {
+          if (status) {
+            status.textContent = isEnRoot
+              ? 'Thank you. No need to write more than what felt true.'
+              : 'תודה. אין צורך לכתוב יותר ממה שהרגיש נכון.';
+          }
+          form.reset();
+          if ((window as any).turnstile) (window as any).turnstile.reset();
+        } else {
+          if (status) status.textContent = isEnRoot ? 'Something failed. Try again later.' : 'משהו נכשל. אפשר לנסות שוב מאוחר יותר.';
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      } catch {
+        if (status) status.textContent = isEnRoot ? 'Something failed. Try again later.' : 'משהו נכשל. אפשר לנסות שוב מאוחר יותר.';
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+
+  document
+    .querySelectorAll<HTMLElement>('[data-practice-invitation]')
+    .forEach(initPracticeInvitation);
+</script>
