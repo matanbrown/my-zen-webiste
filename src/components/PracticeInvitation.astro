@@ -119,7 +119,11 @@ const isEn = lang === "en";
     text-align: center;
   }
 
-  .practice-invitation h2[tabindex="-1"]:focus {
+  /* Focus is moved here programmatically (for screen readers) when the
+     timer finishes - :focus-visible (not :focus) means it won't draw a
+     box for that, only for real keyboard navigation, matching the
+     .practice-btn:focus-visible convention used elsewhere in this file. */
+  .practice-invitation h2[tabindex="-1"]:focus-visible {
     outline: 2px solid var(--indigo);
     outline-offset: 4px;
   }
