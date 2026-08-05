@@ -5,4 +5,3 @@ summary: ""
 draft: false
 ---
 
-(כאן יתווסף התוכן)
