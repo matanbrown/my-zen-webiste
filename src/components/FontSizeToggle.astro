@@ -23,6 +23,8 @@ const label = {
   .font-size-toggle { display: inline-flex; align-items: center; gap: 2px; }
   .font-size-toggle__btn { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background: none; border: none; color: var(--ink-soft); cursor: pointer; font-size: 0.78rem; }
   .font-size-toggle__btn:hover { color: var(--indigo); }
+  .font-size-toggle__btn:focus { outline: none; }
+  .font-size-toggle__btn:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
 </style>
 
 <script is:inline>

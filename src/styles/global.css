@@ -42,7 +42,10 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.
 h1 { font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem); }
 h2 { font-size: 1.4rem; margin-top: var(--space-4); }
 p { margin: 0 0 var(--space-3); max-width: var(--measure); }
-.prose { font-size: calc(1rem * var(--prose-font-scale)); }
+.content { font-size: calc(1rem * var(--prose-font-scale)); }
+/* Headings intentionally keep their own explicit rem/clamp sizing above -
+   only body text (p, li, etc. that inherit rather than set their own
+   font-size) should respond to the reader's text-size preference. */
 .title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
 .title-row h1 { margin: 0; flex: 1; }
 .prose img { max-width: var(--measure); width: 100%; height: auto; border-radius: 4px; display: block; margin: var(--space-3) 0; }
