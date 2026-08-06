@@ -109,6 +109,7 @@ const isEn = lang === "en";
   }
 
   .practice-invitation h2 {
+    margin-top: 0; /* the section's own border-top + padding-top already separate it; the global h2 { margin-top: var(--space-4) } rule was stacking on top of that */
     margin-bottom: var(--space-2);
   }
 
