@@ -219,11 +219,15 @@ const isEn = lang === "en";
     let remaining = DURATION_SECONDS;
     let intervalId: ReturnType<typeof setInterval> | null = null;
     let audioCtx: AudioContext | null = null;
+    let finished = false;
 
-    function showStep(name: string) {
-      for (const [key, el] of Object.entries(steps)) {
-        if (el) el.hidden = key !== name;
-      }
+    // Reveals a step without hiding steps already shown - the invitation
+    // text (why/how to sit) stays visible once the timer starts, and stays
+    // visible once the reflection appears too. Per Matan: don't disappear
+    // the content that was there before the timer.
+    function revealStep(name: string) {
+      const el = steps[name];
+      if (el) el.hidden = false;
     }
 
     function formatTime(totalSeconds: number) {
@@ -274,13 +278,16 @@ const isEn = lang === "en";
     }
 
     function finishPractice() {
+      if (finished) return; // guard against double-trigger (natural end + late click)
+      finished = true;
       if (intervalId !== null) {
         clearInterval(intervalId);
         intervalId = null;
       }
+      if (finishBtn) finishBtn.disabled = true;
       playEndSound();
       vibrateEnd();
-      showStep('reflection');
+      revealStep('reflection');
       const heading = root.querySelector<HTMLElement>('[data-reflection-heading]');
       heading?.focus();
     }
@@ -295,7 +302,8 @@ const isEn = lang === "en";
       primeAudio();
       remaining = DURATION_SECONDS;
       if (display) display.textContent = formatTime(remaining);
-      showStep('timer');
+      revealStep('timer');
+      startBtn.hidden = true; // avoid a second concurrent timer; rest of the invitation text stays visible
       intervalId = setInterval(tick, 1000);
     });
 
