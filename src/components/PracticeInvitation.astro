@@ -24,41 +24,109 @@
  * now just prompts with the same questions and points down to the
  * single CommentsSection at the bottom of the page.
  *
- * TODO before shipping:
- * - Add an English (/en/) copy of the invitation/reflection strings when
- *   the EN mirror of the lesson is written.
+ * RESOLVED (2026-08-06, per Matan): English copy added below, translated
+ * directly from the Hebrew (same voice/register, first person where the
+ * Hebrew is first person) - published straight to /en/ without a separate
+ * review step per Matan's instruction.
  */
 interface Props {
   lang?: "he" | "en";
 }
 const { lang = "he" } = Astro.props;
 const isEn = lang === "en";
+
+const t = {
+  he: {
+    invitationHeading: "עכשיו תורכם",
+    invitation: [
+      "עד עכשיו קראתם.",
+      "עכשיו הגיע הזמן להתנסות.",
+      "אין צורך בכרית מדיטציה.",
+      "אין צורך בתנוחה מיוחדת.",
+      "אפשר לשבת על כיסא.",
+      "אפשר לשבת על כרית.",
+      "אפשר לשבת ברגליים משוכלות או כשהרגליים מונחות על הרצפה.",
+      "אין צורך להפסיק לחשוב.",
+      "אין צורך להירגע.",
+      "אין צורך לנשום בצורה מסוימת.",
+      "ואין שום דבר שאתם צריכים להצליח בו.",
+      "פשוט עצמו את העיניים.",
+      "ושימו לב למה שקורה.",
+    ],
+    soundHint: "מומלץ לוודא שהסאונד במכשיר פועל, כדי שתשמעו את הצליל בסיום התרגול.",
+    startBtn: "▶︎ התחילו תרגול של 3 דקות",
+    doneBtn: "סיימתי",
+    reflectionHeading: "תודה שבחרתם לעצור לרגע.",
+    reflectionIntro: "עכשיו קחו רגע ושאלו את עצמכם:",
+    reflectionQuestion: "מה שמתם לב שהיה שם?",
+    reflectionBody: [
+      "אולי שמתם לב למחשבות.",
+      "אולי לחוסר שקט.",
+      "אולי לשעמום.",
+      "אולי פשוט לזה שהיה לכם קשה לעצור.",
+      "ואולי אפילו גיליתם שלא הצלחתם לשבת את כל שלוש הדקות וקמתם באמצע.",
+      "גם זאת חוויה שאפשר לשים אליה לב.",
+      "אין תשובה נכונה.",
+      "יש רק את מה שפגשתם.",
+      "בסופו של דבר, אף אחד לא יכול לענות על השאלה הזאת במקומכם.",
+      "אם תרצו, קחו רגע לכתוב לעצמכם כמה מילים.",
+    ],
+    shareBefore: "ואם מתחשק לכם לשתף — אשמח לקרוא, ותוכלו לכתוב כמה מילים",
+    shareLink: "בתגובות בתחתית העמוד",
+  },
+  en: {
+    invitationHeading: "Now it's your turn",
+    invitation: [
+      "Until now, you've been reading.",
+      "Now it's time to try it.",
+      "You don't need a meditation cushion.",
+      "You don't need a special posture.",
+      "You can sit on a chair.",
+      "You can sit on a cushion.",
+      "You can sit cross-legged, or with your feet flat on the floor.",
+      "You don't need to stop thinking.",
+      "You don't need to relax.",
+      "You don't need to breathe in any particular way.",
+      "And there's nothing you need to succeed at.",
+      "Just close your eyes.",
+      "And notice what happens.",
+    ],
+    soundHint: "It's worth checking your device's sound is on, so you'll hear the tone at the end.",
+    startBtn: "▶︎ Start a 3-minute practice",
+    doneBtn: "I'm done",
+    reflectionHeading: "Thank you for choosing to stop for a moment.",
+    reflectionIntro: "Now take a moment and ask yourself:",
+    reflectionQuestion: "What did you notice was there?",
+    reflectionBody: [
+      "Maybe you noticed thoughts.",
+      "Maybe restlessness.",
+      "Maybe boredom.",
+      "Maybe just how hard it was to stop.",
+      "Maybe you even found you couldn't sit the full three minutes and got up partway through.",
+      "That's a real experience too, worth noticing.",
+      "There's no right answer.",
+      "There's only what you met.",
+      "In the end, no one else can answer this question for you.",
+      "If you'd like, take a moment to write yourself a few words.",
+    ],
+    shareBefore: "And if you feel like sharing — I'd be glad to read it, and you're welcome to write a few words",
+    shareLink: "in the comments at the bottom of the page",
+  },
+}[isEn ? "en" : "he"];
 ---
 
 <section class="practice-invitation" data-practice-invitation dir={isEn ? "ltr" : "rtl"}>
   <!-- STATE 1: Invitation -->
   <div class="practice-step practice-step--invitation" data-step="invitation">
-    <h2>עכשיו תורכם</h2>
-    <p>עד עכשיו קראתם.</p>
-    <p>עכשיו הגיע הזמן להתנסות.</p>
-    <p>אין צורך בכרית מדיטציה.</p>
-    <p>אין צורך בתנוחה מיוחדת.</p>
-    <p>אפשר לשבת על כיסא.</p>
-    <p>אפשר לשבת על כרית.</p>
-    <p>אפשר לשבת ברגליים משוכלות או כשהרגליים מונחות על הרצפה.</p>
-    <p>אין צורך להפסיק לחשוב.</p>
-    <p>אין צורך להירגע.</p>
-    <p>אין צורך לנשום בצורה מסוימת.</p>
-    <p>ואין שום דבר שאתם צריכים להצליח בו.</p>
-    <p>פשוט עצמו את העיניים.</p>
-    <p>ושימו לב למה שקורה.</p>
+    <h2>{t.invitationHeading}</h2>
+    {t.invitation.map((line) => <p>{line}</p>)}
 
     <p class="practice-invitation__sound-hint">
-      מומלץ לוודא שהסאונד במכשיר פועל, כדי שתשמעו את הצליל בסיום התרגול.
+      {t.soundHint}
     </p>
 
     <button type="button" class="practice-btn practice-btn--start" data-action="start">
-      ▶︎ התחילו תרגול של 3 דקות
+      {t.startBtn}
     </button>
   </div>
 
@@ -67,28 +135,19 @@ const isEn = lang === "en";
     <div class="practice-timer__breath" aria-hidden="true"></div>
     <div class="practice-timer__display" data-timer-display>03:00</div>
     <button type="button" class="practice-btn practice-btn--done" data-action="finish">
-      סיימתי
+      {t.doneBtn}
     </button>
   </div>
 
   <!-- STATE 3: Reflection -->
   <div class="practice-step practice-step--reflection" data-step="reflection" hidden>
-    <h2 tabindex="-1" data-reflection-heading>תודה שבחרתם לעצור לרגע.</h2>
-    <p>עכשיו קחו רגע ושאלו את עצמכם:</p>
-    <p><strong>מה שמתם לב שהיה שם?</strong></p>
-    <p>אולי שמתם לב למחשבות.</p>
-    <p>אולי לחוסר שקט.</p>
-    <p>אולי לשעמום.</p>
-    <p>אולי פשוט לזה שהיה לכם קשה לעצור.</p>
-    <p>ואולי אפילו גיליתם שלא הצלחתם לשבת את כל שלוש הדקות וקמתם באמצע.</p>
-    <p>גם זאת חוויה שאפשר לשים אליה לב.</p>
-    <p>אין תשובה נכונה.</p>
-    <p>יש רק את מה שפגשתם.</p>
-    <p>בסופו של דבר, אף אחד לא יכול לענות על השאלה הזאת במקומכם.</p>
-    <p>אם תרצו, קחו רגע לכתוב לעצמכם כמה מילים.</p>
+    <h2 tabindex="-1" data-reflection-heading>{t.reflectionHeading}</h2>
+    <p>{t.reflectionIntro}</p>
+    <p><strong>{t.reflectionQuestion}</strong></p>
+    {t.reflectionBody.map((line) => <p>{line}</p>)}
     <p>
-      ואם מתחשק לכם לשתף — אשמח לקרוא, ותוכלו לכתוב כמה מילים
-      <a href="#comments" data-reflection-jump>בתגובות בתחתית העמוד</a>.
+      {t.shareBefore}{" "}
+      <a href="#comments" data-reflection-jump>{t.shareLink}</a>.
     </p>
   </div>
 </section>

@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TagFilter from "../../components/TagFilter.astro";
-import SaveButton from "../../components/SaveButton.astro";
 
 export async function getStaticPaths({ paginate }) {
   const lessons = (await getCollection("lessons", ({ data }) => !data.draft))
@@ -36,7 +35,6 @@ const allTags = [...new Set(allLessons.flatMap((l) => l.data.tags ?? []))].sort(
         <p class="eyebrow">{lesson.data.date.toLocaleDateString("he-IL")}</p>
         <h2><a href={`/lessons/${lesson.id}/`}>{lesson.data.title}</a></h2>
         {lesson.data.summary && <p>{lesson.data.summary}</p>}
-        <SaveButton collection="lessons" id={lesson.id} lang="he" size="sm" />
       </article>
     ))}
   </div>

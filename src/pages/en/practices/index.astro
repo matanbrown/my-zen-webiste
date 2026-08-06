@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import SaveButton from "../../../components/SaveButton.astro";
 
 const practices = (await getCollection("practicesEn", ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order);
@@ -22,7 +21,6 @@ const practices = (await getCollection("practicesEn", ({ data }) => !data.draft)
           {practice.data.subtitle && <p>{practice.data.subtitle}</p>}
         </div>
       </div>
-      <SaveButton collection="practices" id={practice.id} lang="en" size="sm" />
     </article>
   ))}
 
