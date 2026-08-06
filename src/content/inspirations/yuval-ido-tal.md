@@ -1,6 +1,8 @@
 ---
 title: "יובל אידו טל"
 author: "יובל אידו טל"
+image: "https://media.matanbrown.com/inspirations/yuval-ido-tal/portrait.webp"
+imageAlt: "תצלום פורטרט של יובל אידו טל"
 date: 2026-07-27
 draft: false
 ---
