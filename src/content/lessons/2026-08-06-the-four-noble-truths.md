@@ -1,5 +1,7 @@
 ---
 title: "ארבע האמיתות הנאצלות"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-06-the-four-noble-truths/cover.webp"
+coverImageAlt: "איור של ארבע האמיתות הנאצלות"
 date: 2026-08-06
 summary: "הדרשה הראשונה של הבודהה בפארק הצבאים — ארבע התבוננויות שמרכיבות את לב התרגול הבודהיסטי, לא כפילוסופיה אלא כתיאור מדויק של חוויה."
 draft: false

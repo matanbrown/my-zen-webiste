@@ -1,5 +1,7 @@
 ---
 title: "The Four Noble Truths"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-06-the-four-noble-truths/cover.webp"
+coverImageAlt: "Illustration of the Four Noble Truths"
 date: 2026-08-06
 summary: "The Buddha's first teaching at the Deer Park — four observations at the heart of Buddhist practice, offered not as philosophy but as an accurate description of experience."
 draft: false
