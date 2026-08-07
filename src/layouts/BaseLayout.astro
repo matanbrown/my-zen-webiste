@@ -101,10 +101,32 @@ const NAV: [string, string][] = isEn
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Google Fonts CSS was render-blocking (PageSpeed: ~1.2s est. savings),
+      because a synchronous <link rel="stylesheet"> chains into 4 woff2
+      requests on the critical path before first paint. This is the
+      standard "loadCSS" pattern: load as a non-blocking preload, then
+      swap its media to "all" once loaded via onload. font-display:swap
+      in the URL already prevents invisible text in the meantime, and the
+      <noscript> fallback covers non-JS clients.
+    -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;500;600;700&family=Noto+Sans+Hebrew:wght@400;500;600&display=swap"
+    />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;500;600;700&family=Noto+Sans+Hebrew:wght@400;500;600&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;500;600;700&family=Noto+Sans+Hebrew:wght@400;500;600&display=swap"
+      />
+    </noscript>
 
     <link rel="alternate" type="application/rss+xml" title={`${SITE_NAME} — ${isEn ? "Lessons" : "שיעורים"}`} href={isEn ? "/en/rss.xml" : "/rss.xml"} />
 
