@@ -56,8 +56,6 @@ const articleJsonLd = {
     <SaveButton collection="lessons" id={entry.id} lang="en" />
   </div>
 
-  {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} />}
-
   {entry.data.videoUrl && (
     <div class="media-embed">
       <video controls src={entry.data.videoUrl}></video>
@@ -70,6 +68,8 @@ const articleJsonLd = {
   <div class="prose">
     <Content />
   </div>
+
+  {entry.data.coverImage && <img class="cover" src={entry.data.coverImage} alt={entry.data.coverImageAlt || entry.data.title} />}
 
   {entry.id === "2026-08-05-before-the-first-sitting" && <PracticeInvitation lang="en" />}
 
@@ -112,7 +112,7 @@ const articleJsonLd = {
 
 <style>
   .media-embed { width: 100%; margin-bottom: var(--space-3); border-radius: 4px; }
-  .cover { width: 100%; max-width: var(--measure); border-radius: 4px; margin-bottom: var(--space-3); }
+  .cover { width: 100%; max-width: var(--measure); border-radius: 4px; margin-top: var(--space-3); }
   .tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-3); }
   .tag {
     font-size: .78rem;
