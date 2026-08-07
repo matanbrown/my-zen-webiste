@@ -47,7 +47,7 @@ He then faced a dilemma: could what he had experienced even be explained to othe
 
 According to tradition, after much deliberation, he decided to try.
 
-He gave his first teaching in the Deer Park at Sarnath. There he laid out what would go on to become the heart of Buddhist practice: the Four Noble Truths (link to a future article) and the Eightfold Path (link to a future article).
+He gave his first teaching in the Deer Park at Sarnath. There he laid out what would go on to become the heart of Buddhist practice: [the Four Noble Truths](/en/lessons/2026-08-06-the-four-noble-truths/) and the Eightfold Path (link to a future article).
 
 Over the roughly 45 years that followed, he wandered across northern India, taught, spoke with kings, monks, farmers, and ordinary people, and built a community of students.
 
