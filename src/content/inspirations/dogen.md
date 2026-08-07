@@ -1,6 +1,7 @@
 ---
 title: "דוגן"
 author: "דוגן"
+subtitle: "מייסד אסכולת הסוטו של הזן ביפן, ומחבר השובוגנזו."
 image: "https://media.matanbrown.com/inspirations/dogen/cover.webp"
 date: 2026-08-01
 draft: false

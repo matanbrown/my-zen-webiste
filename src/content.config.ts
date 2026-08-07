@@ -53,6 +53,7 @@ const inspirations = defineCollection({
   schema: z.object({
     title: z.string(),
     author: z.string(),
+    subtitle: z.string().optional(), // תיאור קצר, שורה אחת
     translator: z.string().optional(),
     source: z.string().optional(), // book/collection title
     date: z.coerce.date(),

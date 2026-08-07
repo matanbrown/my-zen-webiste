@@ -45,8 +45,22 @@ const latestInspiration = inspirations[0];
 
     {latestInspiration && (
       <div class="latest-item">
-        <p class="eyebrow">השראה אחרונה</p>
-        <h2><a href={`/inspirations/${latestInspiration.id}/`}>{latestInspiration.data.title}</a></h2>
+        <div class="lesson-row">
+          {latestInspiration.data.image && (
+            <img
+              class="avatar"
+              src={latestInspiration.data.image}
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+          <div class="lesson-text">
+            <p class="eyebrow">השראה אחרונה</p>
+            <h2><a href={`/inspirations/${latestInspiration.id}/`}>{latestInspiration.data.title}</a></h2>
+            {latestInspiration.data.subtitle && <p>{latestInspiration.data.subtitle}</p>}
+          </div>
+        </div>
       </div>
     )}
 

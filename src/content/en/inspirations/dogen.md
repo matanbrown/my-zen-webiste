@@ -1,6 +1,8 @@
 ---
 title: "Dogen"
 author: "Dogen"
+subtitle: "Founder of the Soto school of Zen in Japan, and author of the Shobogenzo."
+image: "https://media.matanbrown.com/inspirations/dogen/cover.webp"
 date: 2026-08-01
 draft: false
 ---
