@@ -1,5 +1,7 @@
 ---
 title: "The Eightfold Path"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-07-the-eightfold-path/cover.webp"
+coverImageAlt: "Illustration of the Eightfold Path"
 date: 2026-08-07
 summary: "The fourth of the Four Noble Truths — not a list of rules, but eight directions that nourish one another on the way to the end of suffering."
 draft: false

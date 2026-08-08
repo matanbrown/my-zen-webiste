@@ -1,5 +1,7 @@
 ---
 title: "דרך השמונה"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-07-the-eightfold-path/cover.webp"
+coverImageAlt: "איור של דרך השמונה"
 date: 2026-08-07
 summary: "האמת הרביעית מתוך ארבע האמיתות הנאצלות — לא רשימת חוקים, אלא שמונה כיוונים שמזינים זה את זה בדרך לשחרור מסבל."
 draft: false
