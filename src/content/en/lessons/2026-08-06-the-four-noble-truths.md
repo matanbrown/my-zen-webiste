@@ -53,8 +53,8 @@ something he himself had experienced, under the Bodhi tree.
 
 **The fourth truth: there is a path.**
 
-This is the practical truth — the Eightfold Path, which deserves its
-own article. But the key point here is that release from suffering
+This is the practical truth — [the Eightfold Path](/en/lessons/2026-08-07-the-eightfold-path/),
+which has its own article. But the key point here is that release from suffering
 doesn't happen on its own. It requires practice — in conduct, in
 concentration, in understanding.
 
