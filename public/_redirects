@@ -1,0 +1,6 @@
+# Force this exact path to serve with a 200 (no redirect), overriding
+# Cloudflare Pages' automatic clean-URL (.html-stripping) behavior.
+# Google's site-verification fetch requires the literal .html URL to
+# respond directly - a redirect breaks verification, which is likely
+# why it "stopped suddenly" after being verified manually once before.
+/google573ecc33a1e62469.html /google573ecc33a1e62469.html 200
