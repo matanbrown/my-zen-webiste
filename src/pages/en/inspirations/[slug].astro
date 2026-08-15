@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ShareButtons from "../../../components/ShareButtons.astro";
 
 export async function getStaticPaths() {
   const items = await getCollection("inspirationsEn", ({ data }) => !data.draft);
@@ -46,6 +47,8 @@ const description = `${entry.data.author} — an inspiration behind "Without Eff
       </a>
     </p>
   )}
+
+  <ShareButtons title={entry.data.title} lang="en" />
 
   <p><a href="/en/inspirations/">← All inspirations</a></p>
 </BaseLayout>

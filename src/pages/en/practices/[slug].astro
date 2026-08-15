@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import SaveButton from "../../../components/SaveButton.astro";
+import ShareButtons from "../../../components/ShareButtons.astro";
 
 export async function getStaticPaths() {
   const practices = await getCollection("practicesEn", ({ data }) => !data.draft);
@@ -44,6 +45,8 @@ const breadcrumbJsonLd = {
   <div class="prose">
     <Content />
   </div>
+  <ShareButtons title={entry.data.title} lang="en" />
+
   <p><a href="/en/practices/">← All practices</a></p>
 </BaseLayout>
 

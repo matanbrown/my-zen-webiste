@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ShareButtons from "../../../components/ShareButtons.astro";
 
 const FORM_LABELS: Record<string, string> = {
   haiku: "haiku",
@@ -41,6 +42,8 @@ const description = entry.data.author ? `A ${FORM_LABELS[entry.data.form] ?? ent
       </a>
     </p>
   )}
+
+  <ShareButtons title={entry.data.title} lang="en" />
 
   <p><a href="/en/poems/">← All poems</a></p>
 </BaseLayout>

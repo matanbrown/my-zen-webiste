@@ -4,6 +4,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CommentsSection from "../../../components/CommentsSection.astro";
 import PracticeInvitation from "../../../components/PracticeInvitation.astro";
 import SaveButton from "../../../components/SaveButton.astro";
+import ShareButtons from "../../../components/ShareButtons.astro";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessonsEn", ({ data }) => !data.draft);
@@ -114,6 +115,8 @@ const breadcrumbJsonLd = {
       </a>
     ) : <span />}
   </nav>
+
+  <ShareButtons title={entry.data.title} lang="en" />
 
   <p><a href="/en/lessons/">← All lessons</a></p>
 
