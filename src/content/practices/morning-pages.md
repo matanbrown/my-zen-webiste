@@ -1,6 +1,8 @@
 ---
 title: "דפי בוקר"
 order: 6
+coverImage: "https://media.matanbrown.com/practices/morning-pages/cover.webp"
+coverImageAlt: "איור של דפי בוקר"
 draft: false
 ---
 
