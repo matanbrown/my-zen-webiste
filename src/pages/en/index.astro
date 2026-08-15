@@ -9,7 +9,7 @@ const lessons = (await getCollection("lessonsEn", ({ data }) => !data.draft))
 const inspirations = (await getCollection("inspirationsEn", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const latestLesson = lessons[0];
+const latestLessons = lessons.slice(0, 3);
 const latestInspiration = inspirations[0];
 ---
 
@@ -22,26 +22,26 @@ const latestInspiration = inspirations[0];
   </section>
 
   <section class="latest">
-    {latestLesson && (
+    {latestLessons.map((lesson, i) => (
       <div class="latest-item">
         <div class="lesson-row">
-          {(latestLesson.data.avatarImage || latestLesson.data.coverImage) && (
+          {(lesson.data.avatarImage || lesson.data.coverImage) && (
             <img
               class="avatar"
-              src={latestLesson.data.avatarImage ?? latestLesson.data.coverImage}
+              src={lesson.data.avatarImage ?? lesson.data.coverImage}
               alt=""
               loading="lazy"
               decoding="async"
             />
           )}
           <div class="lesson-text">
-            <p class="eyebrow">Latest lesson · {latestLesson.data.date.toLocaleDateString("en-US")}</p>
-            <h2><a href={`/en/lessons/${latestLesson.id}/`}>{latestLesson.data.title}</a></h2>
-            {latestLesson.data.summary && <p>{latestLesson.data.summary}</p>}
+            <p class="eyebrow">{i === 0 ? "Latest lesson" : "Previous lesson"} · {lesson.data.date.toLocaleDateString("en-US")}</p>
+            <h2><a href={`/en/lessons/${lesson.id}/`}>{lesson.data.title}</a></h2>
+            {lesson.data.summary && <p>{lesson.data.summary}</p>}
           </div>
         </div>
       </div>
-    )}
+    ))}
 
     {latestInspiration && (
       <div class="latest-item">
