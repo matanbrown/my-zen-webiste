@@ -11,9 +11,28 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const description = entry.data.subtitle ?? `${entry.data.title} — תרגול מדיטציה מתוך "ללא מאמץ"`;
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: entry.data.title,
+  description,
+  inLanguage: "he-IL",
+  url: `https://zen.matanbrown.com/practices/${entry.id}/`,
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "ללא מאמץ", item: "https://zen.matanbrown.com/" },
+    { "@type": "ListItem", position: 2, name: "תרגולים", item: "https://zen.matanbrown.com/practices/" },
+    { "@type": "ListItem", position: 3, name: entry.data.title, item: `https://zen.matanbrown.com/practices/${entry.id}/` },
+  ],
+};
 ---
 
-<BaseLayout title={entry.data.title} description={description} image={entry.data.coverImage}>
+<BaseLayout title={entry.data.title} description={description} jsonLd={[articleJsonLd, breadcrumbJsonLd]} image={entry.data.coverImage}>
   <div class="title-row">
     <h1>{entry.data.title}</h1>
     <SaveButton collection="practices" id={entry.id} lang="he" />
