@@ -1,5 +1,7 @@
 ---
 title: "Buddhism Is Not One Thing"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-15-buddhism-is-not-one-thing/cover.webp"
+coverImageAlt: "Illustration of the map of Buddhism"
 date: 2026-08-15
 summary: "From Theravada to Mahayana, from China to Japan, from Rinzai to Soto — a short map of how the different Buddhist traditions relate to one another, and where Zen sits within it."
 draft: false

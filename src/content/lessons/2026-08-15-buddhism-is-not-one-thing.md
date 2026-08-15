@@ -1,5 +1,7 @@
 ---
 title: "בודהיזם הוא לא דבר אחד"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-15-buddhism-is-not-one-thing/cover.webp"
+coverImageAlt: "איור של מפת הבודהיזם"
 date: 2026-08-15
 summary: "מתהרוואדה ועד מהאיאנה, מסין ליפן, מרינזאי לסוטו — מפה קצרה של איך המסורות הבודהיסטיות השונות מתייחסות זו לזו, ואיפה הזן נמצא בתוכה."
 draft: false
