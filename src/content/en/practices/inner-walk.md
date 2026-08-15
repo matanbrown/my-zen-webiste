@@ -87,7 +87,7 @@ another traditional meditation method.
 
 ## How I got to know it
 
-After meeting [Yuval "Fluke" Birman](/en/inspirations/yuval-plok-birman/)
+After meeting Yuval "Fluke" Birman
 I started practicing Inner Walk.
 
 One of the things that struck me right away was how little you
