@@ -1,5 +1,7 @@
 ---
 title: "The Three Marks of Existence"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-15-the-three-marks-of-existence/cover.webp"
+coverImageAlt: "Illustration of the Three Marks of Existence"
 date: 2026-08-15
 summary: "Impermanence, dukkha, and not-self — three invitations to look at experience as it is, before rushing to explain it."
 draft: false

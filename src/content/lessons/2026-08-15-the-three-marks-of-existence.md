@@ -1,5 +1,7 @@
 ---
 title: "שלושת סימני הקיום"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-15-the-three-marks-of-existence/cover.webp"
+coverImageAlt: "איור של שלושת סימני הקיום"
 date: 2026-08-15
 summary: "ארעיות, דוקה ואי־עצמי — שלוש הזמנות להתבונן בחוויה כפי שהיא, לפני שממהרים להסביר אותה."
 draft: false
