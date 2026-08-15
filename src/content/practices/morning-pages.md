@@ -7,7 +7,7 @@ draft: false
 ---
 
 דפי בוקר (Morning Pages) הם תרגול כתיבה פשוט שפיתחה הסופרת ג'וליה
-קמרון והציגה בספרה "דרך האמן" (The Artist's Way).
+קמרון והציגה בספרה ["דרך האמן"](https://e-vrit.co.il/product/6170/%D7%93%D7%A8%D7%9A-%D7%94%D7%90%D7%9E%D7%9F?srsltid=AfmBOoq3BJI9Ag6VnzypCGS8dngORkPCaAX0BY-6fIBujz4Jg2v740TH) (The Artist's Way).
 
 ההנחיה פשוטה: בכל בוקר, סמוך ככל האפשר לקימה, כותבים ביד שלושה
 עמודי A4 מלאים.
