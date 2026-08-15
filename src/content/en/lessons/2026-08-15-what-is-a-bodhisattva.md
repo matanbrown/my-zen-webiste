@@ -64,7 +64,7 @@ enthusiasm fades.
 **Meditation — Dhyāna.** Cultivating stability, presence, and
 gathering of the mind.
 
-**Wisdom — Prajñā.** Seeing impermanence, not-self, and emptiness in
+**Wisdom — Prajñā.** Seeing [impermanence, not-self](/en/lessons/2026-08-15-the-three-marks-of-existence/), and emptiness in
 a way that doesn't stay only a philosophical idea.
 
 The paramitas aren't rungs completed one after another. They develop
@@ -186,7 +186,7 @@ work? What do I do when someone makes me angry? How do I respond to
 suffering I'd rather not see? How do I use my time, my body, and my
 attention?
 
-In Zen, and especially in the Soto tradition, everyday activities
+In Zen, and especially in [the Soto tradition](/en/lessons/2026-08-15-buddhism-is-not-one-thing/), everyday activities
 aren't just breaks between periods of meditation. Cooking, cleaning,
 eating, working, and caring for others can all be an expression of
 practice.

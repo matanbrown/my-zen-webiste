@@ -84,7 +84,7 @@ Communities, texts, and new ideas appeared over time within the
 existing Buddhist world.
 
 One of the most important features of Mahayana is its expansion of the
-bodhisattva path. A bodhisattva is one who develops Bodhicitta — the
+[bodhisattva path](/en/lessons/2026-08-15-what-is-a-bodhisattva/). A bodhisattva is one who develops Bodhicitta — the
 aspiration to awaken not only for oneself but for the benefit of all
 beings. So instead of seeing personal liberation as the end of the
 path, the Mahayana ideal points toward full buddhahood and activity in
@@ -186,7 +186,7 @@ that requires continued training, deepening, and expression within
 life.
 
 **Soto and shikantaza.** The central figure in the development of
-Soto Zen in Japan is Eihei Dogen, who lived in the 13th century and,
+Soto Zen in Japan is [Eihei Dogen](/en/inspirations/dogen/), who lived in the 13th century and,
 after studying in China, brought back to Japan the tradition he
 received there. The practice most identified with Soto is Shikantaza,
 usually translated as "just sitting." That phrase can mislead: "just
