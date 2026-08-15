@@ -1,5 +1,7 @@
 ---
 title: "What Is a Bodhisattva?"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-15-what-is-a-bodhisattva/cover.webp"
+coverImageAlt: "Illustration of a bodhisattva"
 date: 2026-08-15
 summary: "Bodhicitta, the six paramitas, and the four vows — why the bodhisattva path in Mahayana isn't a story about a distant figure, but a practice that starts with the next encounter."
 draft: false

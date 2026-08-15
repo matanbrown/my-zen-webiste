@@ -1,5 +1,7 @@
 ---
 title: "מהו בודהיסטווה?"
+coverImage: "https://media.matanbrown.com/lessons/2026-08-15-what-is-a-bodhisattva/cover.webp"
+coverImageAlt: "איור של בודהיסטווה"
 date: 2026-08-15
 summary: "בודהיצ'יטה, שש הפארמיטות וארבעת הנדרים — מדוע דרך הבודהיסטווה במהאיאנה היא לא סיפור על דמות רחוקה, אלא תרגול שמתחיל במפגש הבא."
 draft: false
