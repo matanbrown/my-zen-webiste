@@ -43,9 +43,9 @@ const allTags = [...new Set(allLessons.flatMap((l) => l.data.tags ?? []))].sort(
 
   {page.lastPage > 1 && (
     <nav class="pagination" aria-label="עימוד">
-      {page.url.prev ? <a href={page.url.prev}>← קודמים</a> : <span />}
+      {page.url.prev ? <a href={page.url.prev}>← חדשים יותר</a> : <span />}
       <span class="eyebrow">עמוד {page.currentPage} מתוך {page.lastPage}</span>
-      {page.url.next ? <a href={page.url.next}>חדשים יותר →</a> : <span />}
+      {page.url.next ? <a href={page.url.next}>ישנים יותר →</a> : <span />}
     </nav>
   )}
 </BaseLayout>

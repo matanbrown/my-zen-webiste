@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import CookieConsent from "../components/CookieConsent.astro";
-import FontSizeToggle from "../components/FontSizeToggle.astro";
 
 interface Props {
   title: string;
@@ -185,7 +184,6 @@ const NAV: [string, string][] = isEn
           {NAV.map(([href, label]) => <a href={href}>{label}</a>)}
         </nav>
         <div class="header-actions">
-          <FontSizeToggle lang={lang} />
           <div class="search">
             <button
               id="search-toggle"
