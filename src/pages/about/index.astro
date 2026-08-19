@@ -1,8 +1,18 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "מתן",
+  url: "https://zen.matanbrown.com/about/",
+  description:
+    "מתרגל זן (סוטו) אישי, כותב שיעורים שבועיים, תרגולים ומחשבות על מדיטציה וחיי היומיום באתר \"ללא מאמץ\".",
+  sameAs: ["https://zen.matanbrown.com/en/about/"],
+};
 ---
 
-<BaseLayout title="אודות" description='קצת עליי, ולמה "ללא מאמץ" קיים.'>
+<BaseLayout title="אודות" description='קצת עליי, ולמה "ללא מאמץ" קיים.' jsonLd={personJsonLd}>
   <h1>אודות</h1>
 
   <div class="prose">

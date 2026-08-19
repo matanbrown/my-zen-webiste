@@ -43,6 +43,11 @@ const articleJsonLd = {
   dateModified: modifiedDate.toISOString(),
   inLanguage: "en-US",
   url: `https://zen.matanbrown.com/en/lessons/${entry.id}/`,
+  author: {
+    "@type": "Person",
+    name: "Matan",
+    url: "https://zen.matanbrown.com/en/about/",
+  },
 };
 
 const breadcrumbJsonLd = {
