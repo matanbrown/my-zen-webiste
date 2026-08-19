@@ -1,5 +1,6 @@
 ---
-title: "Inner Walk"
+title: "Inner Walk — Walking Meditation Retreat on Koh Phangan"
+subtitle: "What Inner Walk is, how the Koh Phangan retreat works, and a personal review of the practice"
 order: 2
 coverImage: "https://media.matanbrown.com/practices/inner-walk/cover.jpg"
 coverImageAlt: "Inner Walk logo"

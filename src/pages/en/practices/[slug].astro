@@ -20,6 +20,18 @@ const articleJsonLd = {
   description,
   inLanguage: "en-US",
   url: `https://zen.matanbrown.com/en/practices/${entry.id}/`,
+  author: {
+    "@type": "Person",
+    name: "Matan",
+    url: "https://zen.matanbrown.com/en/about/",
+  },
+  ...(entry.id === "inner-walk" && {
+    about: {
+      "@type": "Thing",
+      name: "Inner Walk",
+      sameAs: "https://www.innerwalk.org/",
+    },
+  }),
 };
 
 const breadcrumbJsonLd = {

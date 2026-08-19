@@ -1,5 +1,6 @@
 ---
-title: "איינר ווק"
+title: "Inner Walk (אינר ווק) — מדיטציית הליכה מקופנגן"
+subtitle: "מה זה Inner Walk, איך הריטריט בקופנגן עובד, וחוויה אישית מהתרגול"
 order: 2
 coverImage: "https://media.matanbrown.com/practices/inner-walk/cover.jpg"
 coverImageAlt: "לוגו Inner Walk"
